@@ -1,0 +1,7 @@
+.wp_notice_message {
+    border: 1px solid #000;
+    display: block;
+    margin: 5px;
+    padding: 5px;
+    width: 100%;
+}

@@ -1,0 +1,99 @@
+# Copyright (C) 2013 TODO
+# This file is distributed under the same license as the TODO package.
+msgid ""
+msgstr ""
+"Project-Id-Version: wp-notice 1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
+"POT-Creation-Date: 2014-06-10 12:56+0200\n"
+"PO-Revision-Date: 2014-06-10 12:59+0200\n"
+"Last-Translator: Ran Bar-Zik <ran@bar-zik.com>\n"
+"Language-Team:  <ran@bar-zik.com>\n"
+"Language: he_IL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.5\n"
+"X-Poedit-KeywordsList: __;_e;_n;_x;esc_html_e;esc_html__;esc_attr_e;"
+"esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;_n:1,2\n"
+"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: admin/class-wp-notice-admin.php:135
+msgid "Done"
+msgstr "בוצע"
+
+#: admin/class-wp-notice-admin.php:136
+msgid "Today"
+msgstr "היום"
+
+#: admin/class-wp-notice-admin.php:139
+msgid "Show a different month"
+msgstr "הראה חודש אחר"
+
+#: admin/class-wp-notice-admin.php:168
+msgid "WP Notice Setting page"
+msgstr "דף ההגדרות של WP Notice"
+
+#: admin/class-wp-notice-admin.php:169
+msgid "WP Notice"
+msgstr "WP Notice"
+
+#: admin/class-wp-notice-admin.php:184
+msgid "Insert the notice and the conditions"
+msgstr "הכניסו את ההודעה ואת התנאים"
+
+#: admin/class-wp-notice-admin.php:303
+msgid "WP Notice Settings Updated"
+msgstr "ההגדרות של WP Notice עודכנו"
+
+#: admin/class-wp-notice-admin.php:305
+msgid "WP Notice Error! please try again."
+msgstr "שגיאה ב-WP Notice אנא נסו שוב מאוחר יותר"
+
+#: admin/class-wp-notice-admin.php:346 admin/class-wp-notice-admin.php:375
+msgid "Show in all posts that belongs to : "
+msgstr "הציגו בכל הפוסטים ששייכים ל:"
+
+#: admin/class-wp-notice-admin.php:348
+msgid "Do not use categories"
+msgstr "אל תשתמשו בקטגוריות"
+
+#: admin/class-wp-notice-admin.php:377
+msgid "Do not use tags"
+msgstr "אל תשתמש בתגיות"
+
+#: admin/class-wp-notice-admin.php:405
+msgid "The Notice"
+msgstr "ההודעה"
+
+#: admin/class-wp-notice-admin.php:406
+msgid "Show in all posts that were created before:"
+msgstr "הצג בכל הפוסטים שנוצרו לפני: "
+
+#: admin/class-wp-notice-admin.php:407
+msgid "Insert the text of the notice here. It can be HTML or text string"
+msgstr "הכנס את הטקסט של ההודעה כאן. הוא יכול להיות HTML או טקסט"
+
+#: admin/class-wp-notice-admin.php:408
+msgid "DD/MM/YY"
+msgstr "DD/MM/YY"
+
+#: admin/class-wp-notice-admin.php:437
+msgid "Settings"
+msgstr "הגדרות"
+
+#: admin/views/admin.php:25
+msgid ""
+"Please fill in the notice text and the proper conditions that need to be "
+"fulfilled in order to make the notice to appear"
+msgstr "אנא מלא את הטקסט של ההודעה והתנאים שצריכים להתמלא על מנת שההודעה תופיע"
+
+#: admin/views/admin.php:26
+msgid "You can combine several conditions and create several notices"
+msgstr "אפשר לשלב מספר תנאים וליצור מספר הודעות"
+
+#: admin/views/admin.php:31
+msgid "Submit"
+msgstr "שלח"
