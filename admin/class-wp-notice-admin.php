@@ -11,7 +11,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) die; // Exit if accessed directly
 
-class WP_notice_Admin {
+final class WP_notice_Admin {
 
 	/**
 	 * Instance of this class.
@@ -59,15 +59,38 @@ class WP_notice_Admin {
 	}
 
 	/**
+	 * Throw error on object clone
+	 *
+	 * The whole idea of the singleton design pattern is that there is a single
+	 * object therefore, we don't want the object to be cloned.
+	 *
+	 * @since 1.0.1
+	 * @return void
+	 */
+	public function __clone() {
+		// Cloning instances of the class is forbidden
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-notice' ), '1.0.1' );
+	}
+
+	/**
+	 * Disable unserializing of the class
+	 *
+	 * @since 1.0.1
+	 * @return void
+	 */
+	public function __wakeup() {
+		// Unserializing instances of the class is forbidden
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-notice' ), '1.0.1' );
+	}
+
+	/**
 	 * Return an instance of this class.
 	 *
 	 * @since     1.0.0
 	 *
-	 * @return    object    A single instance of this class.
+	 * @return    WP_notice_Admin    A single instance of this class.
 	 */
 	public static function get_instance() {
-
-
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
 			self::$instance = new self;
@@ -249,6 +272,8 @@ class WP_notice_Admin {
      * set the settings to the DB
      *
      * @param array $wp_notice_settings
+     * 
+     * @return array
      */
 
     private function set_wp_notice_settings($wp_notice_settings = array()) {
