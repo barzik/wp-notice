@@ -9,6 +9,8 @@
  * @copyright 2014 Ran Bar-Zik
  */
 
+if ( ! defined( 'ABSPATH' ) ) die; // Exit if accessed directly
+
 class WP_notice_Admin {
 
 	/**

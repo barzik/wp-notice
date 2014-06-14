@@ -12,6 +12,7 @@
  * @copyright 2014 Your Name or Company Name
  */
 
+if ( ! defined( 'ABSPATH' ) ) die; // Exit if accessed directly
 ?>
 
 
