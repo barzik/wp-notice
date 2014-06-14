@@ -11,7 +11,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) die; // Exit if accessed directly
 
-class WP_notice {
+final class WP_notice {
 
 	/**
 	 * Plugin version, used for cache-busting of style and script file references.
@@ -41,7 +41,7 @@ class WP_notice {
 	 *
 	 * @var      object
 	 */
-	protected static $instance = null;
+	private static $instance = null;
 
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
@@ -68,12 +68,37 @@ class WP_notice {
 
 	}
 
+	/**
+	 * Throw error on object clone
+	 *
+	 * The whole idea of the singleton design pattern is that there is a single
+	 * object therefore, we don't want the object to be cloned.
+	 *
+	 * @since 1.0.1
+	 * @return void
+	 */
+	public function __clone() {
+		// Cloning instances of the class is forbidden
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-notice' ), '1.0.1' );
+	}
+
+	/**
+	 * Disable unserializing of the class
+	 *
+	 * @since 1.0.1
+	 * @return void
+	 */
+	public function __wakeup() {
+		// Unserializing instances of the class is forbidden
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-notice' ), '1.0.1' );
+	}
+
     /**
      * Return the plugin slug.
      *
-     * @since    1.0.0
+     * @since 1.0.0
      *
-     * @return    Plugin slug variable.
+     * @return string Plugin slug variable.
      */
     public function get_plugin_slug() {
         return $this->plugin_slug;
@@ -82,9 +107,9 @@ class WP_notice {
     /**
      * Return the plugin option name
      *
-     * @since    1.0.0
+     * @since 1.0.0
      *
-     * @return    Plugin slug variable.
+     * @return string Plugin slug variable.
      */
     public function get_plugin_option_name() {
         return $this->plugin_settings_information;
@@ -96,7 +121,7 @@ class WP_notice {
 	 *
 	 * @since     1.0.0
 	 *
-	 * @return    object    A single instance of this class.
+	 * @return    WP_notice    A single instance of this class.
 	 */
 	public static function get_instance() {
 
