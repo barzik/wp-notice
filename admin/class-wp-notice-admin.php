@@ -264,7 +264,7 @@ final class WP_notice_Admin {
     public static function get_wp_notice_settings() {
         $plugin = WP_notice::get_instance();
         $option  = $plugin->get_plugin_option_name();
-        return unserialize(get_option($option, array()));
+        return maybe_unserialize(get_option($option, array()));
     }
 
     /**
@@ -324,13 +324,13 @@ final class WP_notice_Admin {
                 unset($wp_notice_settings[$i]['wp_notice_time']);
             }
         }
-        $new_value = serialize($wp_notice_settings);
+        $new_value = maybe_serialize($wp_notice_settings);
         $result = update_option( $option, $new_value );
-        if($result = true) {
-            return array('status'=> '200', 'text' =>__( 'WP Notice Settings Updated', $this->plugin_slug ));
-        } else {
-            return array('status'=> '500', 'text' =>__( 'WP Notice Error! please try again.', $this->plugin_slug ));
-        }
+	    if ( $result ) {
+		    return array( 'status' => '200', 'text' => __( 'WP Notice Settings Updated', $this->plugin_slug ) );
+	    } else {
+		    return array( 'status' => '500', 'text' => __( 'WP Notice Error! please try again.', $this->plugin_slug ) );
+	    }
     }
 
     /**
@@ -340,7 +340,6 @@ final class WP_notice_Admin {
      * @param $wp_notice_options
      * @return string
      */
-
     private function get_all_fieldsets($wp_notice_options) {
         $html = '';
         if(empty($wp_notice_options)) {
@@ -362,8 +361,6 @@ final class WP_notice_Admin {
      * @param array $selected_category
      * @return string
      */
-
-
     private function generate_category_list($number = 0, $selected_category = array()) {
         if(empty($selected_category) || in_array('all', $selected_category)) {
             $all = 'selected="selected"';
