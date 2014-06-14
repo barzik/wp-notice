@@ -474,13 +474,14 @@ EOD;
      * WordPress stores the locale information in an array with a alphanumeric index, and
      * the datepicker wants a numerical index. This function replaces the index with a number
      */
-    private function strip_array_indices( $ArrayToStrip ) {
-        foreach( $ArrayToStrip as $objArrayItem) {
-            $NewArray[] =  $objArrayItem;
-        }
+	private function strip_array_indices( $array_to_strip ) {
+		$new_array = array();
+		foreach ( $array_to_strip as $obj_array_item ) {
+			$new_array[] = $obj_array_item;
+		}
 
-        return( $NewArray );
-    }
+		return $new_array;
+	}
 
 
 }
