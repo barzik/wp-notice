@@ -392,26 +392,28 @@ final class WP_notice_Admin {
      * @param array $selected_tag
      * @return string
      */
+	private function generate_tag_list( $number = 0, $selected_tag = array() ) {
+		$all_selected = '';
+		if ( empty( $selected_tag ) || in_array( 'all', $selected_tag ) ) {
+			$all_selected = 'selected="selected"';
+		}
+		$tag_list = '';
+		if ( $tags = get_tags( array( 'orderby' => 'name' ) ) ) {
+			$tag_list .= "<label for='tag_{$number}'>" . __( 'Show in all posts that belongs to : ', $this->plugin_slug ) . "</label>";
+			$tag_list .= "<select id='tag_{$number}' name='tag[{$number}][]' multiple='multiple' class='wp_notice_tag'>";
+			$tag_list .= "<option {$all_selected} value='all'>" . __( 'Do not use tags', $this->plugin_slug ) . "</option>";
+			foreach ( $tags as $tag ) {
+				$selected = '';
+				if ( is_array( $selected_tag ) && ! empty( $selected_tag ) && in_array( $tag->term_id, $selected_tag ) ) {
+					$selected = $tag->term_id;
+				}
+				$tag_list .= '<option ' . selected( $selected, $tag->term_id, false ) . ' value="' . $tag->term_id . '">' . $tag->name . '</option>';
+			}
+			$tag_list .= '</select> ';
+		}
 
-    private function generate_tag_list($number = 0, $selected_tag = array()) {
-        if(empty($selected_tag) || in_array('all', $selected_tag)) {
-            $all = 'selected="selected"';
-        }
-        $tag_list = '';
-        if ($tags = get_tags( array('orderby' => 'name') )) {
-            $tag_list .= "<label for='tag_$number'>".__( 'Show in all posts that belongs to : ', $this->plugin_slug )."</label>";
-            $tag_list .= "<select id='tag_$number' name='tag[$number][]' multiple='multiple' class='wp_notice_tag'>";
-            $tag_list .="<option $all value='all'>".__('Do not use tags', $this->plugin_slug )."</option>";
-            foreach ($tags as $tag) {
-                if(is_array($selected_tag) && !empty($selected_tag) && in_array($tag->term_id, $selected_tag)) {
-                    $selected = $tag->term_id;
-                }
-                $tag_list .= '<option '.selected($selected,$tag->term_id,false).' value="'.$tag->term_id .'">'.$tag->name.'</option>';
-            }
-            $tag_list .= '</select> ';
-        }
-        return $tag_list;
-    }
+		return $tag_list;
+	}
 
 
     /**
@@ -458,14 +460,12 @@ EOD;
 	 * @since    1.0.0
 	 */
 	public function add_action_links( $links ) {
-
 		return array_merge(
 			array(
 				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>'
 			),
 			$links
 		);
-
 	}
 
     /**
