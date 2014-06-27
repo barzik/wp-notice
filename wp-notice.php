@@ -26,16 +26,13 @@
  * WordPress-Plugin-Boilerplate: v2.6.1
  */
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+if ( ! defined( 'ABSPATH' ) ) die; // Exit if accessed directly
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
  *----------------------------------------------------------------------------*/
 
-require_once( plugin_dir_path( __FILE__ ) . "public/class-wp-notice.php" );
+require_once( plugin_dir_path( __FILE__ ) . 'public/class-wp-notice.php' );
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.

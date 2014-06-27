@@ -9,7 +9,9 @@
  * @copyright 2014 Ran Bar-Zik
  */
 
-class WP_notice_Admin {
+if ( ! defined( 'ABSPATH' ) ) die; // Exit if accessed directly
+
+final class WP_notice_Admin {
 
 	/**
 	 * Instance of this class.
@@ -57,15 +59,38 @@ class WP_notice_Admin {
 	}
 
 	/**
+	 * Throw error on object clone
+	 *
+	 * The whole idea of the singleton design pattern is that there is a single
+	 * object therefore, we don't want the object to be cloned.
+	 *
+	 * @since 1.0.1
+	 * @return void
+	 */
+	public function __clone() {
+		// Cloning instances of the class is forbidden
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-notice' ), '1.0.1' );
+	}
+
+	/**
+	 * Disable unserializing of the class
+	 *
+	 * @since 1.0.1
+	 * @return void
+	 */
+	public function __wakeup() {
+		// Unserializing instances of the class is forbidden
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-notice' ), '1.0.1' );
+	}
+
+	/**
 	 * Return an instance of this class.
 	 *
 	 * @since     1.0.0
 	 *
-	 * @return    object    A single instance of this class.
+	 * @return    WP_notice_Admin    A single instance of this class.
 	 */
 	public static function get_instance() {
-
-
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
 			self::$instance = new self;
@@ -239,7 +264,7 @@ class WP_notice_Admin {
     public static function get_wp_notice_settings() {
         $plugin = WP_notice::get_instance();
         $option  = $plugin->get_plugin_option_name();
-        return unserialize(get_option($option, array()));
+        return maybe_unserialize(get_option($option, array()));
     }
 
     /**
@@ -247,6 +272,8 @@ class WP_notice_Admin {
      * set the settings to the DB
      *
      * @param array $wp_notice_settings
+     * 
+     * @return array
      */
 
     private function set_wp_notice_settings($wp_notice_settings = array()) {
@@ -297,13 +324,13 @@ class WP_notice_Admin {
                 unset($wp_notice_settings[$i]['wp_notice_time']);
             }
         }
-        $new_value = serialize($wp_notice_settings);
+        $new_value = maybe_serialize($wp_notice_settings);
         $result = update_option( $option, $new_value );
-        if($result = true) {
-            return array('status'=> '200', 'text' =>__( 'WP Notice Settings Updated', $this->plugin_slug ));
-        } else {
-            return array('status'=> '500', 'text' =>__( 'WP Notice Error! please try again.', $this->plugin_slug ));
-        }
+	    if ( $result ) {
+		    return array( 'status' => '200', 'text' => __( 'WP Notice Settings Updated', $this->plugin_slug ) );
+	    } else {
+		    return array( 'status' => '500', 'text' => __( 'WP Notice Error! please try again.', $this->plugin_slug ) );
+	    }
     }
 
     /**
@@ -313,7 +340,6 @@ class WP_notice_Admin {
      * @param $wp_notice_options
      * @return string
      */
-
     private function get_all_fieldsets($wp_notice_options) {
         $html = '';
         if(empty($wp_notice_options)) {
@@ -335,8 +361,6 @@ class WP_notice_Admin {
      * @param array $selected_category
      * @return string
      */
-
-
     private function generate_category_list($number = 0, $selected_category = array()) {
         if(empty($selected_category) || in_array('all', $selected_category)) {
             $all = 'selected="selected"';
@@ -365,26 +389,28 @@ class WP_notice_Admin {
      * @param array $selected_tag
      * @return string
      */
+	private function generate_tag_list( $number = 0, $selected_tag = array() ) {
+		$all_selected = '';
+		if ( empty( $selected_tag ) || in_array( 'all', $selected_tag ) ) {
+			$all_selected = 'selected="selected"';
+		}
+		$tag_list = '';
+		if ( $tags = get_tags( array( 'orderby' => 'name' ) ) ) {
+			$tag_list .= "<label for='tag_{$number}'>" . __( 'Show in all posts that belongs to : ', $this->plugin_slug ) . "</label>";
+			$tag_list .= "<select id='tag_{$number}' name='tag[{$number}][]' multiple='multiple' class='wp_notice_tag'>";
+			$tag_list .= "<option {$all_selected} value='all'>" . __( 'Do not use tags', $this->plugin_slug ) . "</option>";
+			foreach ( $tags as $tag ) {
+				$selected = '';
+				if ( is_array( $selected_tag ) && ! empty( $selected_tag ) && in_array( $tag->term_id, $selected_tag ) ) {
+					$selected = $tag->term_id;
+				}
+				$tag_list .= '<option ' . selected( $selected, $tag->term_id, false ) . ' value="' . $tag->term_id . '">' . $tag->name . '</option>';
+			}
+			$tag_list .= '</select> ';
+		}
 
-    private function generate_tag_list($number = 0, $selected_tag = array()) {
-        if(empty($selected_tag) || in_array('all', $selected_tag)) {
-            $all = 'selected="selected"';
-        }
-        $tag_list = '';
-        if ($tags = get_tags( array('orderby' => 'name') )) {
-            $tag_list .= "<label for='tag_$number'>".__( 'Show in all posts that belongs to : ', $this->plugin_slug )."</label>";
-            $tag_list .= "<select id='tag_$number' name='tag[$number][]' multiple='multiple' class='wp_notice_tag'>";
-            $tag_list .="<option $all value='all'>".__('Do not use tags', $this->plugin_slug )."</option>";
-            foreach ($tags as $tag) {
-                if(is_array($selected_tag) && !empty($selected_tag) && in_array($tag->term_id, $selected_tag)) {
-                    $selected = $tag->term_id;
-                }
-                $tag_list .= '<option '.selected($selected,$tag->term_id,false).' value="'.$tag->term_id .'">'.$tag->name.'</option>';
-            }
-            $tag_list .= '</select> ';
-        }
-        return $tag_list;
-    }
+		return $tag_list;
+	}
 
 
     /**
@@ -431,14 +457,12 @@ EOD;
 	 * @since    1.0.0
 	 */
 	public function add_action_links( $links ) {
-
 		return array_merge(
 			array(
 				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>'
 			),
 			$links
 		);
-
 	}
 
     /**
@@ -447,13 +471,14 @@ EOD;
      * WordPress stores the locale information in an array with a alphanumeric index, and
      * the datepicker wants a numerical index. This function replaces the index with a number
      */
-    private function strip_array_indices( $ArrayToStrip ) {
-        foreach( $ArrayToStrip as $objArrayItem) {
-            $NewArray[] =  $objArrayItem;
-        }
+	private function strip_array_indices( $array_to_strip ) {
+		$new_array = array();
+		foreach ( $array_to_strip as $obj_array_item ) {
+			$new_array[] = $obj_array_item;
+		}
 
-        return( $NewArray );
-    }
+		return $new_array;
+	}
 
 
 }
