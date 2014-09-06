@@ -48,11 +48,15 @@ Ideal for obsolete\deprecation messages for tutorials or technical posts.
 
 == Changelog ==
 
-= 1.0.1 =
+= 1.0.2 =
 * Adding wordpress PHPUnit integration.
+
+= 1.0.1 =
+* Coding conventions, minor bug fix made by Yakir Sitbon
 
 = 1.0 =
 * Initial version
+
 
 == Translation ==
 
