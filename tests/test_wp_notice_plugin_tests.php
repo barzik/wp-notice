@@ -34,13 +34,6 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
         $this->assertEquals('wp-notice-plugin-styles', $public_css_file);
     }
 
-    function test_setuo_notice() {
-        $plugin_admin = WP_notice_Admin::get_instance();
-
-
-
-
-    }
 
 
 }

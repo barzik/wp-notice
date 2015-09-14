@@ -1,21 +1,18 @@
 <?php
 /**
- * The WordPress Plugin Boilerplate.
- *
- * A foundation off of which to build well-documented WordPress plugins that
- * also follow WordPress Coding Standards and PHP best practices.
+ * WP Notice - enable admin to posts messages based on tags, categories or date
  *
  * @package   WP Notice
  * @author    Ran Bar-Zik <ran@bar-zik.com>
  * @license   GPL-2.0+
  * @link      http://internet-israel.com
- * @copyright 2014 Ran Bar-Zik
+ * @copyright 2015 Ran Bar-Zik
  *
  * @wordpress-plugin
  * Plugin Name:       WP Notice
  * Plugin URI:        http://internet-israel.com
  * Description:       Plugin to display notice and messages on posts
- * Version:           1.0.0
+ * Version:           1.0.2
  * Author:            Ran Bar-Zik <ran@bar-zik.com>
  * Author URI:        http://internet-israel.com
  * Text Domain:       wp-notice
