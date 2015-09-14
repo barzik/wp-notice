@@ -1,8 +1,8 @@
 === WordPress Notice ===
 Contributors: barzik
-Tags: notification, posts, obselete, notice
+Tags: notification, posts, obsolete, notice, messages, notice based on category,
 Requires at least: 3.5.1
-Tested up to: 4.0
+Tested up to: 4.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -62,7 +62,18 @@ Ideal for obsolete\deprecation messages for tutorials or technical posts.
 
 This plugin is multi-language plugin and can be translated using standard po-mo methods.
 
-== Updates ==
+== Automated testing ==
 
-The basic structure of this plugin was cloned from the [WordPress-Plugin-Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate) project.
-This plugin supports the [GitHub Updater](https://github.com/afragen/github-updater) plugin, so if you install that, this plugin becomes automatically updateable direct from GitHub. Any submission to WP.org repo will make this redundant.
+WP Tutorial maker can be tested by using PHPUnit with the official WordPress testing environment.
+
+1. Install WordPress develop and PHPUnit. You can follow [these instructions](https://make.wordpress.org/core/handbook/testing/automated-testing/)
+2. define local variable WP_TESTS_DIR with the location of WordPress develop phpunit folder.
+for example, put `export WP_TESTS_DIR="/var/www/html/wordpress-develop/tests/phpunit"` in .bashrc (Linux)
+3. Go to the plugin main folder and run `phpunit`.
+4. Tests coverage report is being printed in HTML page to ./log/CodeCoverage.
+
+== Translations ==
+
+* English - default, always included
+* Hebrew
+
