@@ -46,12 +46,12 @@ final class WP_notice_Admin {
         //create one time message on plugin activation
         add_action('admin_notices', array( $this, 'plugin_activation_message' ) );
 
+        // Add the options page and menu item.
+        add_action('admin_menu', array( $this, 'add_plugin_admin_menu' ) );
+
 		// Load admin style sheet and JavaScript.
 		add_action('admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action('admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-
-		// Add the options page and menu item.
-		add_action('admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
@@ -119,19 +119,11 @@ final class WP_notice_Admin {
 	 */
 	public function enqueue_admin_styles() {
 
-		if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
-			return;
-		}
-
-		$screen = get_current_screen();
-		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
+		if ( 'wp-notice' === $_GET['page'] ) {
 			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), WP_notice::VERSION );
             wp_enqueue_style('jquery-ui-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
             wp_enqueue_style( $this->plugin_slug .'-tb', plugins_url( 'assets/css/bootstrap.css', __FILE__ ), array(), WP_notice::VERSION );
             wp_enqueue_style( $this->plugin_slug .'-tb-theme', plugins_url( 'assets/css/bootstrap-theme.css', __FILE__ ), array(), WP_notice::VERSION );
-
-
-
         }
 
 	}
@@ -146,12 +138,7 @@ final class WP_notice_Admin {
 	 */
 	public function enqueue_admin_scripts() {
 
-		if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
-			return;
-		}
-
-		$screen = get_current_screen();
-		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
+        if ( 'wp-notice' === $_GET['page'] ) {
             wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery' ), WP_notice::VERSION );
             wp_enqueue_script('jquery-ui-datepicker');
 
@@ -184,7 +171,6 @@ final class WP_notice_Admin {
 	 * @since    1.0.0
 	 */
 	public function add_plugin_admin_menu() {
-
 		/*
 		 * Add a settings page for this plugin to the Settings menu.
 		 *
@@ -207,7 +193,6 @@ final class WP_notice_Admin {
 	public function display_plugin_admin_page() {
         $header = esc_html(get_admin_page_title());
         $fieldset_header = __('Insert the notice and the conditions', $this->plugin_slug );
-
 
         if($_POST) {
             $wp_notice_options = $this->prepare_wp_notice_post();
@@ -235,6 +220,7 @@ final class WP_notice_Admin {
      */
 
     private function prepare_wp_notice_post() {
+        global $_POST;
         $wp_notice_options_raw = $_POST;
         $wp_notice_options = array();
         for ($i = 0; $i < count($wp_notice_options_raw); $i++) {
@@ -242,15 +228,23 @@ final class WP_notice_Admin {
                 continue;
             }
             $wp_notice_options[$i]['wp_notice_text'] = $_POST['wp_notice_text'][$i];
-            if(!empty($_POST['cat'][$i])) {
+            if(isset($_POST['cat'][$i])) {
                 $wp_notice_options[$i]['cat'] = $_POST['cat'][$i];
+            } else {
+                $wp_notice_options[$i]['cat'] = '';
             }
-            if(!empty($_POST['tag'][$i])) {
+            if(isset($_POST['tag'][$i])) {
                 $wp_notice_options[$i]['tag'] = $_POST['tag'][$i];
+            } else {
+                $wp_notice_options[$i]['tag'] = '';
             }
-            if(!empty($_POST['wp_notice_time'][$i])) {
+            if(isset($_POST['wp_notice_time'][$i])) {
                 $wp_notice_options[$i]['wp_notice_time'] = $_POST['wp_notice_time'][$i];
+            } else {
+                $wp_notice_options[$i]['wp_notice_time'] = '';
+
             }
+
         }
         return $wp_notice_options;
     }
@@ -311,25 +305,14 @@ final class WP_notice_Admin {
             }
             //no strange dates here
             $test_date = $wp_notice_settings[$i]['wp_notice_time'];
-            $test_arr  = explode('/', $test_date);
-            if (count($test_arr) == 3) {
-                if (checkdate($test_arr[1], $test_arr[0], $test_arr[2])) {
-                    // valid date
-                } else {
-                    // problem with dates
-                    unset($wp_notice_settings[$i]['wp_notice_time']);
-                }
-            } else {
-                // problem with input
-                unset($wp_notice_settings[$i]['wp_notice_time']);
-            }
+
         }
         $new_value = maybe_serialize($wp_notice_settings);
         $result = update_option( $option, $new_value );
 	    if ( $result ) {
 		    return array( 'status' => '200', 'text' => __( 'WP Notice Settings Updated', $this->plugin_slug ) );
 	    } else {
-		    return array( 'status' => '500', 'text' => __( 'WP Notice Error! please try again.', $this->plugin_slug ) );
+		    return array( 'status' => '500', 'text' => __( 'WP Notice Error! You did change the form, right? please try again.', $this->plugin_slug ) );
 	    }
     }
 
@@ -362,14 +345,14 @@ final class WP_notice_Admin {
      * @return string
      */
     private function generate_category_list($number = 0, $selected_category = array()) {
-        if(empty($selected_category) || in_array('all', $selected_category)) {
+        if(empty($selected_category) || 0 === $selected_category || '0' === $selected_category[0] ) {
             $all = 'selected="selected"';
         }
         $category_list = '';
         if ($categories = get_categories( array('orderby' => 'name') )) {
             $category_list .= "<label for='cat_$number'>".__( 'Show in all posts that belongs to : ', $this->plugin_slug )."</label>";
             $category_list .= "<select id='cat_$number' name='cat[$number][]' multiple='multiple' class='wp_notice_tag'>";
-            $category_list .="<option $all value='all'>".__('Do not use categories', $this->plugin_slug )."</option>";
+            $category_list .="<option $all value='0'>".__('Do not use categories', $this->plugin_slug )."</option>";
             foreach ($categories as $cat) {
                 if(is_array($selected_category) && !empty($selected_category) && in_array($cat->term_id, $selected_category)) {
                     $selected = $cat->term_id;
@@ -391,14 +374,14 @@ final class WP_notice_Admin {
      */
 	private function generate_tag_list( $number = 0, $selected_tag = array() ) {
 		$all_selected = '';
-		if ( empty( $selected_tag ) || in_array( 'all', $selected_tag ) ) {
+		if ( empty( $selected_tag ) || 0 === $selected_tag || '0' === $selected_tag[0]) {
 			$all_selected = 'selected="selected"';
 		}
 		$tag_list = '';
 		if ( $tags = get_tags( array( 'orderby' => 'name' ) ) ) {
 			$tag_list .= "<label for='tag_{$number}'>" . __( 'Show in all posts that belongs to : ', $this->plugin_slug ) . "</label>";
 			$tag_list .= "<select id='tag_{$number}' name='tag[{$number}][]' multiple='multiple' class='wp_notice_tag'>";
-			$tag_list .= "<option {$all_selected} value='all'>" . __( 'Do not use tags', $this->plugin_slug ) . "</option>";
+			$tag_list .= "<option {$all_selected} value='0'>" . __( 'Do not use tags', $this->plugin_slug ) . "</option>";
 			foreach ( $tags as $tag ) {
 				$selected = '';
 				if ( is_array( $selected_tag ) && ! empty( $selected_tag ) && in_array( $tag->term_id, $selected_tag ) ) {

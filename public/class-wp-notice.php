@@ -338,15 +338,15 @@ EOD;
 
     private function wp_notice_options_decider() {
         $option  = $this->get_plugin_option_name();
-        $options = unserialize(get_option($option, array()));
+        $options = maybe_unserialize(get_option($option, array()));
         $messages = array();
         $current_categories = $this->get_the_category_id();
         $current_tags =  $this->get_the_tags_id();
-        foreach($options as $key => $option) {
+        foreach($options as $key => $sort_option) {
             $found = false;
-            foreach($option['tag'] as $tag) {
+            foreach($sort_option['tag'] as $tag) {
                 if(in_array($tag, $current_tags)) {
-                    $messages[] = $option['wp_notice_text'];
+                    $messages[] = $sort_option['wp_notice_text'];
                     $found = true;
                     break;
                 }
@@ -354,9 +354,9 @@ EOD;
             if($found == true) {
                 continue;
             }
-            foreach($option['cat'] as $cat) {
+            foreach($sort_option['cat'] as $cat) {
                 if(in_array($cat, $current_categories)) {
-                    $messages[] = $option['wp_notice_text'];
+                    $messages[] = $sort_option['wp_notice_text'];
                     $found = true;
                     break;
                 }
@@ -364,9 +364,15 @@ EOD;
             if($found == true) {
                 continue;
             }
-            if(!empty($option['wp_notice_time']) && strtotime($option['wp_notice_time']) < get_the_time('U')) {
-                $messages[] = $option['wp_notice_text'];
-            }
+
+            if(!empty($sort_option['wp_notice_time'])) {
+				$dt = DateTime::createFromFormat("d/m/Y", $options[$key]['wp_notice_time']);
+				$ts = $dt->getTimestamp();
+				if( $ts > get_the_time('U') ) {
+					$messages[] = $sort_option['wp_notice_text'];
+				}
+			}
+
         }
         return $messages;
 
