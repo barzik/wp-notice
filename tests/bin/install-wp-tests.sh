@@ -76,7 +76,7 @@ install_test_suite() {
       if [ $WP_VERSION == 'latest' ]; then
         local TEST_BRANCH_NAME='trunk'
       else
-        local TEST_BRANCH_NAME=$WP_VERSION
+        local TEST_BRANCH_NAME=$(sed 's/\([0-9]*\.[0-9]*\).*/\1/' <<< $WP_VERSION)
       fi
 
     svn co --quiet http://develop.svn.wordpress.org/branches/${TEST_BRANCH_NAME}/tests/phpunit/includes/ $WP_TESTS_DIR
