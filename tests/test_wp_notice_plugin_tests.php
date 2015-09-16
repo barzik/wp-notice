@@ -264,7 +264,12 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
         $post_content_without_notice = get_echo( 'the_content' );
         $this->assertNotRegExp('/This is notice #'.$i.' message/', $post_content_without_notice);
 
+    }
 
+    public function test_get_wp_notice_settings() {
+        $options_object = $this->plugin_admin->get_wp_notice_settings();
+
+        $this->assertInternalType('array', $options_object);
     }
 
 

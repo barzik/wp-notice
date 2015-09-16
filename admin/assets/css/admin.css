@@ -1,1 +1,32 @@
 /* This stylesheet is used to style the admin option form of the plugin. */
+fieldset.wp_notice {
+    border-bottom: 1px solid black;
+    display: block;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+fieldset.wp_notice > .form-group textarea {
+    display: inline-block;
+    height: 100px;
+    width: 800px;
+}
+fieldset.wp_notice > .form-group > label {
+    display: block;
+}
+fieldset.wp_notice > .wp_notice_conditions.form-group > label {
+    display: inline-block;
+    width: 80px;
+}
+fieldset.wp_notice > .wp_notice_conditions.form-group > select {
+    display: inline-block;
+    width: 225px;
+}
+.wp_notice_time {
+    display: inline-block;
+    width: 90px;
+}
+#wp_notice_form button {
+    cursor: pointer;
+}
