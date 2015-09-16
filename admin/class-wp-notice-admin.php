@@ -122,8 +122,6 @@ final class WP_notice_Admin {
 		if ( 'wp-notice' === $_GET['page'] ) {
 			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), WP_notice::VERSION );
             wp_enqueue_style('jquery-ui-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
-            wp_enqueue_style( $this->plugin_slug .'-tb', plugins_url( 'assets/css/bootstrap.css', __FILE__ ), array(), WP_notice::VERSION );
-            wp_enqueue_style( $this->plugin_slug .'-tb-theme', plugins_url( 'assets/css/bootstrap-theme.css', __FILE__ ), array(), WP_notice::VERSION );
         }
 
 	}
