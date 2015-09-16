@@ -72,7 +72,14 @@ install_test_suite() {
   if [ ! "$(ls -A $WP_TESTS_DIR)" ]; then
     # set up testing suite
     mkdir -p $WP_TESTS_DIR
-    svn co --quiet http://develop.svn.wordpress.org/branches/4.3/tests/phpunit/includes/ $WP_TESTS_DIR
+
+      if [ $WP_VERSION == 'latest' ]; then
+        local TEST_BRANCH_NAME='trunk'
+      else
+        local TEST_BRANCH_NAME=$WP_VERSION
+      fi
+
+    svn co --quiet http://develop.svn.wordpress.org/branches/${TEST_BRANCH_NAME}/tests/phpunit/includes/ $WP_TESTS_DIR
   fi
 
   cd $WP_TESTS_DIR
