@@ -412,7 +412,7 @@ final class WP_notice_Admin {
         $text_label = __('The Notice', $this->plugin_slug );
         $time_label = __('Show in all posts that were created before:', $this->plugin_slug );
         $text_place_holder = __('Insert the text of the notice here. It can be HTML or text string', $this->plugin_slug );
-        $time_place_holder = __('DD/MM/YY', $this->plugin_slug );
+        $time_place_holder = __('DD/MM/YYYY', $this->plugin_slug );
         $fieldset = <<<EOD
 <fieldset class="wp_notice">
         <div class="form-group">
