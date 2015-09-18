@@ -18,6 +18,7 @@
                 firstDay: objectL10n.firstDay,
                 isRTL: objectL10n.isRTL
             });
+            createCloseButton();
 
         });
 
@@ -47,8 +48,6 @@
             var index = fieldset_array.length-1;
             var current_index = index+1;
             var content = $(fieldset_array.last().clone());
-            console.log(index);
-            console.log(current_index);
 
             content.find('[name="tag['+index+'][]"]').removeAttr('name').attr('name', 'tag['+current_index+'][]');
             content.find('[name="cat['+index+'][]"]').removeAttr('name').attr('name', 'cat['+current_index+'][]');
@@ -71,6 +70,17 @@
             } else {
                 $('#wp_notice_conditions_less').hide();
             }
+        }
+
+        function createCloseButton() {
+            var fieldset_array = $(),
+                close_button = $('<div class="wp_notice_close_me">X</div>');
+            close_button.prependTo('#wp_notice_form fieldset');
+            $('.wp_notice_close_me').on('click', function(e){
+                var _this = $(this);
+                _this.parent('fieldset').remove();
+
+            });
         }
 
 
