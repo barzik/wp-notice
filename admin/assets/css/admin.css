@@ -30,3 +30,8 @@ fieldset.wp_notice > .wp_notice_conditions.form-group > select {
 #wp_notice_form button {
     cursor: pointer;
 }
+.wp_notice_close_me {
+    cursor: pointer;
+    float: left;
+    font-size: large;
+}
