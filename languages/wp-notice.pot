@@ -97,3 +97,9 @@ msgstr "אפשר לשלב מספר תנאים וליצור מספר הודעות
 #: admin/views/admin.php:31
 msgid "Submit"
 msgstr "שלח"
+
+msgid "Select the style of the notice : "
+msgstr "בחרו את עיצוב ההודעה : "
+
+msgid "Plugin to display notice and messages on posts"
+msgstr "תוסף להצגת הודעות ומסרים בפוסטים שונים"
