@@ -322,7 +322,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
     public function test_get_wp_notice_settings() {
         $user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
         wp_set_current_user( $user->ID );
-        
+
         $options_object = $this->plugin_admin->get_wp_notice_settings();
 
         $this->assertInternalType('array', $options_object);

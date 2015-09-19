@@ -103,3 +103,14 @@ msgstr "בחרו את עיצוב ההודעה : "
 
 msgid "Plugin to display notice and messages on posts"
 msgstr "תוסף להצגת הודעות ומסרים בפוסטים שונים"
+
+msgid "Select icon for the notice"
+msgstr "בחרו אייקון שיופיע בהודעה"
+
+#. Author of the plugin/theme
+msgid "Ran Bar-Zik <ran@bar-zik.com>"
+msgstr "רן בר-זיק <ran@bar-zik.com>"
+
+#. Plugin name
+msgid "WP Notice"
+msgstr "הודעות וורדפרס"
