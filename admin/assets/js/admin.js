@@ -107,10 +107,15 @@
                     text = fieldset.find('textarea').val(),
                     style = fieldset.find('.wp_notice_style option:selected').val(),
                     destination_id = '#wp_notice_message-'+fieldset.attr('rel'),
-                    destination = $(destination_id);
+                    destination = $(destination_id),
+                    icon_font_style = fieldset.find('.wp_notice_font option:selected').val()
+                    ;
                 destination.removeClass();
                 destination.attr('class', 'wp_notice_message '+style);
-                destination.html(text.replace(/\n\r?/g, '<br />'));
+                if( 'none' !== icon_font_style ) {
+                    destination.addClass( 'fa_included' );
+                }
+                destination.html( '<i class="fa '+icon_font_style+' fa-4x"></i>'+text.replace(/\n\r?/g, '<br />') );
             });
         }
 

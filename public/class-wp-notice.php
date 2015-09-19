@@ -289,6 +289,8 @@ final class WP_notice {
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), self::VERSION );
+		wp_enqueue_style( $this->plugin_slug . 'fonts-awsome-plugin-styles', plugins_url( 'assets/css/font-awesome.min.css', __FILE__ ), array(), self::VERSION );
+
 	}
 
 
@@ -307,7 +309,7 @@ final class WP_notice {
         $messages_html = '';
         $messages_array = $this->wp_notice_options_decider();
         foreach ($messages_array as $key=> $message) {
-            $messages_html .= $this->create_message_block($message['text'], $key, $message['style']);
+            $messages_html .= $this->create_message_block($message['text'], $key, $message['style'], $message['font']);
         }
         $content = $messages_html.$content;
         return $content;
@@ -323,9 +325,15 @@ final class WP_notice {
      * @return string
      */
 
-    public function create_message_block($text, $id, $style = 'wp-notice-regular') {
+    public function create_message_block($text, $id, $style = 'wp-notice-regular', $font = 'none') {
+		if( 'none' !== $font ) {
+			$fa_included = 'fa_included';
+		} else {
+			$fa_included = '';
+		}
+
         $message_html = <<<EOD
-<div class="wp_notice_message $style" id="wp_notice_message-$id">$text</div>
+<div class="wp_notice_message $style $fa_included" id="wp_notice_message-$id"><i class="fa $font fa-4x"></i>$text</div>
 EOD;
         return $message_html;
     }
@@ -348,7 +356,8 @@ EOD;
                 if(in_array($tag, $current_tags)) {
                     $messages[]= array(
 						'text' => $sort_option['wp_notice_text'],
-						'style' => $sort_option['style'] );
+						'style' => $sort_option['style'],
+						'font' => $sort_option['font'] );
                     $found = true;
                     break;
                 }
@@ -360,7 +369,8 @@ EOD;
                 if(in_array($cat, $current_categories)) {
 					$messages[]= array(
 						'text' => $sort_option['wp_notice_text'],
-						'style' => $sort_option['style'] );
+						'style' => $sort_option['style'],
+						'font' => $sort_option['font'] );
                     $found = true;
                     break;
                 }
@@ -375,7 +385,8 @@ EOD;
 				if( $ts > get_the_time('U') ) {
 					$messages[]= array(
 						'text' => $sort_option['wp_notice_text'],
-						'style' => $sort_option['style'] );
+						'style' => $sort_option['style'],
+						'font' => $sort_option['font'] );
 				}
 			}
 

@@ -8,6 +8,24 @@
     width: auto;
 }
 
+.wp_notice_message .fa {
+    float: left;
+    margin: 5px;
+}
+
+.wp_notice_message .fa.none {
+    display: none;
+}
+
+.wp_notice_message.fa_included {
+    min-height: 75px;
+}
+
+.rtl .wp_notice_message .fa {
+    float: right;
+    margin: 5px;
+}
+
 .wp_notice_message.wp-notice-regular {
     color: #31708F;
     background-color: #D9EDF7;

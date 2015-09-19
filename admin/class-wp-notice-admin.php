@@ -22,6 +22,7 @@ final class WP_notice_Admin {
 	 */
 	protected static $instance = null;
     protected static $option = array();
+    protected $fonts = array();
 
 	/**
 	 * Slug of the plugin screen.
@@ -46,6 +47,9 @@ final class WP_notice_Admin {
 	 * @since     1.0.0
 	 */
 	private function __construct() {
+
+        require('fonts.php');
+        $this->fonts = returnFontArray();
 
 		$plugin = WP_notice::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
@@ -129,6 +133,7 @@ final class WP_notice_Admin {
 		if ( 'wp-notice' === $_GET['page'] ) {
 			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), WP_notice::VERSION );
             wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'public/assets/css/public.css', 'wp-notice/public/' ), array(), WP_notice::VERSION );
+            wp_enqueue_style( $this->plugin_slug . 'fonts-awsome-plugin-styles', plugins_url( 'public/assets/css/font-awesome.min.css', 'wp-notice/public/' ), array(), WP_notice::VERSION );
             wp_enqueue_style('jquery-ui-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
         }
 
@@ -244,6 +249,12 @@ final class WP_notice_Admin {
             } else {
                 $wp_notice_options[$i]['style'] = 'wp-notice-regular';
             }
+            if( isset( $_POST['font'][$i] ) ) {
+                $wp_notice_options[$i]['font'] = $_POST['font'][$i][0];
+            } else {
+                $wp_notice_options[$i]['font'] = 'none';
+            }
+
             if(isset($_POST['cat'][$i])) {
                 $wp_notice_options[$i]['cat'] = $_POST['cat'][$i];
             } else {
@@ -325,6 +336,8 @@ final class WP_notice_Admin {
             //no strange styles
             $wp_notice_settings[$i]['style'] = $wp_notice_settings[$i]['style'];
 
+            $wp_notice_settings[$i]['font'] = $wp_notice_settings[$i]['font'];
+
         }
         $new_value = maybe_serialize($wp_notice_settings);
         $result = update_option( $option, $new_value );
@@ -350,7 +363,9 @@ final class WP_notice_Admin {
         }
 
         foreach ($wp_notice_options as $key => $wp_notice_option) {
-            $html .= $this->build_fieldset($key, $wp_notice_option['tag'], $wp_notice_option['cat'], $wp_notice_option['wp_notice_time'],$wp_notice_option['wp_notice_text'],$wp_notice_option['style']);
+            $html .= $this->build_fieldset($key, $wp_notice_option['tag'], $wp_notice_option['cat'],
+                $wp_notice_option['wp_notice_time'],$wp_notice_option['wp_notice_text'],$wp_notice_option['style'],
+                $wp_notice_option['font']);
         }
        return $html;
     }
@@ -435,6 +450,27 @@ final class WP_notice_Admin {
 
         return $style_list;
     }
+    /**
+     *
+     * Generating the font list for the fieldset in the admin options menu
+     *
+     * @param int $number
+     * @param array $selected_tag
+     * @return string
+     */
+    private function generate_fonts_list( $number = 0, $selected_font = 'none' ) {
+
+        $font_list = '';
+        $font_list .= "<label for='font_{$number}'>" . __( 'Select icon for the notice : ', $this->plugin_slug ) . "</label>";
+        $font_list .= "<select id='font_{$number}' name='font[{$number}][]' class='wp_notice_font'>";
+        $font_list .= "<option " . selected( $selected_font, 'none', false ) . " value='none'>" . __( 'Do not use font', $this->plugin_slug ) . "</option>";
+        foreach ($this->fonts as $font ) {
+            $font_list .= '<option ' . selected( $selected_font, $font, false ) . ' value="' . $font . '">' . $font . '</option>';
+        }
+        $font_list .= '</select> ';
+
+        return $font_list;
+    }
 
 
     /**
@@ -449,10 +485,12 @@ final class WP_notice_Admin {
      */
 
 
-    private function build_fieldset($number = 0, $selected_tag = array(), $selected_category = array(), $time = null, $text = '', $selected_style='wp-notice-regular') {
+    private function build_fieldset($number = 0, $selected_tag = array(), $selected_category = array(), $time = null,
+        $text = '', $selected_style='wp-notice-regular', $selected_font = 'none') {
         $category_list = $this->generate_category_list($number, $selected_category);
         $tag_list = $this->generate_tag_list($number ,$selected_tag);
         $style_list = $this->generate_style_list( $number, $selected_style );
+        $fonts_list = $this->generate_fonts_list( $number, $selected_font );
         $text_label = __('The Notice', $this->plugin_slug );
         $time_label = __('Show in all posts that were created before:', $this->plugin_slug );
         $text_place_holder = __('Insert the text of the notice here. It can be HTML or text string', $this->plugin_slug );
@@ -471,6 +509,7 @@ final class WP_notice_Admin {
         </div>
         <div class="wp_notice_style form-group">
             $style_list
+            $fonts_list
         </div>
         <div class="wp_notice_mock_example">
             <div class="wp_notice_message" id="wp_notice_message-$number"></div>
