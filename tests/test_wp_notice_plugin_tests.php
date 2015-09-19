@@ -266,6 +266,32 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
 
     }
 
+    function test_plugin_delete_all_options() {
+
+        update_option( 'wp_notice_settings_information', 'mock_sata' );
+
+        //fetching options, not it is not empty
+        $wp_notice_settings = get_option('wp_notice_settings_information', array() );
+
+        $this->assertNotEmpty( $wp_notice_settings );
+
+
+        //fetching options, validate it is empty
+        global $_POST;
+        $_POST = array();
+        $_POST['delete_all'] = 1;
+
+        //checking the admin page with $_POST - should insert it to the options
+        $this->plugin_admin->display_plugin_admin_page();
+
+        //fetching options, not it is not empty
+        $wp_notice_settings = get_option('wp_notice_settings_information', array() );
+        $wp_notice_settings = unserialize($wp_notice_settings);
+
+        $this->assertEmpty( $wp_notice_settings );
+
+    }
+
     public function test_get_wp_notice_settings() {
         $options_object = $this->plugin_admin->get_wp_notice_settings();
 

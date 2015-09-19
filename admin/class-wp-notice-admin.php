@@ -220,6 +220,11 @@ final class WP_notice_Admin {
     private function prepare_wp_notice_post() {
         global $_POST;
         $wp_notice_options_raw = $_POST;
+        if( isset( $_POST['delete_all'] ) && $_POST['delete_all'] == 1 && !isset($_POST['wp_notice_text'] ) ) {
+            return array();
+        }
+
+
         $wp_notice_options = array();
         for ($i = 0; $i < count($wp_notice_options_raw); $i++) {
             if(empty($_POST['wp_notice_text'][$i])) {
