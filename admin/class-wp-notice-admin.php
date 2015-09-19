@@ -202,6 +202,12 @@ final class WP_notice_Admin {
 	 * @since    1.0.0
 	 */
 	public function display_plugin_admin_page() {
+        global $current_user;
+        if(!user_can( $current_user, 'manage_options' ) ) {
+            return;
+        }
+
+
         $header = esc_html(get_admin_page_title());
         $fieldset_header = __('Insert the notice and the conditions', $this->plugin_slug );
 

@@ -77,7 +77,8 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
     }
 
     function test_plugin_admin_css() {
-
+        $user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+        wp_set_current_user( $user->ID );
         $plugin = WP_notice::get_instance();
         global $wp_styles;
 
@@ -94,6 +95,8 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
 
 
     function test_plugin_admin_js() {
+        $user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+        wp_set_current_user( $user->ID );
 
         $plugin = WP_notice::get_instance();
         set_current_screen( '/options-general.php?page=wp-notice' );
@@ -110,6 +113,9 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
     }
 
     function test_plugin_create_options_for_category() {
+        $user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+        wp_set_current_user( $user->ID );
+
         //fetching options, validate it is empty
         $wp_notice_settings = get_option('wp_notice_settings_information', array() );
         $this->assertEmpty( $wp_notice_settings );
@@ -165,6 +171,9 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
     }
 
     function test_plugin_create_options_for_tag() {
+        $user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+        wp_set_current_user( $user->ID );
+
         //fetching options, validate it is empty
         $wp_notice_settings = get_option('wp_notice_settings_information', array() );
 
@@ -229,6 +238,8 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
     }
 
     function test_plugin_create_options_for_timestamp() {
+        $user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+        wp_set_current_user( $user->ID );
         //fetching options, validate it is empty
         $wp_notice_settings = get_option('wp_notice_settings_information', array() );
 
@@ -281,6 +292,8 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
     }
 
     function test_plugin_delete_all_options() {
+        $user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+        wp_set_current_user( $user->ID );
 
         update_option( 'wp_notice_settings_information', 'mock_sata' );
 
@@ -307,6 +320,9 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
     }
 
     public function test_get_wp_notice_settings() {
+        $user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+        wp_set_current_user( $user->ID );
+        
         $options_object = $this->plugin_admin->get_wp_notice_settings();
 
         $this->assertInternalType('array', $options_object);
