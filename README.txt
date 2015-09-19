@@ -1,19 +1,30 @@
 === WordPress Notice ===
 Contributors: barzik
 Tags: notification, posts, obsolete, notice, messages, notice based on category,
-Requires at least: 3.5.1
+Requires at least: 3.7
 Tested up to: 4.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WP Notice Plugin enable admin to put announcements in the beginning of posts based on date, categories or tags.
+WP Notice Plugin enables admin to put custom announcements in the beginning of posts based on date, categories or tags.
 
 == Description ==
 
-Wp Notice plugin enable every admin to post announcement (HTML or just text) on top of every WordPress post.
-The admin can choose specific categories, tags or post date in order to point the correct message to the posts he wants.
-Ideal for obsolete\deprecation messages for tutorials or technical posts.
+WP Notice plugin enable every admin to post announcement or messages  on top of posts based on tags, categories or date.
+You can assign several messages for the several posts. There are several custom design based on BootStrap styles:
+1. Notice\info.
+2. Warning.
+3. Danger.
+4. Success.
+Along with the styles, you can also add to every message one of hundreds icons based on Font Awesome repository.
+
+Ideal for technical sites that need to post deprecated notice on old posts and any other sites that need to show
+messages to users.
+
+WP Notice has fully automated testing environment based on WordPress PHPUnit and Travis CI.
+GitHub: https://github.com/barzik/wp-notice
+
 
 == Installation ==
 
@@ -48,13 +59,17 @@ Ideal for obsolete\deprecation messages for tutorials or technical posts.
 
 == Changelog ==
 
+= 1.2.0 =
+* Adding preview for messages
+* Adding icons to messages
+* Fixing security breach in admin interface
+
 = 1.1.0 =
 * Fixed issues in date.
 * Allowing custom styling
 * Admin interface UI improvements
 * Better test coverage - more than 50%
 * Adding Travis CI integration
-
 
 = 1.0.2 =
 * Adding WordPress PHPUnit integration.
@@ -66,6 +81,9 @@ Ideal for obsolete\deprecation messages for tutorials or technical posts.
 * Initial version
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+A lot of features and improvements in this release. along with important security fix.
 
 = 1.1.0 =
 Updating a lot of issues in the admin UI, messages appearance and security testing.

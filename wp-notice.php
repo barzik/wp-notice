@@ -12,7 +12,7 @@
  * Plugin Name:       WP Notice
  * Plugin URI:        http://internet-israel.com
  * Description:       Plugin to display notice and messages on posts
- * Version:           1.1.0
+ * Version:           1.2.0
  * Author:            Ran Bar-Zik <ran@bar-zik.com>
  * Author URI:        http://internet-israel.com
  * Text Domain:       wp-notice
