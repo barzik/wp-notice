@@ -110,6 +110,9 @@
                     destination = $(destination_id),
                     icon_font_style = fieldset.find('.wp_notice_font option:selected').val()
                     ;
+                if ( '' === fieldset ) {
+                    return;
+                }
                 destination.removeClass();
                 destination.attr('class', 'wp_notice_message '+style);
                 if( 'none' !== icon_font_style ) {

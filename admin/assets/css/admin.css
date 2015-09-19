@@ -32,9 +32,14 @@ fieldset.wp_notice > .wp_notice_conditions.form-group > select {
 }
 .wp_notice_close_me {
     cursor: pointer;
-    float: left;
+    float: right;
     font-size: large;
 }
+
+.rtl .wp_notice_close_me {
+    float: left;
+}
+
 fieldset.wp_notice > div.wp_notice_style > label {
     display: inline;
 }
