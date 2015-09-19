@@ -239,7 +239,7 @@ final class WP_notice_Admin {
             }
             $wp_notice_options[$i]['wp_notice_text'] = $_POST['wp_notice_text'][$i];
             if( isset( $_POST['style'][$i] ) ) {
-                $wp_notice_options[$i]['style'] = $_POST['style'][$i];
+                $wp_notice_options[$i]['style'] = $_POST['style'][$i][0];
             } else {
                 $wp_notice_options[$i]['style'] = 'wp-notice-regular';
             }
@@ -322,7 +322,7 @@ final class WP_notice_Admin {
             $test_date = $wp_notice_settings[$i]['wp_notice_time'];
 
             //no strange styles
-            $wp_notice_settings[$i]['style'] = sanitize_text_field($wp_notice_settings[$i]['style'][0]);
+            $wp_notice_settings[$i]['style'] = $wp_notice_settings[$i]['style'];
 
         }
         $new_value = maybe_serialize($wp_notice_settings);

@@ -133,6 +133,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
         $this->assertInternalType('array', $options_data[$i]['cat']);
         $this->assertEquals($options_data[$i]['cat'][0], $cat_id);
         $this->assertEquals($options_data[$i]['wp_notice_text'], 'This is notice #'.$i.' message');
+        $this->assertEquals($options_data[$i]['style'], 'wp-notice-regular');
 
         //now test it with real post that related to this category
         //create one post
@@ -143,7 +144,9 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
         $this->go_to( get_permalink( $post_id ) );
         //fetch the content
         $post_content_with_notice = get_echo( 'the_content' );
+
         $this->assertRegExp('/This is notice #'.$i.' message/', $post_content_with_notice);
+        $this->assertRegExp('/<div class=\"wp_notice_message wp-notice-regular\" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice);
 
         //make sure that post that has no relation to this category IS NOT having the notice
         //create non related post
@@ -188,6 +191,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
         $this->assertInternalType('array', $options_data[$i]['tag']);
         $this->assertEquals($options_data[$i]['tag'][0], $term_id);
         $this->assertEquals($options_data[$i]['wp_notice_text'], 'This is notice #'.$i.' message');
+        $this->assertEquals($options_data[$i]['style'], 'wp-notice-regular');
 
         //now test it with real post that related to this tag
         //create one post
@@ -202,6 +206,8 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
 
 
         $this->assertRegExp('/This is notice #'.$i.' message/', $post_content_with_notice);
+        $this->assertRegExp('/<div class=\"wp_notice_message wp-notice-regular\" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice);
+
 
         //make sure that post that has no relation to this category IS NOT having the notice
         //create non related post
@@ -215,6 +221,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
         $this->go_to( get_permalink( $unrelated_post_id ) );
         $post_content_without_notice = get_echo( 'the_content' );
         $this->assertNotRegExp('/This is notice #'.$i.' message/', $post_content_without_notice);
+
 
     }
 
@@ -245,6 +252,8 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
         $this->assertEquals($options_data[$i]['wp_notice_time'],date( 'd/m/Y', $date[1] ));
         $this->assertEquals($options_data[$i]['wp_notice_text'], 'This is notice #'.$i.' message');
 
+        $this->assertEquals($options_data[$i]['style'], 'wp-notice-regular');
+
         //now test it with real post that related to this tag
         //create one post, the date is older than the notice date
         $post_id = $this->factory->post->create( array( 'post_type' => 'post', 'post_status'=> 'publish', 'post_title' => 'POST1', 'post_date' => date( 'Y-m-d H:i:s', $date[0] ) ) );
@@ -255,6 +264,8 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
         $post_content_with_notice = get_echo( 'the_content' );
 
         $this->assertRegExp('/This is notice #'.$i.' message/', $post_content_with_notice);
+        $this->assertRegExp('/<div class=\"wp_notice_message wp-notice-regular\" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice);
+
 
         //create non related post with date that is later than the notice date
         $unrelated_post_id = $this->factory->post->create( array( 'post_type' => 'post', 'post_status'=> 'publish', 'post_title' => 'POST1', 'post_date' => date( 'Y-m-d H:i:s', $date[2] ) ) );
@@ -299,7 +310,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
     }
 
 
-    function create_valid_post_data($i = 0, $cat_id = 0, $term_id = 0, $date = '') {
+    function create_valid_post_data($i = 0, $cat_id = 0, $term_id = 0, $date = '', $style = 'wp-notice-regular') {
         global $_POST;
 
         $_POST['wp_notice_text'][$i] = 'This is notice #'.$i.' message';
@@ -310,6 +321,8 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase {
 
 
         $_POST['wp_notice_time'][$i] = $date;
+
+        $_POST['style'][$i] = array($style);
 
     }
 
