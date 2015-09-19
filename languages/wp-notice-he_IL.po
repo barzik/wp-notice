@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: wp-notice 1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
 "POT-Creation-Date: 2015-09-19 13:32+0200\n"
-"PO-Revision-Date: 2015-09-19 20:36+0200\n"
+"PO-Revision-Date: 2015-09-19 20:38+0200\n"
 "Last-Translator: Ran Bar-Zik <ran@bar-zik.com>\n"
 "Language-Team:  <ran@bar-zik.com>\n"
 "Language: he_IL\n"
@@ -108,7 +108,7 @@ msgstr "שלח"
 msgid "Plugin to display notice and messages on posts"
 msgstr "תוסף להצגת הודעות ומסרים בפוסטים שונים"
 
-msgid "Select icon for the notice"
+msgid "Select icon for the notice : "
 msgstr "בחרו אייקון שיופיע בהודעה"
 
 #. Author of the plugin/theme

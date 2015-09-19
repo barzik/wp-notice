@@ -104,7 +104,7 @@ msgstr "בחרו את עיצוב ההודעה : "
 msgid "Plugin to display notice and messages on posts"
 msgstr "תוסף להצגת הודעות ומסרים בפוסטים שונים"
 
-msgid "Select icon for the notice"
+msgid "Select icon for the notice : "
 msgstr "בחרו אייקון שיופיע בהודעה"
 
 #. Author of the plugin/theme
