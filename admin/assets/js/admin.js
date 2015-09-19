@@ -38,6 +38,15 @@
         });
         $('#wp_notice_conditions_submit').on('click', function() {
             //some validation
+
+            //if no forms, submit the delete_all
+            var delete_all_input = $("<input>").attr("type", "hidden").attr("name", "delete_all").val("1"),
+                fieldset_array = $('#wp_notice_form fieldset'),
+                form = $('#wp_notice_form');
+            if( fieldset_array.length === 0 ) {
+                form.append(delete_all_input);
+            }
+
         });
 
 
