@@ -128,6 +128,7 @@ final class WP_notice_Admin {
 
 		if ( 'wp-notice' === $_GET['page'] ) {
 			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), WP_notice::VERSION );
+            wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'public/assets/css/public.css', 'wp-notice/public/' ), array(), WP_notice::VERSION );
             wp_enqueue_style('jquery-ui-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
         }
 
@@ -457,7 +458,7 @@ final class WP_notice_Admin {
         $text_place_holder = __('Insert the text of the notice here. It can be HTML or text string', $this->plugin_slug );
         $time_place_holder = __('DD/MM/YYYY', $this->plugin_slug );
         $fieldset = <<<EOD
-<fieldset class="wp_notice">
+<fieldset class="wp_notice" rel="$number">
         <div class="form-group">
             <label for="wp_notice_text_$number">$text_label</label>
             <textarea placeholder="$text_place_holder" id="wp_notice_text_$number" name="wp_notice_text[$number]" class="form-control wp_notice_text">$text</textarea>
@@ -471,7 +472,11 @@ final class WP_notice_Admin {
         <div class="wp_notice_style form-group">
             $style_list
         </div>
+        <div class="wp_notice_mock_example">
+            <div class="wp_notice_message" id="wp_notice_message-$number"></div>
+        </div>
 </fieldset>
+
 EOD;
 
         return $fieldset;

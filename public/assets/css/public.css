@@ -1,10 +1,11 @@
 .wp_notice_message {
     border: 1px solid transparent;
     border-radius: 4px;
+    clear: both;
     display: block;
     margin: 5px;
     padding: 5px;
-    width: 100%;
+    width: auto;
 }
 
 .wp_notice_message.wp-notice-regular {
