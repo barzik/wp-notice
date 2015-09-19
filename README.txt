@@ -48,8 +48,16 @@ Ideal for obsolete\deprecation messages for tutorials or technical posts.
 
 == Changelog ==
 
+= 1.1.0 =
+* Fixed issues in date.
+* Allowing custom styling
+* Admin interface UI improvements
+* Better test coverage - more than 50%
+* Adding Travis CI integration
+
+
 = 1.0.2 =
-* Adding wordpress PHPUnit integration.
+* Adding WordPress PHPUnit integration.
 
 = 1.0.1 =
 * Coding conventions, minor bug fix made by Yakir Sitbon
@@ -57,10 +65,10 @@ Ideal for obsolete\deprecation messages for tutorials or technical posts.
 = 1.0 =
 * Initial version
 
+== Upgrade Notice ==
 
-== Translation ==
-
-This plugin is multi-language plugin and can be translated using standard po-mo methods.
+= 1.1.0 =
+Updating a lot of issues in the admin UI, messages appearance and security testing.
 
 == Automated testing ==
 
