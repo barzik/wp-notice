@@ -32,6 +32,13 @@ final class WP_notice_Admin {
 	 */
 	protected $plugin_screen_hook_suffix = null;
 
+    private $styles = array('wp-notice-regular' => 'Regular style',
+        'wp-notice-success' => 'Success',
+        'wp-notice-info' => 'Info',
+        'wp-notice-warning' => 'Warning',
+        'wp-notice-danger' => 'Danger'
+        );
+
 	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
 	 * settings page and menu.
@@ -231,6 +238,11 @@ final class WP_notice_Admin {
                 continue;
             }
             $wp_notice_options[$i]['wp_notice_text'] = $_POST['wp_notice_text'][$i];
+            if( isset( $_POST['style'][$i] ) ) {
+                $wp_notice_options[$i]['style'] = $_POST['style'][$i];
+            } else {
+                $wp_notice_options[$i]['style'] = 'wp-notice-regular';
+            }
             if(isset($_POST['cat'][$i])) {
                 $wp_notice_options[$i]['cat'] = $_POST['cat'][$i];
             } else {
@@ -309,6 +321,9 @@ final class WP_notice_Admin {
             //no strange dates here
             $test_date = $wp_notice_settings[$i]['wp_notice_time'];
 
+            //no strange styles
+            $wp_notice_settings[$i]['style'] = sanitize_text_field($wp_notice_settings[$i]['style'][0]);
+
         }
         $new_value = maybe_serialize($wp_notice_settings);
         $result = update_option( $option, $new_value );
@@ -334,7 +349,7 @@ final class WP_notice_Admin {
         }
 
         foreach ($wp_notice_options as $key => $wp_notice_option) {
-            $html .= $this->build_fieldset($key, $wp_notice_option['tag'], $wp_notice_option['cat'], $wp_notice_option['wp_notice_time'],$wp_notice_option['wp_notice_text']);
+            $html .= $this->build_fieldset($key, $wp_notice_option['tag'], $wp_notice_option['cat'], $wp_notice_option['wp_notice_time'],$wp_notice_option['wp_notice_text'],$wp_notice_option['style']);
         }
        return $html;
     }
@@ -398,6 +413,28 @@ final class WP_notice_Admin {
 		return $tag_list;
 	}
 
+    /**
+     *
+     * Generating the tag list for the fieldset in the admin options menu
+     *
+     * @param int $number
+     * @param array $selected_tag
+     * @return string
+     */
+    private function generate_style_list( $number = 0, $selected_style = 'wp-notice-regular' ) {
+
+        $style_list = '';
+        $style_list .= "<label for='style_{$number}'>" . __( 'Select the style of the notice : ', $this->plugin_slug ) . "</label>";
+        $style_list .= "<select id='style_{$number}' name='style[{$number}][]' class='wp_notice_style'>";
+        foreach ($this->styles as $style_value => $style_name ) {
+            $style_list .= '<option ' . selected( $selected_style, $style_value, false ) . ' value="' . $style_value . '">' . $style_name . '</option>';
+        }
+        $style_list .= '</select> ';
+
+
+        return $style_list;
+    }
+
 
     /**
      * Create the fieldset that should appear in the admin options menu
@@ -411,9 +448,10 @@ final class WP_notice_Admin {
      */
 
 
-    private function build_fieldset($number = 0, $selected_tag = array(), $selected_category = array(), $time = null, $text = '') {
+    private function build_fieldset($number = 0, $selected_tag = array(), $selected_category = array(), $time = null, $text = '', $selected_style='wp-notice-regular') {
         $category_list = $this->generate_category_list($number, $selected_category);
         $tag_list = $this->generate_tag_list($number ,$selected_tag);
+        $style_list = $this->generate_style_list( $number, $selected_style );
         $text_label = __('The Notice', $this->plugin_slug );
         $time_label = __('Show in all posts that were created before:', $this->plugin_slug );
         $text_place_holder = __('Insert the text of the notice here. It can be HTML or text string', $this->plugin_slug );
@@ -429,6 +467,9 @@ final class WP_notice_Admin {
             $tag_list
             <label for="wp_notice_time_$number">$time_label</label>
             <input placeholder="$time_place_holder" class="wp_notice_time" value="$time" id="wp_notice_time_$number" name="wp_notice_time[$number]">
+        </div>
+        <div class="wp_notice_style form-group">
+            $style_list
         </div>
 </fieldset>
 EOD;

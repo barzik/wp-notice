@@ -35,3 +35,6 @@ fieldset.wp_notice > .wp_notice_conditions.form-group > select {
     float: left;
     font-size: large;
 }
+fieldset.wp_notice > div.wp_notice_style > label {
+    display: inline;
+}

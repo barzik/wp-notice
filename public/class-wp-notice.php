@@ -307,7 +307,7 @@ final class WP_notice {
         $messages_html = '';
         $messages_array = $this->wp_notice_options_decider();
         foreach ($messages_array as $key=> $message) {
-            $messages_html .= $this->create_message_block($message, $key);
+            $messages_html .= $this->create_message_block($message['text'], $key, $message['style']);
         }
         $content = $messages_html.$content;
         return $content;
@@ -323,9 +323,9 @@ final class WP_notice {
      * @return string
      */
 
-    public function create_message_block($text, $id) {
+    public function create_message_block($text, $id, $style = 'wp-notice-regular') {
         $message_html = <<<EOD
-<div class="wp_notice_message" id="wp_notice_message-$id">$text</div>
+<div class="wp_notice_message $style" id="wp_notice_message-$id">$text</div>
 EOD;
         return $message_html;
     }
@@ -346,7 +346,9 @@ EOD;
             $found = false;
             foreach($sort_option['tag'] as $tag) {
                 if(in_array($tag, $current_tags)) {
-                    $messages[] = $sort_option['wp_notice_text'];
+                    $messages[]= array(
+						'text' => $sort_option['wp_notice_text'],
+						'style' => $sort_option['style'] );
                     $found = true;
                     break;
                 }
@@ -356,7 +358,9 @@ EOD;
             }
             foreach($sort_option['cat'] as $cat) {
                 if(in_array($cat, $current_categories)) {
-                    $messages[] = $sort_option['wp_notice_text'];
+					$messages[]= array(
+						'text' => $sort_option['wp_notice_text'],
+						'style' => $sort_option['style'] );
                     $found = true;
                     break;
                 }
@@ -369,13 +373,15 @@ EOD;
 				$dt = DateTime::createFromFormat("d/m/Y", $options[$key]['wp_notice_time']);
 				$ts = $dt->getTimestamp();
 				if( $ts > get_the_time('U') ) {
-					$messages[] = $sort_option['wp_notice_text'];
+					$messages[]= array(
+						'text' => $sort_option['wp_notice_text'],
+						'style' => $sort_option['style'] );
 				}
 			}
 
         }
-        return $messages;
 
+        return $messages;
     }
 
     /**
