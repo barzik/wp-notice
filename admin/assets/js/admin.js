@@ -19,6 +19,8 @@
                 isRTL: objectL10n.isRTL
             });
             createCloseButton();
+            createExampleMock();
+            $('#wp_notice_form fieldset').find('select').trigger('change');
 
         });
 
@@ -62,8 +64,13 @@
             content.find('[name="cat['+index+'][]"]').removeAttr('name').attr('name', 'cat['+current_index+'][]');
             content.find('[name="wp_notice_time['+index+']"]').removeAttr('name').attr('name', 'wp_notice_time['+current_index+']');
             content.find('[name="wp_notice_text['+index+']"]').removeAttr('name').attr('name', 'wp_notice_text['+current_index+']');
+            content.attr('rel', current_index);
+            content.find('.wp_notice_message').attr('id', 'wp_notice_message-'+current_index);
             fieldset_array.last().after(content);
             check_less_button();
+            createCloseButton();
+            createExampleMock();
+
         }
 
 
@@ -84,11 +91,31 @@
         function createCloseButton() {
             var fieldset_array = $(),
                 close_button = $('<div class="wp_notice_close_me">X</div>');
+            $('.wp_notice_close_me').remove();
             close_button.prependTo('#wp_notice_form fieldset');
             $('.wp_notice_close_me').on('click', function(e){
                 var _this = $(this);
                 _this.parent('fieldset').remove();
 
+            });
+        }
+
+        function createExampleMock() {
+            $('#wp_notice_form fieldset').find('select, textarea').on('change keyup paste', function(e){
+                var _this = $(this),
+                    fieldset = _this.closest('fieldset'),
+                    text = fieldset.find('textarea').val(),
+                    style = fieldset.find('.wp_notice_style option:selected').val(),
+                    destination_id = '#wp_notice_message-'+fieldset.attr('rel'),
+                    destination = $(destination_id),
+                    icon_font_style = fieldset.find('.wp_notice_font option:selected').val()
+                    ;
+                destination.removeClass();
+                destination.attr('class', 'wp_notice_message '+style);
+                if( 'none' !== icon_font_style ) {
+                    destination.addClass( 'fa_included' );
+                }
+                destination.html( '<i class="fa '+icon_font_style+' fa-4x"></i>'+text.replace(/\n\r?/g, '<br />') );
             });
         }
 

@@ -4,7 +4,7 @@ fieldset.wp_notice {
     display: block;
     margin-bottom: 10px;
     padding-bottom: 10px;
-    width: 100%;
+    width: auto;
 }
 
 fieldset.wp_notice > .form-group textarea {

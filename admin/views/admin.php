@@ -32,5 +32,5 @@ if ( ! defined( 'ABSPATH' ) ) die; // Exit if accessed directly
     <button class="btn btn-primary" id="wp_notice_conditions_submit" ><?php _e('Submit', 'wp-notice' ); ?></button>
 </form>
 
-
+<div><small>Font Awesome by Dave Gandy - <a href="http://fontawesome.io">http://fontawesome.io</a></small></div>
 </div>

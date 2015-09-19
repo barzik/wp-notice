@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: wp-notice 1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
 "POT-Creation-Date: 2015-09-19 13:32+0200\n"
-"PO-Revision-Date: 2015-09-19 13:32+0200\n"
+"PO-Revision-Date: 2015-09-19 20:38+0200\n"
 "Last-Translator: Ran Bar-Zik <ran@bar-zik.com>\n"
 "Language-Team:  <ran@bar-zik.com>\n"
 "Language: he_IL\n"
@@ -40,10 +40,6 @@ msgstr "הראה חודש אחר"
 #: admin/class-wp-notice-admin.php:184
 msgid "WP Notice Setting page"
 msgstr "מסך ההגדרות של WP Notice"
-
-#: admin/class-wp-notice-admin.php:185
-msgid "WP Notice"
-msgstr "WP Notice"
 
 #: admin/class-wp-notice-admin.php:200
 msgid "Insert the notice and the conditions"
@@ -109,5 +105,16 @@ msgstr "אפשר לשלב מספר תנאים וליצור מספר הודעות
 msgid "Submit"
 msgstr "שלח"
 
-#~ msgid "Plugin to display notice and messages on posts"
-#~ msgstr "תוסף להצגת הודעות ומסרים בפוסטים שונים"
+msgid "Plugin to display notice and messages on posts"
+msgstr "תוסף להצגת הודעות ומסרים בפוסטים שונים"
+
+msgid "Select icon for the notice : "
+msgstr "בחרו אייקון שיופיע בהודעה"
+
+#. Author of the plugin/theme
+msgid "Ran Bar-Zik <ran@bar-zik.com>"
+msgstr "רן בר-זיק <ran@bar-zik.com>"
+
+#. Plugin name
+msgid "WP Notice"
+msgstr "הודעות וורדפרס"
