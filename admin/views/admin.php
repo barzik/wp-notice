@@ -12,24 +12,31 @@
  * @copyright 2014 Your Name or Company Name
  */
 
-if ( ! defined( 'ABSPATH' ) ) die; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	die;    // Exit if accessed directly.
+}
 ?>
 
 
 
 
 <div class="wrap">
-    <?php print $message; ?>
-	<h2><?php print $header; ?></h2>
+    <?php print esc_html( $message ); ?>
+	<h2><?php print esc_html( $header ); ?></h2>
 <form id="wp_notice_form" class='form-horizontal' method="post">
-    <h3><?php print $fieldset_header; ?></h3>
-    <p><?php _e('Please fill in the notice text and the proper conditions that need to be fulfilled in order to make the notice to appear', 'wp-notice' ); ?></p>
-    <p><?php _e('You can combine several conditions and create several notices', 'wp-notice' ); ?></p>
+    <h3><?php print esc_html( $fieldset_header ); ?></h3>
+    <p><?php esc_html_e( 'Please fill in the notice text and the proper conditions that need to be fulfilled in order to make the notice to appear', 'wp-notice' ); ?></p>
+    <p><?php esc_html_e( 'You can combine several conditions and create several notices', 'wp-notice' ); ?></p>
 
-    <?php print $fieldsets; ?>
+    <?php
+    // @codingStandardsIgnoreStart
+    // This variable contain HTML That should appear there. It should not be escaped.
+    print $fieldsets;
+    // @codingStandardsIgnoreEnd
+	?>
     <button class="btn btn-info" id="wp_notice_conditions_more" >+</button>
     <button class="btn btn-info" id="wp_notice_conditions_less" style="display: none">-</button>
-    <button class="btn btn-primary" id="wp_notice_conditions_submit" ><?php _e('Submit', 'wp-notice' ); ?></button>
+    <button class="btn btn-primary" id="wp_notice_conditions_submit" ><?php esc_html_e( 'Submit', 'wp-notice' ); ?></button>
 </form>
 
 <div><small>Font Awesome by Dave Gandy - <a href="http://fontawesome.io">http://fontawesome.io</a></small></div>
