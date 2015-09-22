@@ -51,7 +51,7 @@ final class WP_notice_Admin
 	private function __construct() {
 
 		require( 'fonts.php' );
-		$this->fonts = returnFontArray();
+		$this->fonts = return_font_array();
 
 		$plugin = WP_notice::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
