@@ -9,8 +9,13 @@
  * @copyright 2014 Ran Bar-Zik
  */
 
-if ( ! defined( 'ABSPATH' ) ) { die; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+	die; // Exit if accessed directly.
 }
+
+/**
+ * Class WP_notice
+ */
 final class WP_notice
 {
 
@@ -32,7 +37,17 @@ final class WP_notice
 	 *
 	 * @var      string
 	 */
+
+	/**
+	 * The slug
+	 * @var string
+	 */
 	protected $plugin_slug = 'wp-notice';
+
+	/**
+	 * The option name
+	 * @var string
+	 */
 	protected $plugin_settings_information = 'wp_notice_settings_information';
 
 	/**
@@ -52,10 +67,10 @@ final class WP_notice
 	 */
 	private function __construct() {
 
-		// Load plugin text domain
+		// Load plugin text domain.
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-		// Activate plugin when new blog is added
+		// Activate plugin when new blog is added.
 		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
 
 		// Load public-facing style sheet and JavaScript.
@@ -81,8 +96,8 @@ final class WP_notice
 	 */
 	public function __clone() {
 
-		// Cloning instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-notice' ), '1.0.1' );
+		// Cloning instances of the class is forbidden.
+		_doing_it_wrong( __FUNCTION__, esc_html( __( 'Cheatin&#8217; huh?' , 'wp-notice' ) ), '1.0.1' );
 	}
 
 	/**
@@ -93,8 +108,8 @@ final class WP_notice
 	 */
 	public function __wakeup() {
 
-		// Unserializing instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-notice' ), '1.0.1' );
+		// Unserializing instances of the class is forbidden.
+		_doing_it_wrong( __FUNCTION__, esc_html( __( 'Cheatin&#8217; huh?' , 'wp-notice' ) ), '1.0.1' );
 	}
 
 	/**
@@ -132,144 +147,11 @@ final class WP_notice
 	public static function get_instance() {
 
 		// If the single instance hasn't been set, set it now.
-		if ( null == self::$instance ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self;
 		}
 
 		return self::$instance;
-	}
-
-	/**
-	 * Fired when the plugin is activated.
-	 *
-	 * @since    1.0.0
-	 *
-	 * @param    boolean $network_wide    True if WPMU superadmin uses
-	 *                                    "Network Activate" action, false if
-	 *                                    WPMU is disabled or plugin is
-	 *                                    activated on an individual blog.
-	 */
-	public static function activate( $network_wide ) {
-
-		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-
-			if ( $network_wide  ) {
-
-				// Get all blog ids
-				$blog_ids = self::get_blog_ids();
-
-				foreach ( $blog_ids as $blog_id ) {
-
-					switch_to_blog( $blog_id );
-					self::single_activate();
-
-					restore_current_blog();
-				}
-			} else {
-				self::single_activate();
-			}
-		} else {
-			self::single_activate();
-		}
-
-	}
-
-	/**
-	 * Fired when the plugin is deactivated.
-	 *
-	 * @since    1.0.0
-	 *
-	 * @param    boolean $network_wide    True if WPMU superadmin uses
-	 *                                    "Network Deactivate" action, false if
-	 *                                    WPMU is disabled or plugin is
-	 *                                    deactivated on an individual blog.
-	 */
-	public static function deactivate( $network_wide ) {
-
-		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-
-			if ( $network_wide ) {
-
-				// Get all blog ids
-				$blog_ids = self::get_blog_ids();
-
-				foreach ( $blog_ids as $blog_id ) {
-
-					switch_to_blog( $blog_id );
-					self::single_deactivate();
-
-					restore_current_blog();
-
-				}
-			} else {
-				self::single_deactivate();
-			}
-		} else {
-			self::single_deactivate();
-		}
-
-	}
-
-	/**
-	 * Fired when a new site is activated with a WPMU environment.
-	 *
-	 * @since    1.0.0
-	 *
-	 * @param    int $blog_id    ID of the new blog.
-	 */
-	public function activate_new_site( $blog_id ) {
-
-		if ( 1 !== did_action( 'wpmu_new_blog' ) ) {
-			return;
-		}
-
-		switch_to_blog( $blog_id );
-		self::single_activate();
-		restore_current_blog();
-
-	}
-
-	/**
-	 * Get all blog ids of blogs in the current network that are:
-	 * - not archived
-	 * - not spam
-	 * - not deleted
-	 *
-	 * @since    1.0.0
-	 *
-	 * @return   array|false    The blog ids, false if no matches.
-	 */
-	private static function get_blog_ids() {
-
-		global $wpdb;
-
-		// get an array of blog ids
-		$sql = "SELECT blog_id FROM $wpdb->blogs
-			WHERE archived = '0' AND spam = '0'
-			AND deleted = '0'";
-
-		return $wpdb->get_col( $sql );
-
-	}
-
-	/**
-	 * Fired for each blog when the plugin is activated.
-	 *
-	 * @since    1.0.0
-	 */
-	private static function single_activate() {
-
-		add_option( 'wp_notice_information', '' );
-	}
-
-	/**
-	 * Fired for each blog when the plugin is deactivated.
-	 *
-	 * @since    1.0.0
-	 */
-	private static function single_deactivate() {
-
-		delete_option( 'wp_notice_information' );
 	}
 
 	/**
@@ -297,18 +179,12 @@ final class WP_notice
 		wp_enqueue_style( $this->plugin_slug . 'fonts-awsome-plugin-styles', plugins_url( 'assets/css/font-awesome.min.css', __FILE__ ), array(), self::VERSION );
 
 	}
-
-
-
-
 	/**
-	 * NOTE:  Filters are points of execution in which WordPress modifies data
-	 *        before saving it or sending it to the browser.
+	 * Add message to post
 	 *
-	 *        Filters: http://codex.wordpress.org/Plugin_API#Filters
-	 *        Reference:  http://codex.wordpress.org/Plugin_API/Filter_Reference
+	 * @param string $content -The post content.
 	 *
-	 * @since    1.0.0
+	 * @return string
 	 */
 	public function wp_notice_add_message( $content ) {
 
@@ -324,13 +200,15 @@ final class WP_notice
 
 	/**
 	 *
-	 * Create single message block - HTML
+	 * WP notice create message block
 	 *
-	 * @param $text
-	 * @param $id
+	 * @param string $text - The text of the message.
+	 * @param int    $id - The ID of the message, 0-n.
+	 * @param string $style - The style name.
+	 * @param string $font - The fontawsome name.
+	 *
 	 * @return string
 	 */
-
 	public function create_message_block( $text, $id, $style = 'wp-notice-regular', $font = 'none' ) {
 
 		if ( 'none' !== $font ) {
@@ -346,11 +224,10 @@ EOD;
 	}
 
 	/**
-	 * decide which message will appear here.
+	 * Decide which message will appear here.
 	 *
 	 * @return array
 	 */
-
 	private function wp_notice_options_decider() {
 
 		$option  = $this->get_plugin_option_name();
@@ -371,7 +248,7 @@ EOD;
 					break;
 				}
 			}
-			if ( $found == true ) {
+			if ( true === $found ) {
 				continue;
 			}
 			foreach ( $sort_option['cat'] as $cat ) {
@@ -385,7 +262,7 @@ EOD;
 					break;
 				}
 			}
-			if ( $found == true ) {
+			if ( true === $found ) {
 				continue;
 			}
 
@@ -409,11 +286,9 @@ EOD;
 	 *
 	 * Get an array of current category ID
 	 *
-	 * @param bool $post
+	 * @param bool $post  the post object.
 	 * @return array
 	 */
-
-
 	private function get_the_category_id( $post = false ) {
 
 		$cats = array();
@@ -431,10 +306,9 @@ EOD;
 	 *
 	 * Get an array of current tags ID
 	 *
-	 * @param bool $post
+	 * @param bool $post  post object.
 	 * @return array
 	 */
-
 	private function get_the_tags_id( $post = false ) {
 
 		$tags = array();
