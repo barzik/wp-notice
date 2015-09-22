@@ -9,9 +9,10 @@
  * @copyright 2014 Ran Bar-Zik
  */
 
-if ( ! defined( 'ABSPATH' ) ) die; // Exit if accessed directly
-
-final class WP_notice {
+if ( ! defined( 'ABSPATH' ) ) { die; // Exit if accessed directly
+}
+final class WP_notice
+{
 
 	/**
 	 * Plugin version, used for cache-busting of style and script file references.
@@ -32,7 +33,7 @@ final class WP_notice {
 	 * @var      string
 	 */
 	protected $plugin_slug = 'wp-notice';
-    protected $plugin_settings_information = 'wp_notice_settings_information';
+	protected $plugin_settings_information = 'wp_notice_settings_information';
 
 	/**
 	 * Instance of this class.
@@ -60,7 +61,8 @@ final class WP_notice {
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 
-		/* Define custom functionality.
+		/*
+		Define custom functionality.
 		 * Refer To http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
 		 */
 		add_action( '@TODO', array( $this, 'action_method_name' ) );
@@ -78,6 +80,7 @@ final class WP_notice {
 	 * @return void
 	 */
 	public function __clone() {
+
 		// Cloning instances of the class is forbidden
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-notice' ), '1.0.1' );
 	}
@@ -89,34 +92,37 @@ final class WP_notice {
 	 * @return void
 	 */
 	public function __wakeup() {
+
 		// Unserializing instances of the class is forbidden
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-notice' ), '1.0.1' );
 	}
 
-    /**
-     * Return the plugin slug.
-     *
-     * @since 1.0.0
-     *
-     * @return string Plugin slug variable.
-     */
-    public function get_plugin_slug() {
-        return $this->plugin_slug;
-    }
+	/**
+	 * Return the plugin slug.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string Plugin slug variable.
+	 */
+	public function get_plugin_slug() {
 
-    /**
-     * Return the plugin option name
-     *
-     * @since 1.0.0
-     *
-     * @return string Plugin slug variable.
-     */
-    public function get_plugin_option_name() {
-        return $this->plugin_settings_information;
-    }
+		return $this->plugin_slug;
+	}
+
+	/**
+	 * Return the plugin option name
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string Plugin slug variable.
+	 */
+	public function get_plugin_option_name() {
+
+		return $this->plugin_settings_information;
+	}
 
 
-    /**
+	/**
 	 * Return an instance of this class.
 	 *
 	 * @since     1.0.0
@@ -138,10 +144,10 @@ final class WP_notice {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @param    boolean    $network_wide    True if WPMU superadmin uses
-	 *                                       "Network Activate" action, false if
-	 *                                       WPMU is disabled or plugin is
-	 *                                       activated on an individual blog.
+	 * @param    boolean $network_wide    True if WPMU superadmin uses
+	 *                                    "Network Activate" action, false if
+	 *                                    WPMU is disabled or plugin is
+	 *                                    activated on an individual blog.
 	 */
 	public static function activate( $network_wide ) {
 
@@ -159,11 +165,9 @@ final class WP_notice {
 
 					restore_current_blog();
 				}
-
 			} else {
 				self::single_activate();
 			}
-
 		} else {
 			self::single_activate();
 		}
@@ -175,10 +179,10 @@ final class WP_notice {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @param    boolean    $network_wide    True if WPMU superadmin uses
-	 *                                       "Network Deactivate" action, false if
-	 *                                       WPMU is disabled or plugin is
-	 *                                       deactivated on an individual blog.
+	 * @param    boolean $network_wide    True if WPMU superadmin uses
+	 *                                    "Network Deactivate" action, false if
+	 *                                    WPMU is disabled or plugin is
+	 *                                    deactivated on an individual blog.
 	 */
 	public static function deactivate( $network_wide ) {
 
@@ -197,11 +201,9 @@ final class WP_notice {
 					restore_current_blog();
 
 				}
-
 			} else {
 				self::single_deactivate();
 			}
-
 		} else {
 			self::single_deactivate();
 		}
@@ -213,7 +215,7 @@ final class WP_notice {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @param    int    $blog_id    ID of the new blog.
+	 * @param    int $blog_id    ID of the new blog.
 	 */
 	public function activate_new_site( $blog_id ) {
 
@@ -256,7 +258,8 @@ final class WP_notice {
 	 * @since    1.0.0
 	 */
 	private static function single_activate() {
-        add_option('wp_notice_information', '');
+
+		add_option( 'wp_notice_information', '' );
 	}
 
 	/**
@@ -265,7 +268,8 @@ final class WP_notice {
 	 * @since    1.0.0
 	 */
 	private static function single_deactivate() {
-        delete_option('wp_notice_information');
+
+		delete_option( 'wp_notice_information' );
 	}
 
 	/**
@@ -278,7 +282,7 @@ final class WP_notice {
 		$domain = $this->plugin_slug;
 		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
 		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
-		load_plugin_textdomain( $domain, FALSE, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . '/languages/' );
+		load_plugin_textdomain( $domain, false, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . '/languages/' );
 
 	}
 
@@ -288,6 +292,7 @@ final class WP_notice {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
+
 		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), self::VERSION );
 		wp_enqueue_style( $this->plugin_slug . 'fonts-awsome-plugin-styles', plugins_url( 'assets/css/font-awesome.min.css', __FILE__ ), array(), self::VERSION );
 
@@ -305,135 +310,141 @@ final class WP_notice {
 	 *
 	 * @since    1.0.0
 	 */
-	public function wp_notice_add_message($content) {
-        $messages_html = '';
-        $messages_array = $this->wp_notice_options_decider();
-        foreach ($messages_array as $key=> $message) {
-            $messages_html .= $this->create_message_block($message['text'], $key, $message['style'], $message['font']);
-        }
-        $content = $messages_html.$content;
-        return $content;
+	public function wp_notice_add_message( $content ) {
+
+		$messages_html = '';
+		$messages_array = $this->wp_notice_options_decider();
+		foreach ( $messages_array as $key => $message ) {
+			$messages_html .= $this->create_message_block( $message['text'], $key, $message['style'], $message['font'] );
+		}
+		$content = $messages_html.$content;
+		return $content;
 	}
 
 
-    /**
-     *
-     * Create single message block - HTML
-     *
-     * @param $text
-     * @param $id
-     * @return string
-     */
+	/**
+	 *
+	 * Create single message block - HTML
+	 *
+	 * @param $text
+	 * @param $id
+	 * @return string
+	 */
 
-    public function create_message_block($text, $id, $style = 'wp-notice-regular', $font = 'none') {
-		if( 'none' !== $font ) {
+	public function create_message_block( $text, $id, $style = 'wp-notice-regular', $font = 'none' ) {
+
+		if ( 'none' !== $font ) {
 			$fa_included = 'fa_included';
 		} else {
 			$fa_included = '';
 		}
 
-        $message_html = <<<EOD
+		$message_html = <<<EOD
 <div class="wp_notice_message $style $fa_included" id="wp_notice_message-$id"><i class="fa $font fa-4x"></i>$text</div>
 EOD;
-        return $message_html;
-    }
+		return $message_html;
+	}
 
-    /**
-     * decide which message will appear here.
-     *
-     * @return array
-     */
+	/**
+	 * decide which message will appear here.
+	 *
+	 * @return array
+	 */
 
-    private function wp_notice_options_decider() {
-        $option  = $this->get_plugin_option_name();
-        $options = maybe_unserialize(get_option($option, array()));
-        $messages = array();
-        $current_categories = $this->get_the_category_id();
-        $current_tags =  $this->get_the_tags_id();
-        foreach($options as $key => $sort_option) {
-            $found = false;
-            foreach($sort_option['tag'] as $tag) {
-                if(in_array($tag, $current_tags)) {
-                    $messages[]= array(
+	private function wp_notice_options_decider() {
+
+		$option  = $this->get_plugin_option_name();
+		$options = maybe_unserialize( get_option( $option, array() ) );
+		$messages = array();
+		$current_categories = $this->get_the_category_id();
+		$current_tags = $this->get_the_tags_id();
+		foreach ( $options as $key => $sort_option ) {
+			$found = false;
+			foreach ( $sort_option['tag'] as $tag ) {
+				if ( in_array( $tag, $current_tags ) ) {
+					$messages[] = array(
 						'text' => $sort_option['wp_notice_text'],
 						'style' => $sort_option['style'],
-						'font' => $sort_option['font'] );
-                    $found = true;
-                    break;
-                }
-            }
-            if($found == true) {
-                continue;
-            }
-            foreach($sort_option['cat'] as $cat) {
-                if(in_array($cat, $current_categories)) {
-					$messages[]= array(
-						'text' => $sort_option['wp_notice_text'],
-						'style' => $sort_option['style'],
-						'font' => $sort_option['font'] );
-                    $found = true;
-                    break;
-                }
-            }
-            if($found == true) {
-                continue;
-            }
-
-            if(!empty($sort_option['wp_notice_time'])) {
-				$dt = DateTime::createFromFormat("d/m/Y", $options[$key]['wp_notice_time']);
-				$ts = $dt->getTimestamp();
-				if( $ts > get_the_time('U') ) {
-					$messages[]= array(
-						'text' => $sort_option['wp_notice_text'],
-						'style' => $sort_option['style'],
-						'font' => $sort_option['font'] );
+						'font' => $sort_option['font'],
+					);
+					$found = true;
+					break;
 				}
 			}
+			if ( $found == true ) {
+				continue;
+			}
+			foreach ( $sort_option['cat'] as $cat ) {
+				if ( in_array( $cat, $current_categories ) ) {
+					$messages[] = array(
+						'text' => $sort_option['wp_notice_text'],
+						'style' => $sort_option['style'],
+						'font' => $sort_option['font'],
+					);
+					$found = true;
+					break;
+				}
+			}
+			if ( $found == true ) {
+				continue;
+			}
 
-        }
+			if ( ! empty( $sort_option['wp_notice_time'] ) ) {
+				$dt = DateTime::createFromFormat( 'd/m/Y', $options[ $key ]['wp_notice_time'] );
+				$ts = $dt->getTimestamp();
+				if ( $ts > get_the_time( 'U' ) ) {
+					$messages[] = array(
+						'text' => $sort_option['wp_notice_text'],
+						'style' => $sort_option['style'],
+						'font' => $sort_option['font'],
+					);
+				}
+			}
+		}
 
-        return $messages;
-    }
+		return $messages;
+	}
 
-    /**
-     *
-     * Get an array of current category ID
-     *
-     * @param bool $post
-     * @return array
-     */
+	/**
+	 *
+	 * Get an array of current category ID
+	 *
+	 * @param bool $post
+	 * @return array
+	 */
 
 
-    private function get_the_category_id($post = false) {
-        $cats = array();
-        $cats_raw = get_the_category($post);
-        if(!$cats_raw) {
-            return array();
-        }
-        foreach($cats_raw as $key => $cat) {
-            $cats[] = $cat->term_id;
-        }
-        return $cats;
-    }
+	private function get_the_category_id( $post = false ) {
 
-    /**
-     *
-     * Get an array of current tags ID
-     *
-     * @param bool $post
-     * @return array
-     */
+		$cats = array();
+		$cats_raw = get_the_category( $post );
+		if ( ! $cats_raw ) {
+			return array();
+		}
+		foreach ( $cats_raw as $key => $cat ) {
+			$cats[] = $cat->term_id;
+		}
+		return $cats;
+	}
 
-    private function get_the_tags_id($post = false) {
-        $tags = array();
-        $tags_raw = get_the_tags($post);
-        if(!$tags_raw) {
-            return array();
-        }
-        foreach($tags_raw as $key => $tag) {
-            $tags[] = $tag->term_id;
-        }
-        return $tags;
-    }
+	/**
+	 *
+	 * Get an array of current tags ID
+	 *
+	 * @param bool $post
+	 * @return array
+	 */
 
+	private function get_the_tags_id( $post = false ) {
+
+		$tags = array();
+		$tags_raw = get_the_tags( $post );
+		if ( ! $tags_raw ) {
+			return array();
+		}
+		foreach ( $tags_raw as $key => $tag ) {
+			$tags[] = $tag->term_id;
+		}
+		return $tags;
+	}
 }

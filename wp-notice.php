@@ -23,9 +23,10 @@
  * WordPress-Plugin-Boilerplate: v2.6.1
  */
 
-if ( ! defined( 'ABSPATH' ) ) die; // Exit if accessed directly
-
-/*----------------------------------------------------------------------------*
+if ( ! defined( 'ABSPATH' ) ) { die; // Exit if accessed directly
+}
+/*
+ ----------------------------------------------------------------------------*
  * Public-Facing Functionality
  *----------------------------------------------------------------------------*/
 
@@ -40,7 +41,8 @@ register_deactivation_hook( __FILE__, array( 'WP_notice', 'deactivate' ) );
 
 add_action( 'plugins_loaded', array( 'WP_notice', 'get_instance' ) );
 
-/*----------------------------------------------------------------------------*
+/*
+ ----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
  *----------------------------------------------------------------------------*/
 
