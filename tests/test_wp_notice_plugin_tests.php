@@ -88,7 +88,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 		$this->assertArrayHasKey( 'wp-notice-plugin-styles', $wp_styles->registered );
 		$this->assertEquals( $wp_styles->registered['wp-notice-plugin-styles']->ver, $ver );
 		$this->assertArrayHasKey( 'wp-notice-fonts-awsome-plugin-styles', $wp_styles->registered );
-		$this->assertEquals( $wp_styles->registered['wp-notice-fonts-awsome-plugin-styles']->ver, $ver );
+		$this->assertEquals( $wp_styles->registered['wp-notice-plugin-styles']->ver, $ver );
 	}
 
 	function test_plugin_admin_css() {
@@ -168,7 +168,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			$post_content_with_notice = get_echo( 'the_content' );
 
 			$this->assertRegExp( '/This is notice #'.$i.' message/', $post_content_with_notice );
-			$this->assertRegExp( '/<div class=\"wp_notice_message wp-notice-regular \" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice );
+			$this->assertRegExp( '/<div style=\"\" class=\"wp_notice_message wp-notice-regular \" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice );
 			$this->assertRegExp( '/<i class=\"fa none fa\-4x\"><\/i>/', $post_content_with_notice );
 
 			// make sure that post that has no relation to this category IS NOT having the notice
@@ -231,7 +231,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			$post_content_with_notice = get_echo( 'the_content' );
 
 			$this->assertRegExp( '/This is notice #'.$i.' message/', $post_content_with_notice );
-			$this->assertRegExp( '/<div class=\"wp_notice_message wp-notice-regular \" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice );
+			$this->assertRegExp( '/<div style=\"\" class=\"wp_notice_message wp-notice-regular \" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice );
 			$this->assertRegExp( '/<i class=\"fa none fa\-4x\"><\/i>/', $post_content_with_notice );
 
 			// make sure that post that has no relation to this category IS NOT having the notice
@@ -290,7 +290,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			$post_content_with_notice = get_echo( 'the_content' );
 
 			$this->assertRegExp( '/This is notice #'.$i.' message/', $post_content_with_notice );
-			$this->assertRegExp( '/<div class=\"wp_notice_message wp-notice-regular \" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice );
+			$this->assertRegExp( '/<div style=\"\" class=\"wp_notice_message wp-notice-regular \" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice );
 			$this->assertRegExp( '/<i class=\"fa none fa\-4x\"><\/i>/', $post_content_with_notice );
 
 			// create non related post with date that is later than the notice date
@@ -348,7 +348,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 	}
 
 
-	function create_valid_post_data( $i = 0, $cat_id = 0, $term_id = 0, $date = '', $style = 'wp-notice-regular', $font = 'none' ) {
+	function create_valid_post_data( $i = 0, $cat_id = 0, $term_id = 0, $date = '', $style = 'wp-notice-regular', $font = 'none', $animation = array('duration' => '', 'repeat' => '', 'type' => 'none') ) {
 			global $_POST;
 
 			$_POST['wp_notice'] = wp_create_nonce( 'submit_notice' );
@@ -364,6 +364,8 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			$_POST['style'][ $i ] = array( $style );
 
 			$_POST['font'][ $i ] = array( $font );
+
+			$_POST['animation'][ $i ] = $animation;
 
 	}
 

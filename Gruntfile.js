@@ -9,6 +9,16 @@ module.exports = function(grunt) {
                 errorSeverity: 1
             }
         },
+        phpcbf: {
+            files: {
+                src: ['./public/**/*.php' , './admin/**/*.php']
+            },
+            options: {
+                standard: 'WordPress',
+                errorSeverity: 1
+            }
+        },
+
         phpunit: {
             dir: 'tests/',
             options: {
@@ -18,4 +28,5 @@ module.exports = function(grunt) {
     });
     grunt.loadNpmTasks('grunt-phpcs');
     grunt.loadNpmTasks('grunt-phpunit');
+    grunt.loadNpmTasks('grunt-phpcbf');
 };

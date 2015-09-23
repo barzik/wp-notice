@@ -191,7 +191,7 @@ final class WP_notice
 		$messages_html = '';
 		$messages_array = $this->wp_notice_options_decider();
 		foreach ( $messages_array as $key => $message ) {
-			$messages_html .= $this->create_message_block( $message['text'], $key, $message['style'], $message['font'] );
+			$messages_html .= $this->create_message_block( $message['text'], $key, $message['style'], $message['font'], $message['animation'] );
 		}
 		$content = $messages_html.$content;
 		return $content;
@@ -206,10 +206,11 @@ final class WP_notice
 	 * @param int    $id - The ID of the message, 0-n.
 	 * @param string $style - The style name.
 	 * @param string $font - The fontawsome name.
+	 * @param array  $animation - The animation details.
 	 *
 	 * @return string
 	 */
-	public function create_message_block( $text, $id, $style = 'wp-notice-regular', $font = 'none' ) {
+	public function create_message_block( $text, $id, $style = 'wp-notice-regular', $font = 'none', $animation = array() ) {
 
 		if ( 'none' !== $font ) {
 			$fa_included = 'fa_included';
@@ -217,8 +218,23 @@ final class WP_notice
 			$fa_included = '';
 		}
 
+		if ( ! empty( $animation ) && ! empty( $animation['type'] ) &&
+		    ! empty( $animation['duration'] ) && ! empty( $animation['repeat'] ) &&
+				'none' !== $animation['type'] ) {
+			if ( -1 === $animation['repeat'] ) {
+				$animation['repeat'] = 'infinite';
+			}
+
+			$animation['duration'] = $animation['duration'].'s';
+
+			$animation_string = "{$animation['type']} {$animation['duration']} {$animation['repeat']}";
+			$animation_style = "-webkit-animation: $animation_string; animation: $animation_string;";
+		} else {
+			$animation_style = '';
+		}
+
 		$message_html = <<<EOD
-<div class="wp_notice_message $style $fa_included" id="wp_notice_message-$id"><i class="fa $font fa-4x"></i>$text</div>
+<div style="$animation_style" class="wp_notice_message $style $fa_included" id="wp_notice_message-$id"><i class="fa $font fa-4x"></i>$text</div>
 EOD;
 		return $message_html;
 	}
@@ -237,12 +253,16 @@ EOD;
 		$current_tags = $this->get_the_tags_id();
 		foreach ( $options as $key => $sort_option ) {
 			$found = false;
+			if ( ! isset( $sort_option['tag'] ) && ! is_array( $sort_option['tag'] ) ) {
+				continue;
+			}
 			foreach ( $sort_option['tag'] as $tag ) {
 				if ( in_array( $tag, $current_tags ) ) {
 					$messages[] = array(
 						'text' => $sort_option['wp_notice_text'],
 						'style' => $sort_option['style'],
 						'font' => $sort_option['font'],
+						'animation' => $sort_option['animation'],
 					);
 					$found = true;
 					break;
@@ -251,12 +271,18 @@ EOD;
 			if ( true === $found ) {
 				continue;
 			}
+
+			if ( ! isset( $sort_option['cat'] ) && ! is_array( $sort_option['cat'] ) ) {
+				continue;
+			}
+
 			foreach ( $sort_option['cat'] as $cat ) {
 				if ( in_array( $cat, $current_categories ) ) {
 					$messages[] = array(
 						'text' => $sort_option['wp_notice_text'],
 						'style' => $sort_option['style'],
 						'font' => $sort_option['font'],
+						'animation' => $sort_option['animation'],
 					);
 					$found = true;
 					break;
@@ -274,6 +300,7 @@ EOD;
 						'text' => $sort_option['wp_notice_text'],
 						'style' => $sort_option['style'],
 						'font' => $sort_option['font'],
+						'animation' => $sort_option['animation'],
 					);
 				}
 			}
