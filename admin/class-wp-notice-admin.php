@@ -9,22 +9,33 @@
  * @copyright 2014 Ran Bar-Zik
  */
 
-if ( ! defined( 'ABSPATH' ) ) { die; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { die; // Exit if accessed directly.
 }
+
+/**
+ * Class WP_notice_Admin
+ */
 final class WP_notice_Admin
 {
 
 	/**
-	 * Instance of this class.
+	 * The instance.
 	 *
-	 * @since    1.0.0
-	 *
-	 * @var      object
+	 * @var null
 	 */
 	protected static $instance = null;
+	/**
+	 * Options variable.
+	 *
+	 * @var array
+	 */
 	protected static $option = array();
+	/**
+	 * Awsome fonts array.
+	 *
+	 * @var array
+	 */
 	protected $fonts = array();
-
 	/**
 	 * Slug of the plugin screen.
 	 *
@@ -34,6 +45,11 @@ final class WP_notice_Admin
 	 */
 	protected $plugin_screen_hook_suffix = null;
 
+	/**
+	 * The messages styles array.
+	 *
+	 * @var array
+	 */
 	private $styles = array(
 	'wp-notice-regular' => 'Regular style',
 		'wp-notice-success' => 'Success',
@@ -56,7 +72,7 @@ final class WP_notice_Admin
 		$plugin = WP_notice::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
-		// create one time message on plugin activation
+		// Create one time message on plugin activation.
 		add_action( 'admin_notices', array( $this, 'plugin_activation_message' ) );
 
 		// Add the options page and menu item.
@@ -82,8 +98,8 @@ final class WP_notice_Admin
 	 */
 	public function __clone() {
 
-		// Cloning instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-notice' ), '1.0.1' );
+		// Cloning instances of the class is forbidden.
+		_doing_it_wrong( __FUNCTION__, esc_html( __( 'Cheatin&#8217; huh?' , 'wp-notice' ) ), '1.0.1' );
 	}
 
 	/**
@@ -94,8 +110,8 @@ final class WP_notice_Admin
 	 */
 	public function __wakeup() {
 
-		// Unserializing instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wp-notice' ), '1.0.1' );
+		// Unserializing instances of the class is forbidden.
+		_doing_it_wrong( __FUNCTION__, esc_html( __( 'Cheatin&#8217; huh?' , 'wp-notice' ) ), '1.0.1' );
 	}
 
 	/**
@@ -108,7 +124,7 @@ final class WP_notice_Admin
 	public static function get_instance() {
 
 		// If the single instance hasn't been set, set it now.
-		if ( null == self::$instance ) {
+		if ( null === self::$instance ) {
 			self::$instance = new self;
 		}
 
@@ -118,7 +134,6 @@ final class WP_notice_Admin
 	/**
 	 * When plugin is being activated - show message
 	 */
-
 	public function plugin_activation_message() {
 
 		// $message  = '<a href="'.admin_url( 'options-general.php?page=' . $this->plugin_slug ).'">'.__( 'Please set up WP Notice settings.', 'WP-NOTICE' ).'</a>';
@@ -131,12 +146,9 @@ final class WP_notice_Admin
 	 * Register and enqueue admin-specific style sheet.
 	 *
 	 * @since     1.0.0
-	 *
-	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_styles() {
-
-		if ( 'wp-notice' === $_GET['page'] ) {
+		if ( isset( $_GET['page'] ) && 'wp-notice' === sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) { // Input var okay.
 			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), WP_notice::VERSION );
 			wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'public/assets/css/public.css', 'wp-notice/public/' ), array(), WP_notice::VERSION );
 			wp_enqueue_style( $this->plugin_slug . 'fonts-awsome-plugin-styles', plugins_url( 'public/assets/css/font-awesome.min.css', 'wp-notice/public/' ), array(), WP_notice::VERSION );
@@ -149,12 +161,10 @@ final class WP_notice_Admin
 	 * Register and enqueue admin-specific JavaScript.
 	 *
 	 * @since     1.0.0
-	 *
-	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_scripts() {
 
-		if ( 'wp-notice' === $_GET['page'] ) {
+		if ( isset( $_GET['page'] ) && 'wp-notice' === sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) { // Input var okay.
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery' ), WP_notice::VERSION );
 			wp_enqueue_script( 'jquery-ui-datepicker' );
 
@@ -168,13 +178,13 @@ final class WP_notice_Admin
 				'dayNames'          => $this->strip_array_indices( $wp_locale->weekday ),
 				'dayNamesShort'     => $this->strip_array_indices( $wp_locale->weekday_abbrev ),
 				'dayNamesMin'       => $this->strip_array_indices( $wp_locale->weekday_initial ),
-				// get the start of week from WP general setting
+				// Get the start of week from WP general setting.
 				'firstDay'          => get_option( 'start_of_week' ),
-				// is Right to left language? default is false
+				// Is Right to left language? default is false.
 				'isRTL'             => $wp_locale->is_rtl,
 			);
 
-			// Pass the localized array to the enqueued JS
+			// Pass the localized array to the enqueued JS.
 			wp_localize_script( $this->plugin_slug . '-admin-script', 'objectL10n', $aryArgs );
 
 		}
@@ -187,7 +197,6 @@ final class WP_notice_Admin
 	 * @since    1.0.0
 	 */
 	public function add_plugin_admin_menu() {
-
 		/*
 		 * Add a settings page for this plugin to the Settings menu.
 		 *
@@ -216,12 +225,15 @@ final class WP_notice_Admin
 
 		$header = esc_html( get_admin_page_title() );
 		$fieldset_header = __( 'Insert the notice and the conditions', $this->plugin_slug );
-
-		if ( $_POST ) {
+		// @codingStandardsIgnoreStart
+		// It I skip Coding Standard here because of "Detected usage of a non-validated input variable" error.
+		$nonce_key = sanitize_text_field( wp_unslash( $_POST['wp_notice'] ) ); // Input var okay.
+		// @codingStandardsIgnoreEnd
+		if ( wp_verify_nonce( $nonce_key, 'submit_notice' ) ) {
 			$wp_notice_options = $this->prepare_wp_notice_post();
 			$result = $this->set_wp_notice_settings( $wp_notice_options );
-			unset( $_POST );
-			if ( $result['status'] == '200' ) {
+			unset( $_POST ); // Input var okay.
+			if ( 200 === $result['status'] ) {
 				$message = "<div class='alert alert-success'>{$result['text']}</div>";
 			} else {
 				$message = "<div class='alert alert-danger'>{$result['text']}</div>";
@@ -239,44 +251,49 @@ final class WP_notice_Admin
 	 * Take the $_POST and prepare it to something that we can work with
 	 * @return array
 	 */
-
 	private function prepare_wp_notice_post() {
-
-		global $_POST;
-		$wp_notice_options_raw = $_POST;
-		if ( isset( $_POST['delete_all'] ) && $_POST['delete_all'] == 1 && ! isset( $_POST['wp_notice_text'] ) ) {
+		// @codingStandardsIgnoreStart
+		// It I skip Coding Standard here because of "Detected usage of a non-validated input variable" error.
+		$nonce_key = sanitize_text_field( wp_unslash( $_POST['wp_notice'] ) ); // Input var okay.
+		// @codingStandardsIgnoreEnd
+		if ( false === wp_verify_nonce( $nonce_key, 'submit_notice' ) ) {
+			return array();
+		}
+		$wp_notice_options_raw = $_POST; // Input var okay.
+		if ( isset( $wp_notice_options_raw['delete_all'] ) && 1 === $wp_notice_options_raw['delete_all'] && ! isset( $wp_notice_options_raw['wp_notice_text'] ) ) {
 			return array();
 		}
 
 		$wp_notice_options = array();
-		for ( $i = 0; $i < count( $wp_notice_options_raw ); $i++ ) {
-			if ( empty( $_POST['wp_notice_text'][ $i ] ) ) {
+		$wp_notice_options_raw_count = count( $wp_notice_options_raw );
+		for ( $i = 0; $i < $wp_notice_options_raw_count; $i++ ) {
+			if ( empty( $wp_notice_options_raw['wp_notice_text'][ $i ] ) ) {
 				continue;
 			}
-			$wp_notice_options[ $i ]['wp_notice_text'] = $_POST['wp_notice_text'][ $i ];
-			if ( isset( $_POST['style'][ $i ] ) ) {
-				$wp_notice_options[ $i ]['style'] = $_POST['style'][ $i ][0];
+			$wp_notice_options[ $i ]['wp_notice_text'] = balanceTags( $wp_notice_options_raw['wp_notice_text'][ $i ], true );
+			if ( isset( $wp_notice_options_raw['style'][ $i ] ) ) {
+				$wp_notice_options[ $i ]['style'] = sanitize_text_field( $wp_notice_options_raw['style'][ $i ][0] );
 			} else {
 				$wp_notice_options[ $i ]['style'] = 'wp-notice-regular';
 			}
-			if ( isset( $_POST['font'][ $i ] ) ) {
-				$wp_notice_options[ $i ]['font'] = $_POST['font'][ $i ][0];
+			if ( isset( $wp_notice_options_raw['font'][ $i ] ) ) {
+				$wp_notice_options[ $i ]['font'] = sanitize_text_field( $wp_notice_options_raw['font'][ $i ][0] );
 			} else {
 				$wp_notice_options[ $i ]['font'] = 'none';
 			}
 
-			if ( isset( $_POST['cat'][ $i ] ) ) {
-				$wp_notice_options[ $i ]['cat'] = $_POST['cat'][ $i ];
+			if ( isset( $wp_notice_options_raw['cat'][ $i ] ) ) {
+				$wp_notice_options[ $i ]['cat'] = array_map( 'absint', $wp_notice_options_raw['cat'][ $i ] );
 			} else {
 				$wp_notice_options[ $i ]['cat'] = '';
 			}
-			if ( isset( $_POST['tag'][ $i ] ) ) {
-				$wp_notice_options[ $i ]['tag'] = $_POST['tag'][ $i ];
+			if ( isset( $wp_notice_options_raw['tag'][ $i ] ) ) {
+				$wp_notice_options[ $i ]['tag'] = array_map( 'absint', $wp_notice_options_raw['tag'][ $i ] );
 			} else {
 				$wp_notice_options[ $i ]['tag'] = '';
 			}
-			if ( isset( $_POST['wp_notice_time'][ $i ] ) ) {
-				$wp_notice_options[ $i ]['wp_notice_time'] = $_POST['wp_notice_time'][ $i ];
+			if ( isset( $wp_notice_options_raw['wp_notice_time'][ $i ] ) ) {
+				$wp_notice_options[ $i ]['wp_notice_time'] = preg_replace( '([^0-9/])', '', $wp_notice_options_raw['wp_notice_time'][ $i ] );
 			} else {
 				$wp_notice_options[ $i ]['wp_notice_time'] = '';
 
@@ -286,11 +303,10 @@ final class WP_notice_Admin
 	}
 
 	/**
-	 * get the settings from the DB
+	 * Get the settings from the DB.
 	 *
 	 * @return mixed
 	 */
-
 	public static function get_wp_notice_settings() {
 
 		$plugin = WP_notice::get_instance();
@@ -300,13 +316,12 @@ final class WP_notice_Admin
 
 	/**
 	 *
-	 * set the settings to the DB
+	 * Set the settings to the DB.
 	 *
-	 * @param array $wp_notice_settings
+	 * @param array $wp_notice_settings settings array.
 	 *
 	 * @return array
 	 */
-
 	private function set_wp_notice_settings( $wp_notice_settings = array() ) {
 
 		$plugin = WP_notice::get_instance();
@@ -316,16 +331,16 @@ final class WP_notice_Admin
 		}
 		/* Some validation */
 		foreach ( $wp_notice_settings as $i => $fieldset ) {
-			// no asspciative here
+			// No associative here.
 			if ( ! is_numeric( $i ) ) {
 				unset( $wp_notice_settings[ $i ] );
 			}
 
-			// removing notices without text
+			// Removing notices without text.
 			if ( empty( $wp_notice_settings[ $i ]['wp_notice_text'] ) ) {
 				unset( $wp_notice_settings[ $i ] );
 			}
-			// no un-numeric tags
+			// No un-numeric tags.
 			if ( ! empty( $wp_notice_settings[ $i ]['tag'] ) ) {
 				foreach ( $wp_notice_settings[ $i ]['tag'] as $key => $tag ) {
 					if ( ! is_numeric( $tag ) ) {
@@ -333,7 +348,7 @@ final class WP_notice_Admin
 					}
 				}
 			}
-			// no un-numeric categories
+			// No un-numeric categories.
 			if ( ! empty( $wp_notice_settings[ $i ]['cat'] ) ) {
 				foreach ( $wp_notice_settings[ $i ]['cat'] as $key => $cat ) {
 					if ( ! is_numeric( $cat ) ) {
@@ -341,10 +356,8 @@ final class WP_notice_Admin
 					}
 				}
 			}
-			// no strange dates here
 			$test_date = $wp_notice_settings[ $i ]['wp_notice_time'];
 
-			// no strange styles
 			$wp_notice_settings[ $i ]['style'] = $wp_notice_settings[ $i ]['style'];
 
 			$wp_notice_settings[ $i ]['font'] = $wp_notice_settings[ $i ]['font'];
@@ -353,17 +366,17 @@ final class WP_notice_Admin
 		$new_value = maybe_serialize( $wp_notice_settings );
 		$result = update_option( $option, $new_value );
 		if ( $result ) {
-			return array( 'status' => '200', 'text' => __( 'WP Notice Settings Updated', $this->plugin_slug ) );
+			return array( 'status' => 200, 'text' => __( 'WP Notice Settings Updated', $this->plugin_slug ) );
 		} else {
-			return array( 'status' => '500', 'text' => __( 'WP Notice Error! You did change the form, right? please try again.', $this->plugin_slug ) );
+			return array( 'status' => 500, 'text' => __( 'WP Notice Error! You did change the form, right? please try again.', $this->plugin_slug ) );
 		}
 	}
 
 	/**
 	 *
-	 * Creating the fieldset array from wp_notice options
+	 * Creating the fieldset array from wp_notice options.
 	 *
-	 * @param $wp_notice_options
+	 * @param array $wp_notice_options  The options array.
 	 * @return string
 	 */
 	private function get_all_fieldsets( $wp_notice_options ) {
@@ -386,10 +399,10 @@ final class WP_notice_Admin
 
 	/**
 	 *
-	 * Generating the category list for the fieldset in the admin options menu
+	 * Generating the category list for the fieldset in the admin options menu.
 	 *
-	 * @param int   $number
-	 * @param array $selected_category
+	 * @param int   $number The serial ID of the category.
+	 * @param array $selected_category  Selected categories array to be marked as selected.
 	 * @return string
 	 */
 	private function generate_category_list( $number = 0, $selected_category = array() ) {
@@ -415,10 +428,10 @@ final class WP_notice_Admin
 
 	/**
 	 *
-	 * Generating the tag list for the fieldset in the admin options menu
+	 * Generating the tag list for the fieldset in the admin options menu.
 	 *
-	 * @param int   $number
-	 * @param array $selected_tag
+	 * @param int   $number The serial ID of the tag.
+	 * @param array $selected_tag Selected tags array to be marked as selected.
 	 * @return string
 	 */
 	private function generate_tag_list( $number = 0, $selected_tag = array() ) {
@@ -447,10 +460,10 @@ final class WP_notice_Admin
 
 	/**
 	 *
-	 * Generating the tag list for the fieldset in the admin options menu
+	 * Generating the style selector list for the fieldset in the admin options menu
 	 *
-	 * @param int   $number
-	 * @param array $selected_tag
+	 * @param int    $number   The serial ID of the fieldset.
+	 * @param string $selected_style The string of the selected style.
 	 * @return string
 	 */
 	private function generate_style_list( $number = 0, $selected_style = 'wp-notice-regular' ) {
@@ -469,8 +482,8 @@ final class WP_notice_Admin
 	 *
 	 * Generating the font list for the fieldset in the admin options menu
 	 *
-	 * @param int   $number
-	 * @param array $selected_tag
+	 * @param int    $number The serial ID of the fieldset.
+	 * @param string $selected_font The font name of the fontwAwsome.
 	 * @return string
 	 */
 	private function generate_fonts_list( $number = 0, $selected_font = 'none' ) {
@@ -491,15 +504,15 @@ final class WP_notice_Admin
 	/**
 	 * Create the fieldset that should appear in the admin options menu
 	 *
-	 * @param int    $number
-	 * @param array  $selected_tag
-	 * @param array  $selected_category
-	 * @param null   $time
-	 * @param string $text
+	 * @param int    $number  The ID of the fieldset.
+	 * @param array  $selected_tag  The array of the tags selected.
+	 * @param array  $selected_category The array of the categories selected.
+	 * @param null   $time  string that contain the date of the message.
+	 * @param string $text  The text of the message.
+	 * @param string $selected_style  The style string.
+	 * @param string $selected_font  The font string for fontAwsome.
 	 * @return string
 	 */
-
-
 	private function build_fieldset( $number = 0, $selected_tag = array(), $selected_category = array(), $time = null,
 		$text = '', $selected_style = 'wp-notice-regular', $selected_font = 'none' ) {
 
@@ -541,7 +554,7 @@ EOD;
 	/**
 	 * Add settings action link to the plugins page.
 	 *
-	 * @since    1.0.0
+	 * @param string $links  The action links.
 	 */
 	public function add_action_links( $links ) {
 
@@ -558,6 +571,8 @@ EOD;
 	 *
 	 * WordPress stores the locale information in an array with a alphanumeric index, and
 	 * the datepicker wants a numerical index. This function replaces the index with a number
+	 *
+	 * @param string $array_to_strip  array with alphanumeric index.
 	 */
 	private function strip_array_indices( $array_to_strip ) {
 

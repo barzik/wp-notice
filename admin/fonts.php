@@ -1,6 +1,6 @@
 <?php
 /**
- * Silence is golden.
+ * Awesome fonts
  *
  * @package   WP_notice
  * @author    Ran Bar-Zik <ran@bar-zik.com>
@@ -10,7 +10,7 @@
  */
 
 /**
- * Return Awsome fonts name
+ * Return Awesome fonts name
  *
  * @return array
  */

@@ -1,0 +1,27 @@
+{
+  "name": "wp-notice",
+  "version": "1.2.1",
+  "description": "For validation and auto tests.",
+  "main": "Gruntfile.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "grunt-phpcs": "^0.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "grunt phpcs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/barzik/wp-notice.git"
+  },
+  "author": "Ran Bar-Zik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/barzik/wp-notice/issues"
+  },
+  "homepage": "https://github.com/barzik/wp-notice"
+}

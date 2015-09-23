@@ -77,6 +77,20 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			return 'he_IL';
 	}
 
+	function test_plugin_public_css() {
+
+		$plugin = WP_notice::get_instance();
+		global $wp_styles;
+		set_current_screen( '/' );
+		$ver = $plugin::VERSION;
+
+		$result = $plugin->enqueue_styles();
+		$this->assertArrayHasKey( 'wp-notice-plugin-styles', $wp_styles->registered );
+		$this->assertEquals( $wp_styles->registered['wp-notice-plugin-styles']->ver, $ver );
+		$this->assertArrayHasKey( 'wp-notice-fonts-awsome-plugin-styles', $wp_styles->registered );
+		$this->assertEquals( $wp_styles->registered['wp-notice-fonts-awsome-plugin-styles']->ver, $ver );
+	}
+
 	function test_plugin_admin_css() {
 			$user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 			wp_set_current_user( $user->ID );
@@ -303,6 +317,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			// fetching options, validate it is empty
 			global $_POST;
 			$_POST = array();
+			$_POST['wp_notice'] = wp_create_nonce( 'submit_notice' );
 			$_POST['delete_all'] = 1;
 
 			// checking the admin page with $_POST - should insert it to the options
@@ -325,9 +340,18 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			$this->assertInternalType( 'array', $options_object );
 	}
 
+	public function test_get_fontawsome_array() {
+		$fonts = return_font_array();
+		$fonts_count = count( $fonts );
+		$this->assertInternalType( 'array', $fonts );
+		$this->assertGreaterThan(0, $fonts_count);
+	}
+
 
 	function create_valid_post_data( $i = 0, $cat_id = 0, $term_id = 0, $date = '', $style = 'wp-notice-regular', $font = 'none' ) {
 			global $_POST;
+
+			$_POST['wp_notice'] = wp_create_nonce( 'submit_notice' );
 
 			$_POST['wp_notice_text'][ $i ] = 'This is notice #'.$i.' message';
 

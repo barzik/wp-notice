@@ -24,6 +24,12 @@ if ( ! defined( 'ABSPATH' ) ) {
     <?php print esc_html( $message ); ?>
 	<h2><?php print esc_html( $header ); ?></h2>
 <form id="wp_notice_form" class='form-horizontal' method="post">
+    <?php
+    // @codingStandardsIgnoreStart
+    // This variable contain nonce That should appear there. It should not be escaped.
+    print wp_nonce_field('submit_notice', 'wp_notice');
+    // @codingStandardsIgnoreEnd
+	?>
     <h3><?php print esc_html( $fieldset_header ); ?></h3>
     <p><?php esc_html_e( 'Please fill in the notice text and the proper conditions that need to be fulfilled in order to make the notice to appear', 'wp-notice' ); ?></p>
     <p><?php esc_html_e( 'You can combine several conditions and create several notices', 'wp-notice' ); ?></p>

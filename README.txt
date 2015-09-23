@@ -12,17 +12,14 @@ WP Notice Plugin enables admin to put custom announcements in the beginning of p
 == Description ==
 
 WP Notice plugin enable every admin to post announcement or messages  on top of posts based on tags, categories or date.
-You can assign several messages for the several posts. There are several custom design based on BootStrap styles:
-1. Notice\info.
-2. Warning.
-3. Danger.
-4. Success.
+You can assign several messages for the several posts. There are several custom designs based on BootStrap styles.
 Along with the styles, you can also add to every message one of hundreds icons based on Font Awesome repository.
 
 Ideal for technical sites that need to post deprecated notice on old posts and any other sites that need to show
-messages to users.
+messages to users based on categories, tags or date.
 
-WP Notice has fully automated testing environment based on WordPress PHPUnit and Travis CI.
+WP Notice has fully automated testing environment based on WordPress PHPUnit and Travis CI and it is 100% compatible
+to WordPress coding standards.
 GitHub: https://github.com/barzik/wp-notice
 
 
@@ -59,6 +56,14 @@ GitHub: https://github.com/barzik/wp-notice
 
 == Changelog ==
 
+= 1.2.1 =
+* Remove possible XSS issues.
+* Complete Linting
+* Removing deprecated code/
+* Removing options in uninstall
+* Fixing all code standards for WP-Notice classes
+* Adding several PHPUnit tests, 88% coverage!
+
 = 1.2.0 =
 * Adding preview for messages
 * Adding icons to messages
@@ -81,6 +86,9 @@ GitHub: https://github.com/barzik/wp-notice
 * Initial version
 
 == Upgrade Notice ==
+
+= 1.2.1 =
+Security issue fix.
 
 = 1.2.0 =
 A lot of features and improvements in this release. along with important security fix.
