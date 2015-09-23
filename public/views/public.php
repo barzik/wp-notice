@@ -12,7 +12,6 @@
  * @copyright 2014 Your Name or Company Name
  */
 
-if ( ! defined( 'ABSPATH' ) ) die; // Exit if accessed directly
-?>
-
-<!-- This file is used to markup the public facing aspect of the plugin. -->
+if ( ! defined( 'ABSPATH' ) ) {
+	die; // Exit if accessed directly.
+}
