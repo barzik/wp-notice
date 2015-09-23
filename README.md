@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/barzik/wp-notice.svg)](https://travis-ci.org/barzik/wp-notice)
+
+https://travis-ci.org/barzik/wp-notice.svg
+
 # WP Notice
 
 Wp Notice plugin enable every admin to post announcement (HTML or just text) on top of every WordPress post.
