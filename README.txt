@@ -92,6 +92,9 @@ GitHub: https://github.com/barzik/wp-notice
 
 == Upgrade Notice ==
 
+= 1.3.0 =
+Adding animation!
+
 = 1.2.1 =
 Security issue fix.
 
