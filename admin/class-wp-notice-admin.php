@@ -59,6 +59,24 @@ final class WP_notice_Admin
 		);
 
 	/**
+	 * The animation type
+	 *
+	 * @var array
+	 */
+	private $animation_types = array(
+		'pulse',
+	'rubberBand',
+	'jello',
+	'flash',
+	'bounce',
+	'shake',
+	'swing',
+	'tada',
+	'wobble',
+	'flip',
+	);
+
+	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
 	 * settings page and menu.
 	 *
@@ -296,7 +314,18 @@ final class WP_notice_Admin
 				$wp_notice_options[ $i ]['wp_notice_time'] = preg_replace( '([^0-9/])', '', $wp_notice_options_raw['wp_notice_time'][ $i ] );
 			} else {
 				$wp_notice_options[ $i ]['wp_notice_time'] = '';
-
+			}
+			if ( isset( $wp_notice_options_raw['animation'][ $i ] ) && is_array( $wp_notice_options_raw['animation'][ $i ] ) &&
+			     isset( $wp_notice_options_raw['animation'][ $i ]['type'] )
+			     && isset( $wp_notice_options_raw['animation'][ $i ]['duration'] )
+			     && isset( $wp_notice_options_raw['animation'][ $i ]['repeat'] ) ) {
+				$wp_notice_options[ $i ]['animation']['type'] = sanitize_text_field( $wp_notice_options_raw['animation'][ $i ]['type'] );
+				$wp_notice_options[ $i ]['animation']['duration'] = absint( $wp_notice_options_raw['animation'][ $i ]['duration'] );
+				$wp_notice_options[ $i ]['animation']['repeat'] = intval( $wp_notice_options_raw['animation'][ $i ]['repeat'] );
+			} else {
+				$wp_notice_options_raw['animation'][ $i ]['type'] = 'none';
+				$wp_notice_options_raw['animation'][ $i ]['duration'] = '';
+				$wp_notice_options_raw['animation'][ $i ]['repeat'] = '';
 			}
 		}
 		return $wp_notice_options;
@@ -356,12 +385,6 @@ final class WP_notice_Admin
 					}
 				}
 			}
-			$test_date = $wp_notice_settings[ $i ]['wp_notice_time'];
-
-			$wp_notice_settings[ $i ]['style'] = $wp_notice_settings[ $i ]['style'];
-
-			$wp_notice_settings[ $i ]['font'] = $wp_notice_settings[ $i ]['font'];
-
 		}
 		$new_value = maybe_serialize( $wp_notice_settings );
 		$result = update_option( $option, $new_value );
@@ -391,7 +414,7 @@ final class WP_notice_Admin
 			$html .= $this->build_fieldset(
 				$key, $wp_notice_option['tag'], $wp_notice_option['cat'],
 				$wp_notice_option['wp_notice_time'], $wp_notice_option['wp_notice_text'], $wp_notice_option['style'],
-				$wp_notice_option['font']
+				$wp_notice_option['font'], $wp_notice_option['animation']
 			);
 		}
 		return $html;
@@ -500,6 +523,47 @@ final class WP_notice_Admin
 		return $font_list;
 	}
 
+	/**
+	 *
+	 * Generating the animation for the fieldset in the admin options menu
+	 *
+	 * @param int   $number The serial ID of the fieldset.
+	 * @param array $selected_animation The animation array with the information regarding the animation.
+	 * @return string
+	 */
+	private function generate_animation( $number = 0, $selected_animation = array() ) {
+
+		if ( ! isset( $selected_animation['type'] ) || empty( $selected_animation['type'] ) ) {
+			$selected_animation['type'] = 'none';
+		}
+		if ( ! isset( $selected_animation['duration'] ) ) {
+			$selected_animation['duration'] = '';
+		}
+		if ( ! isset( $selected_animation['repeat'] ) ) {
+			$selected_animation['repeat'] = '';
+		}
+
+		$animation_list = '';
+		$animation_list .= '<span>';
+		$animation_list .= "<label for='animation_type_{$number}'>" . __( 'Select animation type : ', $this->plugin_slug ) . '</label>';
+		$animation_list .= "<select id='animation_type_{$number}' name='animation[{$number}][type]' class='wp_notice_animation_type'>";
+		$animation_list .= '<option ' . selected( $selected_animation['type'], 'none', false ) . " value='none'>" . __( 'None', $this->plugin_slug ) . '</option>';
+		foreach ( $this->animation_types as $animation_type ) {
+			$animation_list .= '<option ' . selected( $selected_animation['type'], $animation_type, false ) . ' value="' . $animation_type . '">' . $animation_type . '</option>';
+		}
+		$animation_list .= '</select> ';
+		$animation_list .= '</span>';
+		$animation_list .= '<span>';
+		$animation_list .= "<label for='animation_duration_{$number}'>" . __( 'Select animation duration (seconds) : ', $this->plugin_slug ) . '</label>';
+		$animation_list .= "<input type='number' min='0.1' max='999' step='0.1' class='wp_notice_animation_duration' value='{$selected_animation['duration']}' id='animation_duration_$number' name='animation[{$number}][duration]'>";
+		$animation_list .= '</span>';
+		$animation_list .= '<span>';
+		$animation_list .= "<label for='animation_repeat_{$number}'>" . __( 'Select animation repetition, -1 for infinite : ', $this->plugin_slug ) . '</label>';
+		$animation_list .= "<input type='number' min='-1' max='999' step='1' class='wp_notice_animation_repeat' value='{$selected_animation['repeat']}' id='animation_repeat_$number' name='animation[{$number}][repeat]'>";
+		$animation_list .= '</span>';
+
+		return $animation_list;
+	}
 
 	/**
 	 * Create the fieldset that should appear in the admin options menu
@@ -511,15 +575,17 @@ final class WP_notice_Admin
 	 * @param string $text  The text of the message.
 	 * @param string $selected_style  The style string.
 	 * @param string $selected_font  The font string for fontAwsome.
+	 * @param array  $selected_animation  Array for fonts.
 	 * @return string
 	 */
 	private function build_fieldset( $number = 0, $selected_tag = array(), $selected_category = array(), $time = null,
-		$text = '', $selected_style = 'wp-notice-regular', $selected_font = 'none' ) {
+		$text = '', $selected_style = 'wp-notice-regular', $selected_font = 'none', $selected_animation = array() ) {
 
 		$category_list = $this->generate_category_list( $number, $selected_category );
 		$tag_list = $this->generate_tag_list( $number, $selected_tag );
 		$style_list = $this->generate_style_list( $number, $selected_style );
 		$fonts_list = $this->generate_fonts_list( $number, $selected_font );
+		$animation = $this->generate_animation( $number, $selected_animation );
 		$text_label = __( 'The Notice', $this->plugin_slug );
 		$time_label = __( 'Show in all posts that were created before:', $this->plugin_slug );
 		$text_place_holder = __( 'Insert the text of the notice here. It can be HTML or text string', $this->plugin_slug );
@@ -539,6 +605,9 @@ final class WP_notice_Admin
         <div class="wp_notice_style form-group">
             $style_list
             $fonts_list
+        </div>
+        <div class="wp_notice_animation form-group">
+						$animation
         </div>
         <div class="wp_notice_mock_example">
             <div class="wp_notice_message" id="wp_notice_message-$number"></div>

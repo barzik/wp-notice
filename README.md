@@ -2,9 +2,10 @@
 
 # WP Notice
 
-Wp Notice plugin enable every admin to post announcement (HTML or just text) on top of every WordPress post.
-The admin can choose specific categories, tags or post date in order to point the correct message to the posts he wants.
-Ideal for obsolete\deprecation messages for tutorials or technical posts.
+WP Notice plugin enable every admin to post animated announcement or messages on top of posts based on tags, categories or date.
+You can assign several messages for the several posts. There are several custom designs based on BootStrap styles.
+Along with the styles, you can also add to every message one of hundreds icons based on Font Awesome repository and
+also choose animation type, duration and number of repetition.
 
 # Installation and other information
 
@@ -32,3 +33,6 @@ In order to use it:
 3. Install Grunt modules by typing `npm install`.
 4. Run `grunt phpcs` and observe results.
 
+# Generate auto prefix for animation
+
+Make the changed in source_css and then run `grunt postcss` to output the CSS to public.css.

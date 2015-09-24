@@ -43,3 +43,21 @@ fieldset.wp_notice > .wp_notice_conditions.form-group > select {
 fieldset.wp_notice > div.wp_notice_style > label {
     display: inline;
 }
+
+.wp_notice_animation.form-group > span {
+    display: inline-block;
+}
+
+.wp_notice_animation_type {
+    width: 90px;
+}
+
+.wp_notice_animation_duration {
+    width: 60px;
+}
+
+.wp_notice_animation_repeat {
+    width: 60px;
+}
+
+
