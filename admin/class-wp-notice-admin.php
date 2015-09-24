@@ -65,8 +65,15 @@ final class WP_notice_Admin
 	 */
 	private $animation_types = array(
 		'pulse',
+	'rubberBand',
+	'jello',
 	'flash',
-	'wiggle',
+	'bounce',
+	'shake',
+	'swing',
+	'tada',
+	'wobble',
+	'flip',
 	);
 
 	/**
@@ -539,8 +546,8 @@ final class WP_notice_Admin
 		$animation_list = '';
 		$animation_list .= '<span>';
 		$animation_list .= "<label for='animation_type_{$number}'>" . __( 'Select animation type : ', $this->plugin_slug ) . '</label>';
-		$animation_list .= "<select id='animation_type_{$number}' name='animation[{$number}][type]' class='wp_notice_animation'>";
-		$animation_list .= '<option ' . selected( $selected_animation['type'], 'none', false ) . " value='none'>" . __( 'Do not use animation', $this->plugin_slug ) . '</option>';
+		$animation_list .= "<select id='animation_type_{$number}' name='animation[{$number}][type]' class='wp_notice_animation_type'>";
+		$animation_list .= '<option ' . selected( $selected_animation['type'], 'none', false ) . " value='none'>" . __( 'None', $this->plugin_slug ) . '</option>';
 		foreach ( $this->animation_types as $animation_type ) {
 			$animation_list .= '<option ' . selected( $selected_animation['type'], $animation_type, false ) . ' value="' . $animation_type . '">' . $animation_type . '</option>';
 		}
@@ -548,7 +555,7 @@ final class WP_notice_Admin
 		$animation_list .= '</span>';
 		$animation_list .= '<span>';
 		$animation_list .= "<label for='animation_duration_{$number}'>" . __( 'Select animation duration (seconds) : ', $this->plugin_slug ) . '</label>';
-		$animation_list .= "<input type='number' min='1' max='999' step='1' class='wp_notice_animation_duration' value='{$selected_animation['duration']}' id='animation_duration_$number' name='animation[{$number}][duration]'>";
+		$animation_list .= "<input type='number' min='0.1' max='999' step='0.1' class='wp_notice_animation_duration' value='{$selected_animation['duration']}' id='animation_duration_$number' name='animation[{$number}][duration]'>";
 		$animation_list .= '</span>';
 		$animation_list .= '<span>';
 		$animation_list .= "<label for='animation_repeat_{$number}'>" . __( 'Select animation repetition, -1 for infinite : ', $this->plugin_slug ) . '</label>';

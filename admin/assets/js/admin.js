@@ -101,22 +101,37 @@
         }
 
         function createExampleMock() {
-            $('#wp_notice_form fieldset').find('select, textarea').on('change keyup paste', function(e){
+            $('#wp_notice_form fieldset').find('select, textarea, input[type="number"]').on('change keyup paste', function(e){
                 var _this = $(this),
                     fieldset = _this.closest('fieldset'),
                     text = fieldset.find('textarea').val(),
                     style = fieldset.find('.wp_notice_style option:selected').val(),
                     destination_id = '#wp_notice_message-'+fieldset.attr('rel'),
                     destination = $(destination_id),
-                    icon_font_style = fieldset.find('.wp_notice_font option:selected').val()
+                    icon_font_style = fieldset.find('.wp_notice_font option:selected').val(),
+                    animation_type =  fieldset.find('.wp_notice_animation_type option:selected').val(),
+                    animation_duration =  fieldset.find('.wp_notice_animation_duration').val(),
+                    animation_repeat =  fieldset.find('.wp_notice_animation_repeat').val(),
+                    animation_string;
                     ;
                 if ( '' === fieldset ) {
                     return;
                 }
+                if( '-1' === animation_repeat ) {
+                    animation_repeat = 'infinite';
+                }
+                animation_duration = animation_duration + 's '
+                animation_string = animation_type + ' ' + animation_duration + animation_repeat;
                 destination.removeClass();
+                destination.css( {'-webkit-animation' : '', 'animation':  '' });
                 destination.attr('class', 'wp_notice_message '+style);
                 if( 'none' !== icon_font_style ) {
                     destination.addClass( 'fa_included' );
+                }
+                if( 'none' === animation_type ) {
+                    destination.css( {'-webkit-animation' : '', 'animation':  '' });
+                } else {
+                    destination.css( {'-webkit-animation' : animation_string, 'animation':  animation_string });
                 }
                 destination.html( '<i class="fa '+icon_font_style+' fa-4x"></i>'+text.replace(/\n\r?/g, '<br />') );
             });

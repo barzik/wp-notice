@@ -101,6 +101,18 @@ msgstr "שלח"
 msgid "Select the style of the notice : "
 msgstr "בחרו את עיצוב ההודעה : "
 
+msgid "Select animation type : "
+msgstr "בחרו את סוג האנימציה"
+
+msgid "None"
+msgstr "ללא"
+
+msgid "Select animation duration (seconds) : "
+msgstr "משך האנימציה בשניות"
+
+msgid "Select animation repetition, -1 for infinite : "
+msgstr "מספר החזרות. -1 עבור אינסוף"
+
 msgid "Plugin to display notice and messages on posts"
 msgstr "תוסף להצגת הודעות ומסרים בפוסטים שונים"
 
