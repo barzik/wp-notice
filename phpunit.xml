@@ -10,6 +10,8 @@
             <directory suffix=".php">./</directory>
             <exclude>
                 <directory suffix=".php">tests</directory>
+                <directory suffix=".php">node_modules</directory>
+                <directory suffix=".php">**/assets</directory>
             </exclude>
         </whitelist>
     </filter>

@@ -1,22 +1,23 @@
 === WordPress Notice ===
 Contributors: barzik
-Tags: notification, posts, obsolete, notice, messages, notice based on category,
+Tags: notification, posts, obsolete, notice, messages, notice based on category, animation, font awesome
 Requires at least: 3.7
-Tested up to: 4.3
+Tested up to: 4.3.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WP Notice Plugin enables admin to put custom announcements in the beginning of posts based on date, categories or tags.
+WP Notice Plugin enables admin to put custom animated announcements in the beginning of posts based on date, categories or tags.
 
 == Description ==
 
-WP Notice plugin enable every admin to post announcement or messages  on top of posts based on tags, categories or date.
+WP Notice plugin enable every admin to post animated announcement or messages on top of posts based on tags, categories or date.
 You can assign several messages for the several posts. There are several custom designs based on BootStrap styles.
-Along with the styles, you can also add to every message one of hundreds icons based on Font Awesome repository.
+Along with the styles, you can also add to every message one of hundreds icons based on Font Awesome repository and
+also choose animation type, duration and number of repetition.
 
 Ideal for technical sites that need to post deprecated notice on old posts and any other sites that need to show
-messages to users based on categories, tags or date.
+messages to users based on categories, tags or date and get attention to the message by using icons and animation if needed.
 
 WP Notice has fully automated testing environment based on WordPress PHPUnit and Travis CI and it is 100% compatible
 to WordPress coding standards.
@@ -56,12 +57,16 @@ GitHub: https://github.com/barzik/wp-notice
 
 == Changelog ==
 
+= 1.3.0 =
+* Adding animations.
+* Adding PHPUnit testing for animations.
+
 = 1.2.1 =
 * Remove possible XSS issues.
-* Complete Linting
-* Removing deprecated code/
-* Removing options in uninstall
-* Fixing all code standards for WP-Notice classes
+* Complete Linting.
+* Removing deprecated code.
+* Removing options in uninstall.
+* Fixing all code standards for WP-Notice classes.
 * Adding several PHPUnit tests, 88% coverage!
 
 = 1.2.0 =
