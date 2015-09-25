@@ -1,5 +1,5 @@
 (function ( $ ) {
-	"use strict";
+	'use strict';
 
 	$(function () {
         $( document ).ready(function() {
@@ -42,7 +42,7 @@
             //some validation
 
             //if no forms, submit the delete_all
-            var delete_all_input = $("<input>").attr("type", "hidden").attr("name", "delete_all").val("1"),
+            var delete_all_input = $('<input>').attr('type', 'hidden').attr('name', 'delete_all').val('1'),
                 fieldset_array = $('#wp_notice_form fieldset'),
                 form = $('#wp_notice_form');
             if( fieldset_array.length === 0 ) {
@@ -53,7 +53,9 @@
 
 
         function create_fieldset(number) {
-            typeof(number) == 'undefined' ? number = 0 : '';
+            if( typeof(number) === 'undefined' ) {
+                number = 0;
+            }
             var fieldset_array = $('#wp_notice_form fieldset');
 
             var index = fieldset_array.length-1;
@@ -79,7 +81,7 @@
          * @param fieldset_array
          */
 
-        function check_less_button(fieldset_array) {
+        function check_less_button() {
             var fieldset_array = $('#wp_notice_form fieldset');
             if(fieldset_array.length > 1) {
                 $('#wp_notice_conditions_less').show();
@@ -89,11 +91,10 @@
         }
 
         function createCloseButton() {
-            var fieldset_array = $(),
-                close_button = $('<div class="wp_notice_close_me">X</div>');
+            var close_button = $('<div class="wp_notice_close_me">X</div>');
             $('.wp_notice_close_me').remove();
             close_button.prependTo('#wp_notice_form fieldset');
-            $('.wp_notice_close_me').on('click', function(e){
+            $('.wp_notice_close_me').on('click', function(){
                 var _this = $(this);
                 _this.parent('fieldset').remove();
 
@@ -101,7 +102,7 @@
         }
 
         function createExampleMock() {
-            $('#wp_notice_form fieldset').find('select, textarea, input[type="number"]').on('change keyup paste', function(e){
+            $('#wp_notice_form fieldset').find('select, textarea, input[type="number"]').on('change keyup paste', function(){
                 var _this = $(this),
                     fieldset = _this.closest('fieldset'),
                     text = fieldset.find('textarea').val(),
@@ -113,14 +114,14 @@
                     animation_duration =  fieldset.find('.wp_notice_animation_duration').val(),
                     animation_repeat =  fieldset.find('.wp_notice_animation_repeat').val(),
                     animation_string;
-                    ;
+
                 if ( '' === fieldset ) {
                     return;
                 }
                 if( '-1' === animation_repeat ) {
                     animation_repeat = 'infinite';
                 }
-                animation_duration = animation_duration + 's '
+                animation_duration = animation_duration + 's ';
                 animation_string = animation_type + ' ' + animation_duration + animation_repeat;
                 destination.removeClass();
                 destination.css( {'-webkit-animation' : '', 'animation':  '' });

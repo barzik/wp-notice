@@ -35,6 +35,25 @@ module.exports = function(grunt) {
                 src: 'public/assets/source_css/*.css', //source
                 dest: 'public/assets/css/public.css' //destination of compiled css
             }
+        },
+        jshint: {
+            all: ['Gruntfile.js', 'public/**/*.js', 'admin/**/*.js'],
+            options : {
+                curly : true,
+                eqeqeq : true,
+                immed : true,
+                latedef : true,
+                newcap : false,
+                noarg : true,
+                sub : true,
+                undef : true,
+                unused : true,
+                boss : true,
+                eqnull : true,
+                browser : true,
+                jquery : true,
+                globals : {objectL10n : true, module : true, require : true}
+            }
         }
 
     });
@@ -42,5 +61,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-phpunit');
     grunt.loadNpmTasks('grunt-phpcbf');
     grunt.loadNpmTasks('grunt-postcss');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
 
 };

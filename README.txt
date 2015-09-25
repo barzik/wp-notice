@@ -7,20 +7,22 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WP Notice Plugin enables admin to put custom animated announcements in the beginning of posts based on date, categories or tags.
+WP Notice Plugin enables site admin to display custom animated announcements in the beginning of posts based on date, categories or tags.
 
 == Description ==
 
-WP Notice plugin enable every admin to post animated announcement or messages on top of posts based on tags, categories or date.
-You can assign several messages for the several posts. There are several custom designs based on BootStrap styles.
+WP Notice plugin enable every website manager to display animated announcement or messages on top of posts based on tags, categories or date.
+You can assign several messages for the several posts. There are several custom designs based on Twitter BootStrap styles.
 Along with the styles, you can also add to every message one of hundreds icons based on Font Awesome repository and
-also choose animation type, duration and number of repetition.
+also choose animation type, duration and number of repetition. You can preview the message with the animation before saving it.
 
 Ideal for technical sites that need to post deprecated notice on old posts and any other sites that need to show
 messages to users based on categories, tags or date and get attention to the message by using icons and animation if needed.
 
-WP Notice has fully automated testing environment based on WordPress PHPUnit and Travis CI and it is 100% compatible
-to WordPress coding standards.
+WP Notice has fully automated testing environment based on WordPress PHPUnit with more that 90% code coverage. Travis CI
+full integration allow us to make sure that WP-Notice will not be broken.
+
+The plugin files are 100% compatible to WordPress coding standards (PHP files and JS files).
 GitHub: https://github.com/barzik/wp-notice
 
 
@@ -57,6 +59,11 @@ GitHub: https://github.com/barzik/wp-notice
 
 == Changelog ==
 
+= 1.3.1 =
+* Fix for PHP warnings that happens when no condition notice saved.
+* Linting JS files.
+* Updating Grunt for jshint task.
+
 = 1.3.0 =
 * Adding animations.
 * Adding PHPUnit testing for animations.
@@ -91,6 +98,10 @@ GitHub: https://github.com/barzik/wp-notice
 * Initial version
 
 == Upgrade Notice ==
+
+= 1.3.1 =
+Fix for PHP warnings that happens when no condition notice saved.
+Also slightly better JS files.
 
 = 1.3.0 =
 Adding animation!
