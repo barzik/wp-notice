@@ -34,6 +34,7 @@ In order to use it:
 2. Install Code Sniffer WordPress extension.
 3. Install Grunt modules by typing `npm install`.
 4. Run `grunt phpcs` and observe results.
+5. Run `grunt jshint` for linting JS files. 
 
 # Generate auto prefix for animation
 

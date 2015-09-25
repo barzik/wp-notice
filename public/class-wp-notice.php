@@ -253,41 +253,40 @@ EOD;
 		$current_tags = $this->get_the_tags_id();
 		foreach ( $options as $key => $sort_option ) {
 			$found = false;
-			if ( ! isset( $sort_option['tag'] ) && ! is_array( $sort_option['tag'] ) ) {
-				continue;
-			}
-			foreach ( $sort_option['tag'] as $tag ) {
-				if ( in_array( $tag, $current_tags ) ) {
-					$messages[] = array(
-						'text' => $sort_option['wp_notice_text'],
-						'style' => $sort_option['style'],
-						'font' => $sort_option['font'],
-						'animation' => $sort_option['animation'],
-					);
-					$found = true;
-					break;
+			if ( isset( $sort_option['tag'] ) && ! empty( $sort_option['tag'] ) ) {
+				foreach ( $sort_option['tag'] as $tag ) {
+					if ( in_array( $tag, $current_tags ) ) {
+						$messages[] = array(
+							'text' => $sort_option['wp_notice_text'],
+							'style' => $sort_option['style'],
+							'font' => $sort_option['font'],
+							'animation' => $sort_option['animation'],
+						);
+						$found = true;
+						break;
+					}
 				}
 			}
+
 			if ( true === $found ) {
 				continue;
 			}
 
-			if ( ! isset( $sort_option['cat'] ) && ! is_array( $sort_option['cat'] ) ) {
-				continue;
-			}
-
-			foreach ( $sort_option['cat'] as $cat ) {
-				if ( in_array( $cat, $current_categories ) ) {
-					$messages[] = array(
-						'text' => $sort_option['wp_notice_text'],
-						'style' => $sort_option['style'],
-						'font' => $sort_option['font'],
-						'animation' => $sort_option['animation'],
-					);
-					$found = true;
-					break;
+			if ( isset( $sort_option['cat'] ) && ! empty( $sort_option['cat'] ) ) {
+				foreach ( $sort_option['cat'] as $cat ) {
+					if ( in_array( $cat, $current_categories ) ) {
+						$messages[] = array(
+							'text' => $sort_option['wp_notice_text'],
+							'style' => $sort_option['style'],
+							'font' => $sort_option['font'],
+							'animation' => $sort_option['animation'],
+						);
+						$found = true;
+						break;
+					}
 				}
 			}
+
 			if ( true === $found ) {
 				continue;
 			}
