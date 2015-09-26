@@ -34,14 +34,6 @@ if ( ! defined( 'ABSPATH' ) ) { die; // Exit if accessed directly.
 
 require_once( plugin_dir_path( __FILE__ ) . 'public/class-wp-notice.php' );
 
-/*
- * Register hooks that are fired when the plugin is activated or deactivated.
- * When the plugin is deleted, the uninstall.php file is loaded.
- */
-
-register_activation_hook( __FILE__, array( 'WP_notice', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'WP_notice', 'deactivate' ) );
-
 add_action( 'plugins_loaded', array( 'WP_notice', 'get_instance' ) );
 
 /*

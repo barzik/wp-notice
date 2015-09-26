@@ -355,6 +355,63 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 
 	}
 
+	function test_plugin_submit_notice_without_condition() {
+		//Lets create some notice with date and assign to it animation
+		$user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+		wp_set_current_user( $user->ID );
+		// fetching options, validate it is empty
+		$wp_notice_settings = get_option( 'wp_notice_settings_information', array() );
+
+		$this->assertEmpty( $wp_notice_settings );
+
+		$i = 0;
+		// generate $_POST data
+		$this->create_valid_post_data( $i, NULL, NULL, NULL , 'wp-notice-regular', 'none', array('duration' => '4', 'repeat' => '-1', 'type' => 'wiggle') );
+
+		// checking the admin page with $_POST - should insert it to the options
+		$this->plugin_admin->display_plugin_admin_page();
+
+		// fetching options, not it is not empty
+		$wp_notice_settings = get_option( 'wp_notice_settings_information', array() );
+
+		$this->assertNotEmpty( $wp_notice_settings );
+
+		$options_data = unserialize( $wp_notice_settings );
+		$this->assertInternalType( 'array', $options_data[ $i ] );
+		$this->assertEmpty( $options_data[ $i ]['wp_notice_time']);
+		$this->assertEmpty( $options_data[ $i ]['tag']);
+		$this->assertEmpty( $options_data[ $i ]['cat']);
+
+
+		$this->assertEquals( $options_data[ $i ]['wp_notice_text'], 'This is notice #'.$i.' message' );
+		$this->assertEquals( $options_data[ $i ]['style'], 'wp-notice-regular' );
+		$this->assertEquals( $options_data[ $i ]['font'], 'none' );
+		$this->assertInternalType( 'array', $options_data[ $i ]['animation'] );
+		$this->assertEquals( $options_data[ $i ]['animation']['duration'], 4 );
+		$this->assertEquals( $options_data[ $i ]['animation']['repeat'], -1 );
+		$this->assertEquals( $options_data[ $i ]['animation']['type'], 'wiggle' );
+
+		// now test it with real post - it should not contain message and not errors
+		// notice, warnings and errors will drop tests - added convertErrorsToExceptions   = "true"
+		//convertNoticesToExceptions  = "true"
+    //convertWarningsToExceptions = "true"
+		// in phpunit.xml
+		// create one post
+		$post_id = $this->factory->post->create( array( 'post_type' => 'post', 'post_status' => 'publish', 'post_title' => 'POST1', 'post_date' => date( 'Y-m-d H:i:s', time() ) ) );
+
+		// go to this post
+		$this->go_to( get_permalink( $post_id ) );
+		// fetch the content
+		$post_content_with_notice = get_echo( 'the_content' );
+
+		$this->assertNotRegExp( '/This is notice #'.$i.' message/', $post_content_with_notice );
+		$this->assertNotRegExp( '/<div style=\"-webkit-animation: wiggle 4s infinite; animation: wiggle 4s infinite;\" class=\"wp_notice_message wp-notice-regular \" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice );
+		$this->assertNotRegExp( '/<i class=\"fa none fa\-4x\"><\/i>/', $post_content_with_notice );
+
+
+	}
+
+
 	function test_plugin_delete_all_options() {
 			$user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 			wp_set_current_user( $user->ID );
@@ -399,6 +456,42 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 		$this->assertGreaterThan(0, $fonts_count);
 	}
 
+	public function test_uninstall() {
+		update_option( 'wp_notice_settings_information', 'mock_sata' );
+
+		// fetching options, not it is not empty
+		$wp_notice_settings = get_option( 'wp_notice_settings_information', array() );
+
+		$this->assertNotEmpty( $wp_notice_settings );
+
+		define('WP_UNINSTALL_PLUGIN', 'someMockValue');
+
+		require dirname( __DIR__ )  . '/uninstall.php';
+
+		$wp_notice_settings = get_option( 'wp_notice_settings_information', array() );
+
+		$this->assertEmpty( $wp_notice_settings );
+
+	}
+
+	public function test_main_class() {
+		$user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+		wp_set_current_user( $user->ID );
+
+		require_once( dirname( __DIR__ )  . '/wp-notice.php' );
+		$this->assertTrue(
+			class_exists('WP_notice'),
+			'Class WP_notice is not there'
+		);
+
+		$this->assertTrue(
+			class_exists('WP_notice_Admin'),
+			'Class WP_notice is not there'
+		);
+
+
+	}
+
 
 	function create_valid_post_data( $i = 0, $cat_id = 0, $term_id = 0, $date = '', $style = 'wp-notice-regular', $font = 'none', $animation = array('duration' => '', 'repeat' => '', 'type' => 'none') ) {
 			global $_POST;
@@ -407,11 +500,15 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 
 			$_POST['wp_notice_text'][ $i ] = 'This is notice #'.$i.' message';
 
-			$_POST['cat'][ $i ] = array( $cat_id );
-
-			$_POST['tag'][ $i ] = array( $term_id );
-
-			$_POST['wp_notice_time'][ $i ] = $date;
+			if( $cat_id !== NULL ) {
+				$_POST['cat'][ $i ] = array( $cat_id );
+			}
+			if( $term_id !== NULL ) {
+				$_POST['tag'][ $i ] = array( $term_id );
+			}
+			if( $date !== NULL ) {
+				$_POST['wp_notice_time'][ $i ] = $date;
+			}
 
 			$_POST['style'][ $i ] = array( $style );
 
