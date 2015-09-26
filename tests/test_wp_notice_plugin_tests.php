@@ -474,6 +474,24 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 
 	}
 
+	public function test_main_class() {
+		$user = new WP_User( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+		wp_set_current_user( $user->ID );
+
+		require_once( dirname( __DIR__ )  . '/wp-notice.php' );
+		$this->assertTrue(
+			class_exists('WP_notice'),
+			'Class WP_notice is not there'
+		);
+
+		$this->assertTrue(
+			class_exists('WP_notice_Admin'),
+			'Class WP_notice is not there'
+		);
+
+
+	}
+
 
 	function create_valid_post_data( $i = 0, $cat_id = 0, $term_id = 0, $date = '', $style = 'wp-notice-regular', $font = 'none', $animation = array('duration' => '', 'repeat' => '', 'type' => 'none') ) {
 			global $_POST;
