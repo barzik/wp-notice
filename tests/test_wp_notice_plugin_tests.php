@@ -456,6 +456,24 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 		$this->assertGreaterThan(0, $fonts_count);
 	}
 
+	public function test_uninstall() {
+		update_option( 'wp_notice_settings_information', 'mock_sata' );
+
+		// fetching options, not it is not empty
+		$wp_notice_settings = get_option( 'wp_notice_settings_information', array() );
+
+		$this->assertNotEmpty( $wp_notice_settings );
+
+		define('WP_UNINSTALL_PLUGIN', 'someMockValue');
+
+		require dirname( __DIR__ )  . '/uninstall.php';
+
+		$wp_notice_settings = get_option( 'wp_notice_settings_information', array() );
+
+		$this->assertEmpty( $wp_notice_settings );
+
+	}
+
 
 	function create_valid_post_data( $i = 0, $cat_id = 0, $term_id = 0, $date = '', $style = 'wp-notice-regular', $font = 'none', $animation = array('duration' => '', 'repeat' => '', 'type' => 'none') ) {
 			global $_POST;
