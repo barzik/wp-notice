@@ -66,7 +66,6 @@ final class WP_notice
 	 * @since     1.0.0
 	 */
 	private function __construct() {
-
 		// Load plugin text domain.
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
@@ -95,7 +94,6 @@ final class WP_notice
 	 * @return void
 	 */
 	public function __clone() {
-
 		// Cloning instances of the class is forbidden.
 		_doing_it_wrong( __FUNCTION__, esc_html( __( 'Cheatin&#8217; huh?' , 'wp-notice' ) ), '1.0.1' );
 	}
@@ -107,7 +105,6 @@ final class WP_notice
 	 * @return void
 	 */
 	public function __wakeup() {
-
 		// Unserializing instances of the class is forbidden.
 		_doing_it_wrong( __FUNCTION__, esc_html( __( 'Cheatin&#8217; huh?' , 'wp-notice' ) ), '1.0.1' );
 	}
@@ -120,7 +117,6 @@ final class WP_notice
 	 * @return string Plugin slug variable.
 	 */
 	public function get_plugin_slug() {
-
 		return $this->plugin_slug;
 	}
 
@@ -132,10 +128,8 @@ final class WP_notice
 	 * @return string Plugin slug variable.
 	 */
 	public function get_plugin_option_name() {
-
 		return $this->plugin_settings_information;
 	}
-
 
 	/**
 	 * Return an instance of this class.
@@ -145,7 +139,6 @@ final class WP_notice
 	 * @return    WP_notice    A single instance of this class.
 	 */
 	public static function get_instance() {
-
 		// If the single instance hasn't been set, set it now.
 		if ( null === self::$instance ) {
 			self::$instance = new self;
@@ -160,7 +153,6 @@ final class WP_notice
 	 * @since    1.0.0
 	 */
 	public function load_plugin_textdomain() {
-
 		$domain = $this->plugin_slug;
 		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
 		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
@@ -174,10 +166,8 @@ final class WP_notice
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
 		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), self::VERSION );
 		wp_enqueue_style( $this->plugin_slug . '-fonts-awsome-plugin-styles', plugins_url( 'assets/css/font-awesome.min.css', __FILE__ ), array(), self::VERSION );
-
 	}
 	/**
 	 * Add message to post
@@ -187,7 +177,6 @@ final class WP_notice
 	 * @return string
 	 */
 	public function wp_notice_add_message( $content ) {
-
 		$messages_html = '';
 		$messages_array = $this->wp_notice_options_decider();
 		foreach ( $messages_array as $key => $message ) {
@@ -211,7 +200,6 @@ final class WP_notice
 	 * @return string
 	 */
 	public function create_message_block( $text, $id, $style = 'wp-notice-regular', $font = 'none', $animation = array() ) {
-
 		if ( 'none' !== $font ) {
 			$fa_included = 'fa_included';
 		} else {
@@ -245,7 +233,6 @@ EOD;
 	 * @return array
 	 */
 	private function wp_notice_options_decider() {
-
 		$option  = $this->get_plugin_option_name();
 		$options = maybe_unserialize( get_option( $option, array() ) );
 		$messages = array();
@@ -316,7 +303,6 @@ EOD;
 	 * @return array
 	 */
 	private function get_the_category_id( $post = false ) {
-
 		$cats = array();
 		$cats_raw = get_the_category( $post );
 		if ( ! $cats_raw ) {
@@ -336,7 +322,6 @@ EOD;
 	 * @return array
 	 */
 	private function get_the_tags_id( $post = false ) {
-
 		$tags = array();
 		$tags_raw = get_the_tags( $post );
 		if ( ! $tags_raw ) {
