@@ -17,11 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-
-
-
 <div class="wrap">
-    <?php print esc_html( $message ); ?>
 	<h2><?php print esc_html( $header ); ?></h2>
 <form id="wp_notice_form" class='form-horizontal' method="post">
     <?php

@@ -51,12 +51,12 @@ final class WP_notice_Admin
 	 * @var array
 	 */
 	private $styles = array(
-	'wp-notice-regular' => 'Regular style',
+		'wp-notice-regular' => 'Regular style',
 		'wp-notice-success' => 'Success',
 		'wp-notice-info' => 'Info',
 		'wp-notice-warning' => 'Warning',
 		'wp-notice-danger' => 'Danger',
-		);
+	);
 
 	/**
 	 * The animation type
@@ -65,15 +65,15 @@ final class WP_notice_Admin
 	 */
 	private $animation_types = array(
 		'pulse',
-	'rubberBand',
-	'jello',
-	'flash',
-	'bounce',
-	'shake',
-	'swing',
-	'tada',
-	'wobble',
-	'flip',
+		'rubberBand',
+		'jello',
+		'flash',
+		'bounce',
+		'shake',
+		'swing',
+		'tada',
+		'wobble',
+		'flip',
 	);
 
 	/**
@@ -83,15 +83,11 @@ final class WP_notice_Admin
 	 * @since     1.0.0
 	 */
 	private function __construct() {
-
 		require( 'fonts.php' );
 		$this->fonts = return_font_array();
 
 		$plugin = WP_notice::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
-
-		// Create one time message on plugin activation.
-		add_action( 'admin_notices', array( $this, 'plugin_activation_message' ) );
 
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
@@ -115,7 +111,6 @@ final class WP_notice_Admin
 	 * @return void
 	 */
 	public function __clone() {
-
 		// Cloning instances of the class is forbidden.
 		_doing_it_wrong( __FUNCTION__, esc_html( __( 'Cheatin&#8217; huh?' , 'wp-notice' ) ), '1.0.1' );
 	}
@@ -127,7 +122,6 @@ final class WP_notice_Admin
 	 * @return void
 	 */
 	public function __wakeup() {
-
 		// Unserializing instances of the class is forbidden.
 		_doing_it_wrong( __FUNCTION__, esc_html( __( 'Cheatin&#8217; huh?' , 'wp-notice' ) ), '1.0.1' );
 	}
@@ -140,7 +134,6 @@ final class WP_notice_Admin
 	 * @return    WP_notice_Admin    A single instance of this class.
 	 */
 	public static function get_instance() {
-
 		// If the single instance hasn't been set, set it now.
 		if ( null === self::$instance ) {
 			self::$instance = new self;
@@ -150,28 +143,18 @@ final class WP_notice_Admin
 	}
 
 	/**
-	 * When plugin is being activated - show message
-	 */
-	public function plugin_activation_message() {
-
-		// $message  = '<a href="'.admin_url( 'options-general.php?page=' . $this->plugin_slug ).'">'.__( 'Please set up WP Notice settings.', 'WP-NOTICE' ).'</a>';
-		// $html = "<div id='message' class='updated'><p>$message</p></div>";
-		// print $html;
-	}
-
-
-	/**
 	 * Register and enqueue admin-specific style sheet.
 	 *
 	 * @since     1.0.0
 	 */
 	public function enqueue_admin_styles() {
-		if ( isset( $_GET['page'] ) && 'wp-notice' === sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) { // Input var okay.
-			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), WP_notice::VERSION );
-			wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'public/assets/css/public.css', 'wp-notice/public/' ), array(), WP_notice::VERSION );
-			wp_enqueue_style( $this->plugin_slug . 'fonts-awsome-plugin-styles', plugins_url( 'public/assets/css/font-awesome.min.css', 'wp-notice/public/' ), array(), WP_notice::VERSION );
-			wp_enqueue_style( 'jquery-ui-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
+		if ( ! isset( $_GET['page'] ) || 'wp-notice' !== sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) { // Input var okay.
+			return;
 		}
+		wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), WP_notice::VERSION );
+		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'public/assets/css/public.css', 'wp-notice/public/' ), array(), WP_notice::VERSION );
+		wp_enqueue_style( $this->plugin_slug . 'fonts-awsome-plugin-styles', plugins_url( 'public/assets/css/font-awesome.min.css', 'wp-notice/public/' ), array(), WP_notice::VERSION );
+		wp_enqueue_style( 'jquery-ui-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
 
 	}
 
@@ -181,32 +164,30 @@ final class WP_notice_Admin
 	 * @since     1.0.0
 	 */
 	public function enqueue_admin_scripts() {
-
-		if ( isset( $_GET['page'] ) && 'wp-notice' === sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) { // Input var okay.
-			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery' ), WP_notice::VERSION );
-			wp_enqueue_script( 'jquery-ui-datepicker' );
-
-			global $wp_locale;
-			$aryArgs = array(
-				'closeText'         => __( 'Done', $this->plugin_slug ),
-				'currentText'       => __( 'Today', $this->plugin_slug ),
-				'monthNames'        => $this->strip_array_indices( $wp_locale->month ),
-				'monthNamesShort'   => $this->strip_array_indices( $wp_locale->month_abbrev ),
-				'monthStatus'       => __( 'Show a different month', $this->plugin_slug ),
-				'dayNames'          => $this->strip_array_indices( $wp_locale->weekday ),
-				'dayNamesShort'     => $this->strip_array_indices( $wp_locale->weekday_abbrev ),
-				'dayNamesMin'       => $this->strip_array_indices( $wp_locale->weekday_initial ),
-				// Get the start of week from WP general setting.
-				'firstDay'          => get_option( 'start_of_week' ),
-				// Is Right to left language? default is false.
-				'isRTL'             => $wp_locale->is_rtl,
-			);
-
-			// Pass the localized array to the enqueued JS.
-			wp_localize_script( $this->plugin_slug . '-admin-script', 'objectL10n', $aryArgs );
-
+		if ( ! isset( $_GET['page'] ) || 'wp-notice' !== sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) { // Input var okay.
+			return;
 		}
+		wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery' ), WP_notice::VERSION );
+		wp_enqueue_script( 'jquery-ui-datepicker' );
 
+		global $wp_locale;
+		$aryArgs = array(
+			'closeText'         => __( 'Done', $this->plugin_slug ),
+			'currentText'       => __( 'Today', $this->plugin_slug ),
+			'monthNames'        => $this->strip_array_indices( $wp_locale->month ),
+			'monthNamesShort'   => $this->strip_array_indices( $wp_locale->month_abbrev ),
+			'monthStatus'       => __( 'Show a different month', $this->plugin_slug ),
+			'dayNames'          => $this->strip_array_indices( $wp_locale->weekday ),
+			'dayNamesShort'     => $this->strip_array_indices( $wp_locale->weekday_abbrev ),
+			'dayNamesMin'       => $this->strip_array_indices( $wp_locale->weekday_initial ),
+			// Get the start of week from WP general setting.
+			'firstDay'          => get_option( 'start_of_week' ),
+			// Is Right to left language? default is false.
+			'isRTL'             => $wp_locale->is_rtl(),
+		);
+
+		// Pass the localized array to the queued JS.
+		wp_localize_script( $this->plugin_slug . '-admin-script', 'objectL10n', $aryArgs );
 	}
 
 	/**
@@ -235,12 +216,10 @@ final class WP_notice_Admin
 	 * @since    1.0.0
 	 */
 	public function display_plugin_admin_page() {
-
 		global $current_user;
 		if ( ! user_can( $current_user, 'manage_options' ) ) {
 			return;
 		}
-
 		$header = esc_html( get_admin_page_title() );
 		$fieldset_header = __( 'Insert the notice and the conditions', $this->plugin_slug );
 		// @codingStandardsIgnoreStart
@@ -249,17 +228,11 @@ final class WP_notice_Admin
 		// @codingStandardsIgnoreEnd
 		if ( wp_verify_nonce( $nonce_key, 'submit_notice' ) ) {
 			$wp_notice_options = $this->prepare_wp_notice_post();
-			$result = $this->set_wp_notice_settings( $wp_notice_options );
+			$this->set_wp_notice_settings( $wp_notice_options );
 			unset( $_POST ); // Input var okay.
-			if ( 200 === $result['status'] ) {
-				$message = "<div class='alert alert-success'>{$result['text']}</div>";
-			} else {
-				$message = "<div class='alert alert-danger'>{$result['text']}</div>";
-			}
 		} else {
 			$wp_notice_options = $this->get_wp_notice_settings();
 		}
-
 		$fieldsets = $this->get_all_fieldsets( $wp_notice_options );
 
 		include_once( 'views/admin.php' );
@@ -270,9 +243,14 @@ final class WP_notice_Admin
 	 * @return array
 	 */
 	private function prepare_wp_notice_post() {
+
 		// @codingStandardsIgnoreStart
-		// It I skip Coding Standard here because of "Detected usage of a non-validated input variable" error.
-		$nonce_key = sanitize_text_field( wp_unslash( $_POST['wp_notice'] ) ); // Input var okay.
+		// I skip Coding Standard here because of "Detected usage of a non-validated input variable" error.
+		if ( isset (  $_POST['wp_notice'] ) ) {
+			$nonce_key = sanitize_text_field( wp_unslash( $_POST['wp_notice'] ) ); // Input var okay.
+		} else {
+			$nonce_key = false;
+		}
 		// @codingStandardsIgnoreEnd
 		if ( false === wp_verify_nonce( $nonce_key, 'submit_notice' ) ) {
 			return array();
@@ -288,7 +266,7 @@ final class WP_notice_Admin
 			if ( empty( $wp_notice_options_raw['wp_notice_text'][ $i ] ) ) {
 				continue;
 			}
-			$wp_notice_options[ $i ]['wp_notice_text'] = balanceTags( $wp_notice_options_raw['wp_notice_text'][ $i ], true );
+			$wp_notice_options[ $i ]['wp_notice_text'] = balanceTags( wp_unslash( $wp_notice_options_raw['wp_notice_text'][ $i ] ), true );
 			if ( isset( $wp_notice_options_raw['style'][ $i ] ) ) {
 				$wp_notice_options[ $i ]['style'] = sanitize_text_field( $wp_notice_options_raw['style'][ $i ][0] );
 			} else {
@@ -352,7 +330,6 @@ final class WP_notice_Admin
 	 * @return array
 	 */
 	private function set_wp_notice_settings( $wp_notice_settings = array() ) {
-
 		$plugin = WP_notice::get_instance();
 		$option  = $plugin->get_plugin_option_name();
 		if ( empty( $wp_notice_settings ) || ! is_array( $wp_notice_settings ) ) {
@@ -403,7 +380,6 @@ final class WP_notice_Admin
 	 * @return string
 	 */
 	private function get_all_fieldsets( $wp_notice_options ) {
-
 		$html = '';
 		if ( empty( $wp_notice_options ) ) {
 			$html .= $this->build_fieldset();
@@ -429,9 +405,10 @@ final class WP_notice_Admin
 	 * @return string
 	 */
 	private function generate_category_list( $number = 0, $selected_category = array() ) {
-
 		if ( empty( $selected_category ) || 0 === $selected_category || '0' === $selected_category[0] ) {
 			$all = 'selected="selected"';
+		} else {
+			$all = '';
 		}
 		$category_list = '';
 		if ( $categories = get_categories( array( 'orderby' => 'name' ) ) ) {
@@ -441,6 +418,8 @@ final class WP_notice_Admin
 			foreach ( $categories as $cat ) {
 				if ( is_array( $selected_category ) && ! empty( $selected_category ) && in_array( $cat->term_id, $selected_category ) ) {
 					$selected = $cat->term_id;
+				} else {
+					$selected = '';
 				}
 				$category_list .= '<option '.selected( $selected, $cat->term_id, false ).' value="'.$cat->term_id .'">'.$cat->name.'</option>';
 			}
@@ -458,7 +437,6 @@ final class WP_notice_Admin
 	 * @return string
 	 */
 	private function generate_tag_list( $number = 0, $selected_tag = array() ) {
-
 		$all_selected = '';
 		if ( empty( $selected_tag ) || 0 === $selected_tag || '0' === $selected_tag[0] ) {
 			$all_selected = 'selected="selected"';
@@ -490,7 +468,6 @@ final class WP_notice_Admin
 	 * @return string
 	 */
 	private function generate_style_list( $number = 0, $selected_style = 'wp-notice-regular' ) {
-
 		$style_list = '';
 		$style_list .= "<label for='style_{$number}'>" . __( 'Select the style of the notice : ', $this->plugin_slug ) . '</label>';
 		$style_list .= "<select id='style_{$number}' name='style[{$number}][]' class='wp_notice_style'>";
@@ -532,7 +509,6 @@ final class WP_notice_Admin
 	 * @return string
 	 */
 	private function generate_animation( $number = 0, $selected_animation = array() ) {
-
 		if ( ! isset( $selected_animation['type'] ) || empty( $selected_animation['type'] ) ) {
 			$selected_animation['type'] = 'none';
 		}
@@ -619,14 +595,13 @@ EOD;
 		return $fieldset;
 	}
 
-
 	/**
 	 * Add settings action link to the plugins page.
 	 *
 	 * @param string $links  The action links.
+	 * @return array
 	 */
 	public function add_action_links( $links ) {
-
 		return array_merge(
 			array(
 				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>',
@@ -641,7 +616,8 @@ EOD;
 	 * WordPress stores the locale information in an array with a alphanumeric index, and
 	 * the datepicker wants a numerical index. This function replaces the index with a number
 	 *
-	 * @param string $array_to_strip  array with alphanumeric index.
+	 * @param array $array_to_strip  array with alphanumeric index.
+	 * @return array
 	 */
 	private function strip_array_indices( $array_to_strip ) {
 

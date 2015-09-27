@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         postcss: {
             options: {
                 processors: [
-                    require('autoprefixer-core')({browsers: ['last 2 versions', 'Android >= 2.3']}), // add vendor prefixes
+                    require('autoprefixer')({browsers: ['last 2 versions', 'Android >= 2.3']}), // add vendor prefixes
                 ]
             },
             main: {
@@ -57,6 +57,28 @@ module.exports = function(grunt) {
         }
 
     });
+
+    grunt.registerTask('lint', [
+        'jshint',
+        'phpcs'
+    ]);
+
+    grunt.registerTask('test', [
+        'jshint',
+        'phpcs',
+        'phpunit'
+    ]);
+
+    grunt.registerTask('build', [
+        'postcss',
+        'phpcbf',
+        'phpunit',
+        'jshint',
+        'phpcs',
+        'phpunit'
+    ]);
+
+
     grunt.loadNpmTasks('grunt-phpcs');
     grunt.loadNpmTasks('grunt-phpunit');
     grunt.loadNpmTasks('grunt-phpcbf');

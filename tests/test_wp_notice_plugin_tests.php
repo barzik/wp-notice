@@ -153,7 +153,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			$this->assertInternalType( 'array', $options_data[ $i ] );
 			$this->assertInternalType( 'array', $options_data[ $i ]['cat'] );
 			$this->assertEquals( $options_data[ $i ]['cat'][0], $cat_id );
-			$this->assertEquals( $options_data[ $i ]['wp_notice_text'], 'This is notice #'.$i.' message' );
+			$this->assertEquals( preg_quote($options_data[ $i ]['wp_notice_text'], '/'), preg_quote('This is <a href="http://www.google.com">notice</a> #'.$i.' message', '/') );
 			$this->assertEquals( $options_data[ $i ]['style'], 'wp-notice-regular' );
 			$this->assertEquals( $options_data[ $i ]['font'], 'none' );
 
@@ -167,7 +167,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			// fetch the content
 			$post_content_with_notice = get_echo( 'the_content' );
 
-			$this->assertRegExp( '/This is notice #'.$i.' message/', $post_content_with_notice );
+			$this->assertRegExp( '/This is <a href="http:\/\/www\.google\.com">notice<\/a> #'.$i.' message/', $post_content_with_notice );
 			$this->assertRegExp( '/<div style=\"\" class=\"wp_notice_message wp-notice-regular \" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice );
 			$this->assertRegExp( '/<i class=\"fa none fa\-4x\"><\/i>/', $post_content_with_notice );
 
@@ -181,7 +181,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			// go to this post
 			$this->go_to( get_permalink( $unrelated_post_id ) );
 			$post_content_without_notice = get_echo( 'the_content' );
-			$this->assertNotRegExp( '/This is notice #'.$i.' message/', $post_content_without_notice );
+			$this->assertNotRegExp( '/This is <a href=\"http:\/\/www\.google\.com\">notice<\/a> #'.$i.' message/', $post_content_without_notice );
 
 	}
 
@@ -215,7 +215,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			$this->assertInternalType( 'array', $options_data[ $i ] );
 			$this->assertInternalType( 'array', $options_data[ $i ]['tag'] );
 			$this->assertEquals( $options_data[ $i ]['tag'][0], $term_id );
-			$this->assertEquals( $options_data[ $i ]['wp_notice_text'], 'This is notice #'.$i.' message' );
+			$this->assertEquals( $options_data[ $i ]['wp_notice_text'], 'This is <a href="http://www.google.com">notice</a> #'.$i.' message' );
 			$this->assertEquals( $options_data[ $i ]['style'], 'wp-notice-regular' );
 			$this->assertEquals( $options_data[ $i ]['font'], 'none' );
 
@@ -230,7 +230,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			// fetch the content
 			$post_content_with_notice = get_echo( 'the_content' );
 
-			$this->assertRegExp( '/This is notice #'.$i.' message/', $post_content_with_notice );
+			$this->assertRegExp( '/This is <a href=\"http:\/\/www\.google\.com\">notice<\/a> #'.$i.' message/', $post_content_with_notice );
 			$this->assertRegExp( '/<div style=\"\" class=\"wp_notice_message wp-notice-regular \" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice );
 			$this->assertRegExp( '/<i class=\"fa none fa\-4x\"><\/i>/', $post_content_with_notice );
 
@@ -245,7 +245,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			// go to this post
 			$this->go_to( get_permalink( $unrelated_post_id ) );
 			$post_content_without_notice = get_echo( 'the_content' );
-			$this->assertNotRegExp( '/This is notice #'.$i.' message/', $post_content_without_notice );
+			$this->assertNotRegExp( '/This is <a href=\"http:\/\/www\.google\.com\">notice<\/a> #'.$i.' message/', $post_content_without_notice );
 
 	}
 
@@ -276,7 +276,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			$this->assertInternalType( 'array', $options_data[ $i ] );
 			$this->assertInternalType( 'string', $options_data[ $i ]['wp_notice_time'] );
 			$this->assertEquals( $options_data[ $i ]['wp_notice_time'], date( 'd/m/Y', $date[1] ) );
-			$this->assertEquals( $options_data[ $i ]['wp_notice_text'], 'This is notice #'.$i.' message' );
+			$this->assertEquals( $options_data[ $i ]['wp_notice_text'], 'This is <a href="http://www.google.com">notice</a> #'.$i.' message' );
 			$this->assertEquals( $options_data[ $i ]['style'], 'wp-notice-regular' );
 			$this->assertEquals( $options_data[ $i ]['font'], 'none' );
 
@@ -289,7 +289,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			// fetch the content
 			$post_content_with_notice = get_echo( 'the_content' );
 
-			$this->assertRegExp( '/This is notice #'.$i.' message/', $post_content_with_notice );
+			$this->assertRegExp( '/This is <a href=\"http:\/\/www\.google\.com\">notice<\/a> #'.$i.' message/', $post_content_with_notice );
 			$this->assertRegExp( '/<div style=\"\" class=\"wp_notice_message wp-notice-regular \" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice );
 			$this->assertRegExp( '/<i class=\"fa none fa\-4x\"><\/i>/', $post_content_with_notice );
 
@@ -299,7 +299,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 			// go to this post
 			$this->go_to( get_permalink( $unrelated_post_id ) );
 			$post_content_without_notice = get_echo( 'the_content' );
-			$this->assertNotRegExp( '/This is notice #'.$i.' message/', $post_content_without_notice );
+			$this->assertNotRegExp( '/This is <a href=\"http:\/\/www\.google\.com\">notice<\/a> #'.$i.' message/', $post_content_without_notice );
 
 	}
 
@@ -331,7 +331,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 		$this->assertInternalType( 'array', $options_data[ $i ] );
 		$this->assertInternalType( 'string', $options_data[ $i ]['wp_notice_time'] );
 		$this->assertEquals( $options_data[ $i ]['wp_notice_time'], date( 'd/m/Y', $date ) );
-		$this->assertEquals( $options_data[ $i ]['wp_notice_text'], 'This is notice #'.$i.' message' );
+		$this->assertEquals( $options_data[ $i ]['wp_notice_text'], 'This is <a href="http://www.google.com">notice</a> #'.$i.' message' );
 		$this->assertEquals( $options_data[ $i ]['style'], 'wp-notice-regular' );
 		$this->assertEquals( $options_data[ $i ]['font'], 'none' );
 		$this->assertInternalType( 'array', $options_data[ $i ]['animation'] );
@@ -348,7 +348,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 		// fetch the content
 		$post_content_with_notice = get_echo( 'the_content' );
 
-		$this->assertRegExp( '/This is notice #'.$i.' message/', $post_content_with_notice );
+		$this->assertRegExp( '/This is <a href=\"http:\/\/www\.google\.com\">notice<\/a> #'.$i.' message/', $post_content_with_notice );
 		$this->assertRegExp( '/<div style=\"-webkit-animation: wiggle 4s infinite; animation: wiggle 4s infinite;\" class=\"wp_notice_message wp-notice-regular \" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice );
 		$this->assertRegExp( '/<i class=\"fa none fa\-4x\"><\/i>/', $post_content_with_notice );
 
@@ -383,7 +383,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 		$this->assertEmpty( $options_data[ $i ]['cat']);
 
 
-		$this->assertEquals( $options_data[ $i ]['wp_notice_text'], 'This is notice #'.$i.' message' );
+		$this->assertEquals( $options_data[ $i ]['wp_notice_text'], 'This is <a href="http://www.google.com">notice</a> #'.$i.' message' );
 		$this->assertEquals( $options_data[ $i ]['style'], 'wp-notice-regular' );
 		$this->assertEquals( $options_data[ $i ]['font'], 'none' );
 		$this->assertInternalType( 'array', $options_data[ $i ]['animation'] );
@@ -404,7 +404,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 		// fetch the content
 		$post_content_with_notice = get_echo( 'the_content' );
 
-		$this->assertNotRegExp( '/This is notice #'.$i.' message/', $post_content_with_notice );
+		$this->assertNotRegExp( '/This is <a href=\"http:\/\/www\.google\.com\">notice<\/a> #'.$i.' message/', $post_content_with_notice );
 		$this->assertNotRegExp( '/<div style=\"-webkit-animation: wiggle 4s infinite; animation: wiggle 4s infinite;\" class=\"wp_notice_message wp-notice-regular \" id=\"wp_notice_message-'.$i.'\">/', $post_content_with_notice );
 		$this->assertNotRegExp( '/<i class=\"fa none fa\-4x\"><\/i>/', $post_content_with_notice );
 
@@ -498,7 +498,7 @@ class WP_Test_WPnotice_Plugin_Tests extends WP_UnitTestCase
 
 			$_POST['wp_notice'] = wp_create_nonce( 'submit_notice' );
 
-			$_POST['wp_notice_text'][ $i ] = 'This is notice #'.$i.' message';
+			$_POST['wp_notice_text'][ $i ] = 'This is <a href=\"http://www.google.com\">notice</a> #'.$i.' message';
 
 			if( $cat_id !== NULL ) {
 				$_POST['cat'][ $i ] = array( $cat_id );
