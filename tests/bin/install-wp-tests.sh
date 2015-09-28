@@ -171,6 +171,7 @@ run_phpcs() {
   npm install -g jshint
   phpcs --config-set installed_paths $(pear config-get php_dir)/PHP/CodeSniffer/Standards/WordPress
   phpcs -i
+  cd $DIR
   grunt lint
 }
 
