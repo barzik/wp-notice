@@ -59,6 +59,10 @@ GitHub: https://github.com/barzik/wp-notice
 
 == Changelog ==
 
+= 1.3.2 =
+* Fix for link posting in messages.
+* Added PHPUnit test case for the link issues.
+
 = 1.3.1 =
 * Fix for PHP warnings that happens when no condition notice saved.
 * Linting JS files.
@@ -98,6 +102,9 @@ GitHub: https://github.com/barzik/wp-notice
 * Initial version
 
 == Upgrade Notice ==
+
+= 1.3.2 =
+Fix for issue with link being inserted to message and got malformed.
 
 = 1.3.1 =
 Fix for PHP warnings that happens when no condition notice saved.
