@@ -172,7 +172,7 @@ run_phpcs() {
   phpcs --config-set installed_paths $(pear config-get php_dir)/PHP/CodeSniffer/Standards/WordPress
   phpcs -i
   local FOLDER_PATH=$(dirname $DIR)
-  cd FOLDER_PATH
+  cd $FOLDER_PATH
   grunt lint
 }
 
