@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/barzik/wp-notice.svg)](https://travis-ci.org/barzik/wp-notice)
+[![Build Status](https://travis-ci.org/barzik/wp-notice.svg?branch=master)](https://travis-ci.org/barzik/wp-notice)
 
 # WP Notice
 
