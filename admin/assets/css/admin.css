@@ -44,6 +44,10 @@ fieldset.wp_notice > div.wp_notice_style > label {
     display: inline;
 }
 
+fieldset.wp_notice > div.wp_notice_position > label {
+    display: inline;
+}
+
 .wp_notice_animation.form-group > span {
     display: inline-block;
 }

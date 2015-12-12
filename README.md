@@ -2,10 +2,10 @@
 
 # WP Notice
 
-WP Notice plugin enable every admin to post animated announcement or messages on top of posts based on tags, categories or date.
+WP Notice plugin enable every admin to post animated announcement or messages in posts based on tags, categories or date.
 You can assign several messages for the several posts. There are several custom designs based on BootStrap styles.
 Along with the styles, you can also add to every message one of hundreds icons based on Font Awesome repository and
-also choose animation type, duration and number of repetition.
+also choose animation type, duration and number of repetition. You can chhose the position of the notices.
 
 # Installation and other information
 

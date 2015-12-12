@@ -181,8 +181,19 @@ final class WP_notice
 		$messages_array = $this->wp_notice_options_decider();
 		foreach ( $messages_array as $key => $message ) {
 			$messages_html .= $this->create_message_block( $message['text'], $key, $message['style'], $message['font'], $message['animation'] );
+			switch ( $message['position'] ) {
+				case 'after':
+					$content = $content.$messages_html;
+					break;
+				case 'both':
+					$content = $messages_html.$content.$messages_html;
+					break;
+				default:
+					$content = $messages_html.$content;
+					break;
+			}
 		}
-		$content = $messages_html.$content;
+
 		return $content;
 	}
 
@@ -243,12 +254,18 @@ EOD;
 			if ( isset( $sort_option['tag'] ) && ! empty( $sort_option['tag'] ) ) {
 				foreach ( $sort_option['tag'] as $tag ) {
 					if ( in_array( $tag, $current_tags ) ) {
-						$messages[] = array(
+						$temp_message = array(
 							'text' => $sort_option['wp_notice_text'],
 							'style' => $sort_option['style'],
 							'font' => $sort_option['font'],
 							'animation' => $sort_option['animation'],
 						);
+						if ( isset( $sort_option['position'] ) ) {
+							$temp_message['position'] = $sort_option['position'];
+						} else {
+							$temp_message['position'] = 'before';
+						}
+						$messages[] = $temp_message;
 						$found = true;
 						break;
 					}
@@ -262,12 +279,18 @@ EOD;
 			if ( isset( $sort_option['cat'] ) && ! empty( $sort_option['cat'] ) ) {
 				foreach ( $sort_option['cat'] as $cat ) {
 					if ( in_array( $cat, $current_categories ) ) {
-						$messages[] = array(
+						$temp_message = array(
 							'text' => $sort_option['wp_notice_text'],
 							'style' => $sort_option['style'],
 							'font' => $sort_option['font'],
 							'animation' => $sort_option['animation'],
 						);
+						if ( isset( $sort_option['position'] ) ) {
+							$temp_message['position'] = $sort_option['position'];
+						} else {
+							$temp_message['position'] = 'before';
+						}
+						$messages[] = $temp_message;
 						$found = true;
 						break;
 					}
@@ -282,12 +305,18 @@ EOD;
 				$dt = DateTime::createFromFormat( 'd/m/Y', $options[ $key ]['wp_notice_time'] );
 				$ts = $dt->getTimestamp();
 				if ( $ts > get_the_time( 'U' ) ) {
-					$messages[] = array(
+					$temp_message = array(
 						'text' => $sort_option['wp_notice_text'],
 						'style' => $sort_option['style'],
 						'font' => $sort_option['font'],
 						'animation' => $sort_option['animation'],
 					);
+					if ( isset( $sort_option['position'] ) ) {
+						$temp_message['position'] = $sort_option['position'];
+					} else {
+						$temp_message['position'] = 'before';
+					}
+					$messages[] = $temp_message;
 				}
 			}
 		}

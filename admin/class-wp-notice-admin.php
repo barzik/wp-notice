@@ -305,6 +305,11 @@ final class WP_notice_Admin
 				$wp_notice_options_raw['animation'][ $i ]['duration'] = '';
 				$wp_notice_options_raw['animation'][ $i ]['repeat'] = '';
 			}
+			if ( isset( $wp_notice_options_raw['position'][ $i ] ) ) {
+				$wp_notice_options[ $i ]['position'] = sanitize_text_field( $wp_notice_options_raw['position'][ $i ] );
+			} else {
+				$wp_notice_options[ $i ]['position'] = 'before';
+			}
 		}
 		return $wp_notice_options;
 	}
@@ -390,7 +395,7 @@ final class WP_notice_Admin
 			$html .= $this->build_fieldset(
 				$key, $wp_notice_option['tag'], $wp_notice_option['cat'],
 				$wp_notice_option['wp_notice_time'], $wp_notice_option['wp_notice_text'], $wp_notice_option['style'],
-				$wp_notice_option['font'], $wp_notice_option['animation']
+				$wp_notice_option['font'], $wp_notice_option['animation'], $wp_notice_option['position']
 			);
 		}
 		return $html;
@@ -502,6 +507,27 @@ final class WP_notice_Admin
 
 	/**
 	 *
+	 * Generating the position list for the fieldset in the admin options menu
+	 *
+	 * @param int    $number The serial ID of the fieldset.
+	 * @param string $selected_position The position for the notice.
+	 * @return string
+	 */
+	private function generate_position( $number = 0, $selected_position = 'befote' ) {
+
+		$position_list = '';
+		$position_list .= "<label for='position_{$number}'>" . __( 'Select position for the notice : ', $this->plugin_slug ) . '</label>';
+		$position_list .= "<select id='position_{$number}' name='position[{$number}]' class='wp_notice_position'>";
+		$position_list .= '<option ' . selected( $selected_position, 'before', false ) . ' value="before">'. __( 'Before', $this->plugin_slug ) . '</option>';
+		$position_list .= '<option ' . selected( $selected_position, 'after', false ) . ' value="after">'. __( 'After', $this->plugin_slug ) . '</option>';
+		$position_list .= '<option ' . selected( $selected_position, 'both', false ) . ' value="both">'. __( 'Both', $this->plugin_slug ) . '</option>';
+		$position_list .= '</select> ';
+
+		return $position_list;
+	}
+
+	/**
+	 *
 	 * Generating the animation for the fieldset in the admin options menu
 	 *
 	 * @param int   $number The serial ID of the fieldset.
@@ -552,16 +578,19 @@ final class WP_notice_Admin
 	 * @param string $selected_style  The style string.
 	 * @param string $selected_font  The font string for fontAwsome.
 	 * @param array  $selected_animation  Array for fonts.
+	 * @param string $selected_position - The position of the notice.
 	 * @return string
 	 */
 	private function build_fieldset( $number = 0, $selected_tag = array(), $selected_category = array(), $time = null,
-		$text = '', $selected_style = 'wp-notice-regular', $selected_font = 'none', $selected_animation = array() ) {
+		$text = '', $selected_style = 'wp-notice-regular', $selected_font = 'none', $selected_animation = array(),
+		$selected_position = 'before' ) {
 
 		$category_list = $this->generate_category_list( $number, $selected_category );
 		$tag_list = $this->generate_tag_list( $number, $selected_tag );
 		$style_list = $this->generate_style_list( $number, $selected_style );
 		$fonts_list = $this->generate_fonts_list( $number, $selected_font );
 		$animation = $this->generate_animation( $number, $selected_animation );
+		$position = $this->generate_position( $number, $selected_position );
 		$text_label = __( 'The Notice', $this->plugin_slug );
 		$time_label = __( 'Show in all posts that were created before:', $this->plugin_slug );
 		$text_place_holder = __( 'Insert the text of the notice here. It can be HTML or text string', $this->plugin_slug );
@@ -584,6 +613,9 @@ final class WP_notice_Admin
         </div>
         <div class="wp_notice_animation form-group">
 						$animation
+        </div>
+        <div class="wp_notice_position form-group">
+						$position
         </div>
         <div class="wp_notice_mock_example">
             <div class="wp_notice_message" id="wp_notice_message-$number"></div>
