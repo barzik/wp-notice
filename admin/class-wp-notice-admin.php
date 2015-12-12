@@ -585,17 +585,17 @@ final class WP_notice_Admin
 		$text = '', $selected_style = 'wp-notice-regular', $selected_font = 'none', $selected_animation = array(),
 		$selected_position = 'before' ) {
 
-		$category_list = $this->generate_category_list( $number, $selected_category );
-		$tag_list = $this->generate_tag_list( $number, $selected_tag );
-		$style_list = $this->generate_style_list( $number, $selected_style );
-		$fonts_list = $this->generate_fonts_list( $number, $selected_font );
-		$animation = $this->generate_animation( $number, $selected_animation );
-		$position = $this->generate_position( $number, $selected_position );
-		$text_label = __( 'The Notice', $this->plugin_slug );
-		$time_label = __( 'Show in all posts that were created before:', $this->plugin_slug );
-		$text_place_holder = __( 'Insert the text of the notice here. It can be HTML or text string', $this->plugin_slug );
-		$time_place_holder = __( 'DD/MM/YYYY', $this->plugin_slug );
-		$fieldset = <<<EOD
+			$category_list = $this->generate_category_list( $number, $selected_category );
+			$tag_list = $this->generate_tag_list( $number, $selected_tag );
+			$style_list = $this->generate_style_list( $number, $selected_style );
+			$fonts_list = $this->generate_fonts_list( $number, $selected_font );
+			$animation = $this->generate_animation( $number, $selected_animation );
+			$position = $this->generate_position( $number, $selected_position );
+			$text_label = __( 'The Notice', $this->plugin_slug );
+			$time_label = __( 'Show in all posts that were created before:', $this->plugin_slug );
+			$text_place_holder = __( 'Insert the text of the notice here. It can be HTML or text string', $this->plugin_slug );
+			$time_place_holder = __( 'DD/MM/YYYY', $this->plugin_slug );
+			$fieldset = <<<EOD
 <fieldset class="wp_notice" rel="$number">
         <div class="form-group">
             <label for="wp_notice_text_$number">$text_label</label>
@@ -624,7 +624,7 @@ final class WP_notice_Admin
 
 EOD;
 
-		return $fieldset;
+			return $fieldset;
 	}
 
 	/**
