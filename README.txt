@@ -14,7 +14,7 @@ WP Notice Plugin enables site admin to display custom animated announcements in 
 WP Notice plugin enable every admin to post animated announcement or messages in posts based on tags, categories or date.
 You can assign several messages for the several posts. There are several custom designs based on BootStrap styles.
 Along with the styles, you can also add to every message one of hundreds icons based on Font Awesome repository and
-also choose animation type, duration and number of repetition. You can chhose the position of the notices.
+also choose animation type, duration and number of repetition. You can choose the position of the notices.
 
 Ideal for technical sites that need to post deprecated notice on old posts and any other sites that need to show
 messages to users based on categories, tags or date and get attention to the message by using icons and animation if needed.
