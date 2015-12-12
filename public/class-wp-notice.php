@@ -253,7 +253,7 @@ EOD;
 			$found = false;
 			if ( isset( $sort_option['tag'] ) && ! empty( $sort_option['tag'] ) ) {
 				foreach ( $sort_option['tag'] as $tag ) {
-					if ( in_array( $tag, $current_tags ) ) {
+					if ( in_array( $tag, $current_tags, true ) ) {
 						$temp_message = array(
 							'text' => $sort_option['wp_notice_text'],
 							'style' => $sort_option['style'],
@@ -278,7 +278,7 @@ EOD;
 
 			if ( isset( $sort_option['cat'] ) && ! empty( $sort_option['cat'] ) ) {
 				foreach ( $sort_option['cat'] as $cat ) {
-					if ( in_array( $cat, $current_categories ) ) {
+					if ( in_array( $cat, $current_categories, true ) ) {
 						$temp_message = array(
 							'text' => $sort_option['wp_notice_text'],
 							'style' => $sort_option['style'],

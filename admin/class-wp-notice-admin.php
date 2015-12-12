@@ -421,7 +421,7 @@ final class WP_notice_Admin
 			$category_list .= "<select id='cat_$number' name='cat[$number][]' multiple='multiple' class='wp_notice_tag'>";
 			$category_list .= "<option $all value='0'>".__( 'Do not use categories', $this->plugin_slug ).'</option>';
 			foreach ( $categories as $cat ) {
-				if ( is_array( $selected_category ) && ! empty( $selected_category ) && in_array( $cat->term_id, $selected_category ) ) {
+				if ( is_array( $selected_category ) && ! empty( $selected_category ) && in_array( $cat->term_id, $selected_category, true ) ) {
 					$selected = $cat->term_id;
 				} else {
 					$selected = '';
@@ -453,7 +453,7 @@ final class WP_notice_Admin
 			$tag_list .= "<option {$all_selected} value='0'>" . __( 'Do not use tags', $this->plugin_slug ) . '</option>';
 			foreach ( $tags as $tag ) {
 				$selected = '';
-				if ( is_array( $selected_tag ) && ! empty( $selected_tag ) && in_array( $tag->term_id, $selected_tag ) ) {
+				if ( is_array( $selected_tag ) && ! empty( $selected_tag ) && in_array( $tag->term_id, $selected_tag, true ) ) {
 					$selected = $tag->term_id;
 				}
 				$tag_list .= '<option ' . selected( $selected, $tag->term_id, false ) . ' value="' . $tag->term_id . '">' . $tag->name . '</option>';
