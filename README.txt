@@ -1,8 +1,8 @@
 === WordPress Notice ===
 Contributors: barzik
 Tags: notification, posts, obsolete, notice, messages, notice based on category, animation, font awesome
-Requires at least: 3.7
-Tested up to: 4.3.1
+Requires at least: 3.8
+Tested up to: 4.4
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -11,10 +11,10 @@ WP Notice Plugin enables site admin to display custom animated announcements in 
 
 == Description ==
 
-WP Notice plugin enable every website manager to display animated announcement or messages on top of posts based on tags, categories or date.
-You can assign several messages for the several posts. There are several custom designs based on Twitter BootStrap styles.
+WP Notice plugin enable every admin to post animated announcement or messages in posts based on tags, categories or date.
+You can assign several messages for the several posts. There are several custom designs based on BootStrap styles.
 Along with the styles, you can also add to every message one of hundreds icons based on Font Awesome repository and
-also choose animation type, duration and number of repetition. You can preview the message with the animation before saving it.
+also choose animation type, duration and number of repetition. You can choose the position of the notices.
 
 Ideal for technical sites that need to post deprecated notice on old posts and any other sites that need to show
 messages to users based on categories, tags or date and get attention to the message by using icons and animation if needed.
@@ -59,6 +59,11 @@ GitHub: https://github.com/barzik/wp-notice
 
 == Changelog ==
 
+= 1.3.4 =
+* Adding Position choice: before content, after content or both.
+* Added PHPUnit test case.
+* Removed tests from production to testing.
+
 = 1.3.2 =
 * Fix for link posting in messages.
 * Added PHPUnit test case for the link issues.
@@ -102,6 +107,11 @@ GitHub: https://github.com/barzik/wp-notice
 * Initial version
 
 == Upgrade Notice ==
+
+= 1.3.4 =
+* Adding Position choice: before content, after content or both.
+* Added PHPUnit test case.
+* Removed tests from production to testing.
 
 = 1.3.2 =
 Fix for issue with link being inserted to message and got malformed.

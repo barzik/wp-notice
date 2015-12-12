@@ -1,5 +1,7 @@
 <?php
-/*
+/**
+ * Router.php
+ *
  * This is router for built-in php server. It is designed to use only for testing
  * This frees us from installing apache or nginx in travis
  * Usage: $ php -S 0.0.0.0:12000 router.php

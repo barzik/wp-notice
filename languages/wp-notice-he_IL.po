@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-notice 1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-09-19 13:32+0200\n"
-"PO-Revision-Date: 2015-09-24 18:50+0200\n"
+"POT-Creation-Date: 2015-12-12 14:49+0200\n"
+"PO-Revision-Date: 2015-12-12 14:52+0200\n"
 "Last-Translator: Ran Bar-Zik <ran@bar-zik.com>\n"
 "Language-Team:  <ran@bar-zik.com>\n"
 "Language: he_IL\n"
@@ -20,113 +20,139 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: admin/class-wp-notice-admin.php:79 admin/class-wp-notice-admin.php:90
-#: public/class-wp-notice.php:82 public/class-wp-notice.php:93
+#: admin/class-wp-notice-admin.php:115 admin/class-wp-notice-admin.php:126
+#: public/class-wp-notice.php:98 public/class-wp-notice.php:109
 msgid "Cheatin&#8217; huh?"
-msgstr ""
+msgstr "לרמות זה לא יפה."
 
-#: admin/class-wp-notice-admin.php:152
+#: admin/class-wp-notice-admin.php:175
 msgid "Done"
 msgstr "בוצע"
 
-#: admin/class-wp-notice-admin.php:153
+#: admin/class-wp-notice-admin.php:176
 msgid "Today"
 msgstr "היום"
 
-#: admin/class-wp-notice-admin.php:156
+#: admin/class-wp-notice-admin.php:179
 msgid "Show a different month"
 msgstr "הראה חודש אחר"
 
-#: admin/class-wp-notice-admin.php:184
+#: admin/class-wp-notice-admin.php:204
 msgid "WP Notice Setting page"
 msgstr "מסך ההגדרות של WP Notice"
 
-#: admin/class-wp-notice-admin.php:200
+#: admin/class-wp-notice-admin.php:205
+msgid "WP Notice"
+msgstr "הודעות וורדפרס"
+
+#: admin/class-wp-notice-admin.php:224
 msgid "Insert the notice and the conditions"
 msgstr "הכניסו את ההודעה ואת התנאים"
 
-#: admin/class-wp-notice-admin.php:331
+#: admin/class-wp-notice-admin.php:374
 msgid "WP Notice Settings Updated"
 msgstr "ההגדרות של WP Notice עודכנו"
 
-#: admin/class-wp-notice-admin.php:333
+#: admin/class-wp-notice-admin.php:376
 #, fuzzy
 msgid "WP Notice Error! You did change the form, right? please try again."
 msgstr "שגיאה ב Wp Notice אנא נסו שוב."
 
-#: admin/class-wp-notice-admin.php:371 admin/class-wp-notice-admin.php:400
+#: admin/class-wp-notice-admin.php:420 admin/class-wp-notice-admin.php:451
 msgid "Show in all posts that belongs to : "
 msgstr "הראה בכל הפוסטים ששייכים אל:"
 
-#: admin/class-wp-notice-admin.php:373
+#: admin/class-wp-notice-admin.php:422
 msgid "Do not use categories"
 msgstr "אל תשתמש בקטגוריות"
 
-#: admin/class-wp-notice-admin.php:402
+#: admin/class-wp-notice-admin.php:453
 msgid "Do not use tags"
 msgstr "אל תשתמש בתגיות"
 
-#: admin/class-wp-notice-admin.php:427
+#: admin/class-wp-notice-admin.php:477
 msgid "Select the style of the notice : "
 msgstr "בחרו את עיצוב ההודעה : "
 
-#: admin/class-wp-notice-admin.php:455
+#: admin/class-wp-notice-admin.php:497
+msgid "Select icon for the notice : "
+msgstr "בחרו אייקון שיופיע בהודעה"
+
+#: admin/class-wp-notice-admin.php:499
+#, fuzzy
+msgid "Do not use font"
+msgstr "אל תשתמש בתגיות"
+
+#: admin/class-wp-notice-admin.php:519
+#, fuzzy
+msgid "Select position for the notice : "
+msgstr "בחרו אייקון שיופיע בהודעה"
+
+#: admin/class-wp-notice-admin.php:521
+msgid "Before"
+msgstr "לפני"
+
+#: admin/class-wp-notice-admin.php:522
+msgid "After"
+msgstr "אחרי"
+
+#: admin/class-wp-notice-admin.php:523
+msgid "Both"
+msgstr "גם וגם"
+
+#: admin/class-wp-notice-admin.php:550
+msgid "Select animation type : "
+msgstr "בחרו את סוג האנימציה"
+
+#: admin/class-wp-notice-admin.php:552
+msgid "None"
+msgstr "ללא"
+
+#: admin/class-wp-notice-admin.php:559
+msgid "Select animation duration (seconds) : "
+msgstr "משך האנימציה בשניות"
+
+#: admin/class-wp-notice-admin.php:563
+msgid "Select animation repetition, -1 for infinite : "
+msgstr "מספר החזרות. -1 עבור אינסוף"
+
+#: admin/class-wp-notice-admin.php:594
 msgid "The Notice"
 msgstr "ההודעה"
 
-#: admin/class-wp-notice-admin.php:456
+#: admin/class-wp-notice-admin.php:595
 msgid "Show in all posts that were created before:"
 msgstr "הצג בכל הפוסטים שנוצרו לפני:"
 
-#: admin/class-wp-notice-admin.php:457
+#: admin/class-wp-notice-admin.php:596
 msgid "Insert the text of the notice here. It can be HTML or text string"
 msgstr "הכנס את הטקסט של ההודעה כאן. הטקסט יכול להיות HTML"
 
-#: admin/class-wp-notice-admin.php:458
+#: admin/class-wp-notice-admin.php:597
 #, fuzzy
 msgid "DD/MM/YYYY"
 msgstr "DD/MM/YY"
 
-#: admin/class-wp-notice-admin.php:489
+#: admin/class-wp-notice-admin.php:639
 msgid "Settings"
 msgstr "הגדרות"
 
-#: admin/views/admin.php:26
+#: admin/views/admin.php:30
 msgid ""
 "Please fill in the notice text and the proper conditions that need to be "
 "fulfilled in order to make the notice to appear"
 msgstr "אנא מלאו את ההודעה ואת התנאים שצריכים להתקיים על מנת שהיא תופיע"
 
-#: admin/views/admin.php:27
+#: admin/views/admin.php:31
 msgid "You can combine several conditions and create several notices"
 msgstr "אפשר לשלב מספר תנאים וליצור מספר הודעות"
 
-#: admin/views/admin.php:32
+#: admin/views/admin.php:41
 msgid "Submit"
 msgstr "שלח"
 
 msgid "Plugin to display notice and messages on posts"
 msgstr "תוסף להצגת הודעות ומסרים בפוסטים שונים"
 
-msgid "Select icon for the notice : "
-msgstr "בחרו אייקון שיופיע בהודעה"
-
-msgid "Select animation type : "
-msgstr "בחרו את סוג האנימציה"
-
-msgid "None"
-msgstr "ללא"
-
-msgid "Select animation duration (seconds) : "
-msgstr "משך האנימציה בשניות"
-
-msgid "Select animation repetition, -1 for infinite : "
-msgstr "מספר החזרות. -1 עבור אינסוף"
-
-#. Author of the plugin/theme
 msgid "Ran Bar-Zik <ran@bar-zik.com>"
 msgstr "רן בר-זיק <ran@bar-zik.com>"
-
-#. Plugin name
-msgid "WP Notice"
-msgstr "הודעות וורדפרס"
