@@ -78,7 +78,8 @@ install_test_suite() {
       else
         local TEST_BRANCH_NAME='branches/'$(sed 's/\([0-9]*\.[0-9]*\).*/\1/' <<< $WP_VERSION)
       fi
-    svn co --quiet http://develop.svn.wordpress.org/${TEST_BRANCH_NAME}/tests/phpunit/includes/ $WP_TESTS_DIR
+
+    svn co --quiet http://develop.svn.wordpress.org/trunk/tests/phpunit/includes/ $WP_TESTS_DIR
   fi
 
   cd $WP_TESTS_DIR
